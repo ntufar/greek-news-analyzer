@@ -36,12 +36,25 @@ ssh -i your-key.pem ubuntu@your-instance-ip
 ```
 
 ### **3. Run Deployment Script**
+
+#### **For Ubuntu/Debian:**
 ```bash
 # Download and run the deployment script
 curl -O https://raw.githubusercontent.com/ntufar/greek-news-analyzer/main/aws-deploy.sh
 chmod +x aws-deploy.sh
 ./aws-deploy.sh
+```
 
+#### **For Amazon Linux:**
+```bash
+# Download and run the Amazon Linux deployment script
+curl -O https://raw.githubusercontent.com/ntufar/greek-news-analyzer/main/aws-deploy-amazon-linux.sh
+chmod +x aws-deploy-amazon-linux.sh
+./aws-deploy-amazon-linux.sh
+```
+
+#### **Add Your API Key:**
+```bash
 # The script will pause and ask you to add your API key
 # Edit the .env file when prompted:
 nano .env
