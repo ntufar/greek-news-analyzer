@@ -119,7 +119,7 @@ sudo systemctl restart greek-news-analyzer
 # View logs
 sudo journalctl -u greek-news-analyzer -f
 
-# Update application
+# Update application (Manual)
 cd /var/www/greek-news-analyzer
 git pull
 source venv/bin/activate
@@ -129,6 +129,79 @@ sudo systemctl restart greek-news-analyzer
 # Check Nginx status
 sudo systemctl status nginx
 sudo nginx -t
+```
+
+## 🔄 **Application Updates**
+
+### **Automatic Update (Recommended)**
+```bash
+# Download and run the update script
+curl -O https://raw.githubusercontent.com/ntufar/greek-news-analyzer/main/aws-update.sh
+chmod +x aws-update.sh
+
+# Update with existing API key (keeps current configuration)
+./aws-update.sh
+
+# OR update with new API key
+./aws-update.sh your_new_gemini_api_key_here
+```
+
+### **What the Update Script Does**
+- ✅ **Pulls latest code** from GitHub repository
+- ✅ **Updates dependencies** including new PWA features
+- ✅ **Generates PWA icons** automatically
+- ✅ **Updates Nginx configuration** with PWA headers
+- ✅ **Backs up existing configuration** (API keys, settings)
+- ✅ **Restarts services** with zero downtime
+- ✅ **Tests deployment** and shows status
+
+### **New Features After Update**
+- 📱 **Progressive Web App (PWA)** - Install on mobile devices
+- 🔗 **Deep Linking** - Handle news URLs directly
+- 📤 **Share Target** - Receive shared URLs from other apps
+- ⚡ **Caching System** - Faster repeated analyses
+- 🚦 **Rate Limiting** - Prevents API abuse
+- 📊 **Health Monitoring** - `/health` and `/status` endpoints
+- 🔒 **Enhanced Security** - Better headers and validation
+
+### **Manual Update (Alternative)**
+```bash
+# Stop the service
+sudo systemctl stop greek-news-analyzer
+
+# Navigate to app directory
+cd /var/www/greek-news-analyzer
+
+# Pull latest changes
+git fetch origin
+git reset --hard origin/main
+
+# Activate virtual environment
+source venv/bin/activate
+
+# Update dependencies
+pip install --upgrade pip
+pip install -r requirements.txt
+
+# Generate PWA icons (if needed)
+python3 generate_icons.py
+
+# Restart service
+sudo systemctl start greek-news-analyzer
+sudo systemctl restart nginx
+```
+
+### **Verify Update**
+```bash
+# Check service status
+sudo systemctl status greek-news-analyzer
+
+# Test PWA features
+curl http://your-server-ip/health
+curl http://your-server-ip/status
+
+# Check if PWA manifest is accessible
+curl http://your-server-ip/static/manifest.json
 ```
 
 ## 🔒 **Security Considerations**
@@ -174,6 +247,55 @@ free -h
 sudo netstat -tlnp | grep :5000
 sudo kill -9 <PID>
 ```
+
+### **PWA Not Working**
+```bash
+# Check if manifest is accessible
+curl -I http://your-server-ip/static/manifest.json
+
+# Check if icons exist
+ls -la /var/www/greek-news-analyzer/static/icons/
+
+# Regenerate icons if missing
+cd /var/www/greek-news-analyzer
+python3 generate_icons.py
+
+# Check Nginx configuration
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
+### **Service Worker Issues**
+```bash
+# Check if service worker is accessible
+curl http://your-server-ip/static/sw.js
+
+# Clear browser cache and try again
+# Or check browser developer tools for errors
+```
+
+## 📱 **PWA Testing**
+
+### **Mobile Installation**
+1. **Open your app** in mobile browser
+2. **Look for install prompt** or install button
+3. **Add to home screen** when prompted
+4. **Test standalone mode** - app should open like native app
+
+### **URL Handling Test**
+```bash
+# Test deep linking
+curl "http://your-server-ip/?url=https://kathimerini.gr/some-article"
+
+# Test share target (from mobile browser)
+# Share a news URL from another app to your analyzer
+```
+
+### **PWA Validation**
+- **Lighthouse Audit:** Use Chrome DevTools → Lighthouse
+- **Manifest Test:** Check `/static/manifest.json` is accessible
+- **Service Worker:** Check `/static/sw.js` is accessible
+- **Icons:** Verify all icon sizes are generated
 
 ## 🔄 **Scaling Options**
 

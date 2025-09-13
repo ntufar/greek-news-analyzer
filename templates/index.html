@@ -4,6 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ανάλυση Ελληνικών Ειδήσεων</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Αναλύστε ελληνικά άρθρα ειδήσεων για στοιχεία προπαγάνδας και προκατάληψης">
+    <meta name="theme-color" content="#1e3c72">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="News Analyzer">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/static/manifest.json">
+    
+    <!-- Icons for different platforms -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/icons/icon-16x16.png">
+    <link rel="apple-touch-icon" href="/static/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/static/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/icons/icon-192x192.png">
+    
+    <!-- Stylesheets -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -234,6 +253,133 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js"></script>
+    <script>
+        // PWA Installation and Service Worker
+        let deferredPrompt;
+        let isInstalled = false;
+
+        // Check if app is already installed
+        if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+            isInstalled = true;
+            console.log('App is running in standalone mode');
+        }
+
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/static/sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        // Handle PWA install prompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            showInstallButton();
+        });
+
+        // Handle app installed
+        window.addEventListener('appinstalled', (evt) => {
+            console.log('App was installed');
+            isInstalled = true;
+            hideInstallButton();
+        });
+
+        function showInstallButton() {
+            if (!isInstalled && deferredPrompt) {
+                const installButton = document.createElement('button');
+                installButton.className = 'btn btn-success btn-sm position-fixed';
+                installButton.style.cssText = 'top: 20px; right: 20px; z-index: 1000;';
+                installButton.innerHTML = '<i class="fas fa-download me-1"></i>Εγκατάσταση';
+                installButton.onclick = installApp;
+                document.body.appendChild(installButton);
+            }
+        }
+
+        function hideInstallButton() {
+            const installButton = document.querySelector('button[onclick="installApp()"]');
+            if (installButton) {
+                installButton.remove();
+            }
+        }
+
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    } else {
+                        console.log('User dismissed the install prompt');
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        }
+
+        // Handle URL parameters for deep linking
+        function handleUrlParameters() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const url = urlParams.get('url');
+            const title = urlParams.get('title');
+            const text = urlParams.get('text');
+
+            if (url) {
+                // Pre-fill URL input
+                document.getElementById('inputType').value = 'url';
+                document.getElementById('articleUrl').value = url;
+                toggleInputType();
+                
+                // Auto-analyze if it's a news URL
+                if (isNewsUrl(url)) {
+                    setTimeout(() => {
+                        document.getElementById('analysisForm').dispatchEvent(new Event('submit'));
+                    }, 1000);
+                }
+            }
+
+            if (title) {
+                document.getElementById('source').value = title;
+            }
+        }
+
+        function isNewsUrl(url) {
+            const newsDomains = [
+                'kathimerini.gr', 'tovima.gr', 'naftemporiki.gr', 'protothema.gr',
+                'skai.gr', 'ert.gr', 'ant1.gr', 'mega.gr', 'alpha.gr',
+                'news247.gr', 'in.gr', 'lifo.gr', 'efsyn.gr'
+            ];
+            return newsDomains.some(domain => url.includes(domain));
+        }
+
+        // Handle share target
+        if ('serviceWorker' in navigator && 'navigator' in window) {
+            navigator.serviceWorker.addEventListener('message', (event) => {
+                if (event.data && event.data.type === 'SHARE_TARGET') {
+                    const { title, text, url } = event.data.data;
+                    if (url) {
+                        document.getElementById('inputType').value = 'url';
+                        document.getElementById('articleUrl').value = url;
+                        toggleInputType();
+                    }
+                    if (title) {
+                        document.getElementById('source').value = title;
+                    }
+                }
+            });
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            handleUrlParameters();
+        });
+    </script>
     <script>
         function toggleInputType() {
             const inputType = document.getElementById('inputType').value;

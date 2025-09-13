@@ -1,6 +1,12 @@
 import os
 import re
+import logging
+import hashlib
+import time
+from functools import wraps
 from flask import Flask, render_template, request, jsonify
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import google.generativeai as genai
 import requests
 from bs4 import BeautifulSoup
@@ -9,44 +15,125 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 app = Flask(__name__)
+
+# Configure rate limiting
+limiter = Limiter(
+    key_func=get_remote_address,
+    default_limits=["100 per hour", "10 per minute"]
+)
+limiter.init_app(app)
 
 # Configure Gemini API
 genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
 model = genai.GenerativeModel('gemini-2.0-flash-lite')
 
+# Simple in-memory cache for analysis results
+analysis_cache = {}
+
+def get_cache_key(text, source=""):
+    """Generate a cache key for the analysis"""
+    content = f"{text[:1000]}_{source}".encode('utf-8')
+    return hashlib.md5(content).hexdigest()
+
+def log_request(func):
+    """Decorator to log API requests"""
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        client_ip = get_remote_address()
+        logger.info(f"Request from {client_ip} to {func.__name__}")
+        
+        try:
+            result = func(*args, **kwargs)
+            duration = time.time() - start_time
+            logger.info(f"Request completed in {duration:.2f}s")
+            return result
+        except Exception as e:
+            duration = time.time() - start_time
+            logger.error(f"Request failed after {duration:.2f}s: {str(e)}")
+            raise
+    return wrapper
+
 def extract_text_from_url(url):
-    """Extract text content from a news URL"""
+    """Extract text content from a news URL with improved error handling"""
     try:
+        # Validate URL
+        if not url.startswith(('http://', 'https://')):
+            raise ValueError("Invalid URL format")
+            
         headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'el-GR,el;q=0.9,en;q=0.8',
+            'Accept-Encoding': 'gzip, deflate',
+            'Connection': 'keep-alive',
         }
-        response = requests.get(url, headers=headers, timeout=10)
+        
+        logger.info(f"Extracting text from URL: {url}")
+        response = requests.get(url, headers=headers, timeout=15, allow_redirects=True)
         response.raise_for_status()
+        
+        # Check content type
+        content_type = response.headers.get('content-type', '').lower()
+        if 'text/html' not in content_type:
+            raise ValueError(f"Unsupported content type: {content_type}")
         
         soup = BeautifulSoup(response.content, 'html.parser')
         
-        # Remove script and style elements
-        for script in soup(["script", "style"]):
-            script.decompose()
+        # Remove unwanted elements
+        for element in soup(["script", "style", "nav", "footer", "header", "aside", "advertisement"]):
+            element.decompose()
         
-        # Try to find main content
-        main_content = soup.find('main') or soup.find('article') or soup.find('div', class_='content')
+        # Try multiple selectors for main content
+        content_selectors = [
+            'main', 'article', '[role="main"]',
+            '.content', '.article-content', '.post-content',
+            '.entry-content', '.story-content', '.news-content'
+        ]
+        
+        main_content = None
+        for selector in content_selectors:
+            main_content = soup.select_one(selector)
+            if main_content:
+                break
+        
         if main_content:
             text = main_content.get_text()
         else:
-            text = soup.get_text()
+            # Fallback to body content
+            body = soup.find('body')
+            text = body.get_text() if body else soup.get_text()
         
         # Clean up text
         text = re.sub(r'\s+', ' ', text).strip()
+        
+        if len(text) < 100:
+            raise ValueError("Insufficient text content extracted")
+            
+        logger.info(f"Successfully extracted {len(text)} characters from URL")
         return text[:3000]  # Limit to 3000 characters for API efficiency
         
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Request error for URL {url}: {str(e)}")
+        return f"Error fetching URL: {str(e)}"
     except Exception as e:
+        logger.error(f"Error extracting text from {url}: {str(e)}")
         return f"Error extracting text: {str(e)}"
 
 def analyze_greek_news(text, source=""):
-    """Analyze Greek news text for propaganda indicators using Gemini"""
+    """Analyze Greek news text for propaganda indicators using Gemini with caching"""
     try:
+        # Check cache first
+        cache_key = get_cache_key(text, source)
+        if cache_key in analysis_cache:
+            logger.info("Returning cached analysis result")
+            return analysis_cache[cache_key]
+        
         # Enhanced prompt with more detailed analysis criteria
         prompt = f"""
         Αναλύστε αυτό το ελληνικό άρθρο για πιθανά στοιχεία προπαγάνδας και προκατάληψης:
@@ -95,17 +182,56 @@ def analyze_greek_news(text, source=""):
         Απαντήστε στα ελληνικά με σαφή, κατανοητό και δομημένο τρόπο.
         """
 
+        logger.info("Sending request to Gemini API")
         response = model.generate_content(prompt)
+        
+        if not response or not response.text:
+            raise ValueError("Empty response from Gemini API")
+        
+        # Cache the result
+        analysis_cache[cache_key] = response.text
+        logger.info("Analysis completed and cached")
+        
         return response.text
         
     except Exception as e:
+        logger.error(f"Error in analysis: {str(e)}")
         return f"Σφάλμα στην ανάλυση: {str(e)}"
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
+@app.route('/static/manifest.json')
+def manifest():
+    return app.send_static_file('manifest.json')
+
+@app.route('/health')
+def health():
+    """Health check endpoint"""
+    return jsonify({
+        'status': 'healthy',
+        'timestamp': time.time(),
+        'cache_size': len(analysis_cache)
+    })
+
+@app.route('/status')
+def status():
+    """Status endpoint with more detailed information"""
+    return jsonify({
+        'status': 'running',
+        'timestamp': time.time(),
+        'cache_size': len(analysis_cache),
+        'rate_limits': {
+            'default': '100 per hour, 10 per minute',
+            'analyze': '5 per minute'
+        },
+        'api_status': 'operational'
+    })
+
 @app.route('/analyze', methods=['POST'])
+@limiter.limit("5 per minute")  # More restrictive for analysis endpoint
+@log_request
 def analyze():
     try:
         data = request.get_json()
@@ -148,6 +274,7 @@ def analyze():
         })
         
     except Exception as e:
+        logger.error(f"Error in analyze endpoint: {str(e)}")
         return jsonify({'error': f'Σφάλμα: {str(e)}', 'success': False}), 500
 
 if __name__ == '__main__':
