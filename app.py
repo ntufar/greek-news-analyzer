@@ -206,6 +206,14 @@ def index():
 def manifest():
     return app.send_static_file('manifest.json')
 
+@app.route('/static/sw.js')
+def service_worker():
+    response = app.send_static_file('sw.js')
+    response.headers['Content-Type'] = 'application/javascript'
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response.headers['Service-Worker-Allowed'] = '/'
+    return response
+
 @app.route('/health')
 def health():
     """Health check endpoint"""

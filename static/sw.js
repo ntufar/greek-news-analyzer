@@ -1,18 +1,25 @@
 // Service Worker for Greek News Analyzer PWA
-const CACHE_NAME = 'greek-news-analyzer-v2';
+const CACHE_NAME = 'greek-news-analyzer-v3';
 const urlsToCache = [
   '/',
   '/static/manifest.json'
   // Icons will be cached on demand to avoid 404 errors
 ];
 
+console.log('Service Worker: Script loaded');
+
 // Install event - cache resources
 self.addEventListener('install', (event) => {
+  console.log('Service Worker: Install event');
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        console.log('Opened cache');
+        console.log('Service Worker: Opened cache');
         return cache.addAll(urlsToCache);
+      })
+      .then(() => {
+        console.log('Service Worker: Cached all resources');
+        return self.skipWaiting();
       })
   );
 });
