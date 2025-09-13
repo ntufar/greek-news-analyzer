@@ -45,6 +45,29 @@ self.addEventListener('message', (event) => {
   }
 });
 
+// Handle share target from form submission
+self.addEventListener('fetch', (event) => {
+  if (event.request.method === 'GET' && event.request.url.includes('?')) {
+    const url = new URL(event.request.url);
+    const title = url.searchParams.get('title');
+    const text = url.searchParams.get('text');
+    const sharedUrl = url.searchParams.get('url');
+    
+    if (title || text || sharedUrl) {
+      // Store the shared data and redirect to main app
+      event.respondWith(
+        caches.open('shared-data').then(cache => {
+          return cache.put('shared-data', new Response(JSON.stringify({
+            title, text, url: sharedUrl
+          })));
+        }).then(() => {
+          return Response.redirect('/', 302);
+        })
+      );
+    }
+  }
+});
+
 // Handle protocol handlers (web+greeknews://)
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'PROTOCOL_HANDLER') {

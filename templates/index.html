@@ -375,9 +375,35 @@
             });
         }
 
+        // Check for shared data from service worker
+        async function checkSharedData() {
+            if ('caches' in window) {
+                try {
+                    const cache = await caches.open('shared-data');
+                    const response = await cache.match('shared-data');
+                    if (response) {
+                        const data = await response.json();
+                        if (data.url) {
+                            document.getElementById('inputType').value = 'url';
+                            document.getElementById('articleUrl').value = data.url;
+                            toggleInputType();
+                        }
+                        if (data.title) {
+                            document.getElementById('source').value = data.title;
+                        }
+                        // Clear the shared data after using it
+                        await cache.delete('shared-data');
+                    }
+                } catch (error) {
+                    console.log('No shared data found');
+                }
+            }
+        }
+
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', () => {
             handleUrlParameters();
+            checkSharedData();
         });
     </script>
     <script>
