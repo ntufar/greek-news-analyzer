@@ -81,6 +81,50 @@
             line-height: 1.6;
         }
         
+        .analysis-text h1, .analysis-text h2, .analysis-text h3, .analysis-text h4, .analysis-text h5, .analysis-text h6 {
+            color: #1e3c72;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .analysis-text h2 {
+            font-size: 1.3rem;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 0.3rem;
+        }
+        
+        .analysis-text h3 {
+            font-size: 1.1rem;
+            color: #495057;
+        }
+        
+        .analysis-text ul, .analysis-text ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .analysis-text li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .analysis-text strong {
+            color: #1e3c72;
+            font-weight: 600;
+        }
+        
+        .analysis-text p {
+            margin-bottom: 1rem;
+        }
+        
+        .analysis-text blockquote {
+            border-left: 4px solid #007bff;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            font-style: italic;
+            color: #6c757d;
+        }
+        
         @media (max-width: 768px) {
             .main-container {
                 margin: 1rem;
@@ -189,6 +233,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js"></script>
     <script>
         function toggleInputType() {
             const inputType = document.getElementById('inputType').value;
@@ -287,14 +332,14 @@
                     throw new Error(data.error);
                 }
                 
-                document.getElementById('analysisText').textContent = data.analysis;
+                document.getElementById('analysisText').innerHTML = marked.parse(data.analysis);
                 document.getElementById('textLength').textContent = data.text_length || 0;
                 document.getElementById('sourceName').textContent = data.source || 'Άγνωστη';
                 document.getElementById('result').style.display = 'block';
                 document.getElementById('result').className = 'analysis-card p-4';
                 
             } catch (error) {
-                document.getElementById('analysisText').textContent = 'Σφάλμα: ' + error.message;
+                document.getElementById('analysisText').innerHTML = '<div class="alert alert-danger">Σφάλμα: ' + error.message + '</div>';
                 document.getElementById('result').style.display = 'block';
                 document.getElementById('result').className = 'analysis-card p-4 error';
             } finally {
