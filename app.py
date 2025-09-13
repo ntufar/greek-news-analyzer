@@ -47,22 +47,52 @@ def extract_text_from_url(url):
 def analyze_greek_news(text, source=""):
     """Analyze Greek news text for propaganda indicators using Gemini"""
     try:
+        # Enhanced prompt with more detailed analysis criteria
         prompt = f"""
-        Αναλύστε αυτό το ελληνικό άρθρο για πιθανά στοιχεία προπαγάνδας:
+        Αναλύστε αυτό το ελληνικό άρθρο για πιθανά στοιχεία προπαγάνδας και προκατάληψης:
 
-        Κείμενο: {text}
-        Πηγή: {source}
+        Κείμενο: {text[:2000]}
+        Πηγή: {source if source else "Άγνωστη"}
 
-        Παρακαλώ αξιολογήστε από 1-10 (1=πιθανή προπαγάνδα, 10=αξιόπισες ειδήσεις) και εξηγήστε:
+        Παρακαλώ αξιολογήστε από 1-10 (1=πιθανή προπαγάνδα, 10=αξιόπισες ειδήσεις) και δώστε λεπτομερή ανάλυση:
 
-        1. Στοιχεία συναισθηματικής χειραγώγησης
-        2. Δείκτες προκατάληψης
-        3. Αναλογία γεγονότων vs γνώμες
-        4. Αξιοπιστία πηγής
-        5. Χρήση φορτωμένης γλώσσας
-        6. Λογικές πλάνες
+        **ΣΥΝΟΛΙΚΗ ΑΞΙΟΛΟΓΗΣΗ: [Βαθμολογία 1-10]**
 
-        Απαντήστε στα ελληνικά με σαφή και κατανοητό τρόπο.
+        **1. ΣΥΝΑΙΣΘΗΜΑΤΙΚΗ ΧΕΙΡΑΓΩΓΗΣΗ:**
+        - Χρήση φορτωμένων λέξεων και φράσεων
+        - Εκφοβιστική γλώσσα
+        - Συναισθηματικές εκφράσεις
+
+        **2. ΔΕΙΚΤΕΣ ΠΡΟΚΑΤΑΛΗΨΗΣ:**
+        - Πολιτική ή ιδεολογική κλίση
+        - Μονόπλευρη παρουσίαση γεγονότων
+        - Επιλογή πηγών και μαρτύρων
+
+        **3. ΑΝΑΛΟΓΙΑ ΓΕΓΟΝΟΤΩΝ vs ΓΝΩΜΕΣ:**
+        - Ποσοστό αντικειμενικών γεγονότων
+        - Ποσοστό υποκειμενικών ερμηνειών
+        - Διαχωρισμός ειδήσεων από σχολιασμό
+
+        **4. ΑΞΙΟΠΙΣΤΙΑ ΠΗΓΗΣ:**
+        - Ιστορικό αξιοπιστίας
+        - Διαφάνεια και ευθύνη
+        - Συνέπεια στην αναφορά
+
+        **5. ΓΛΩΣΣΙΚΗ ΑΝΑΛΥΣΗ:**
+        - Χρήση υπερβολών και υπερθετικών
+        - Αποφυγή συγκεκριμένων όρων
+        - Επιλογή λεξιλογίου
+
+        **6. ΛΟΓΙΚΕΣ ΠΛΑΝΕΣ:**
+        - Αναγνώριση λογικών σφαλμάτων
+        - Χειραγώγηση δεδομένων
+        - Αποφυγή αντίθετων επιχειρημάτων
+
+        **7. ΣΥΣΤΑΣΗ:**
+        - Σύσταση για περαιτέρω έλεγχο
+        - Προτεινόμενες πηγές για επιπλέον πληροφόρηση
+
+        Απαντήστε στα ελληνικά με σαφή, κατανοητό και δομημένο τρόπο.
         """
 
         response = model.generate_content(prompt)
@@ -79,27 +109,46 @@ def index():
 def analyze():
     try:
         data = request.get_json()
-        text = data.get('text', '')
-        url = data.get('url', '')
-        source = data.get('source', '')
+        if not data:
+            return jsonify({'error': 'Μη έγκυρα δεδομένα'}), 400
+            
+        text = data.get('text', '').strip()
+        url = data.get('url', '').strip()
+        source = data.get('source', '').strip()
+        
+        # Validate input
+        if not text and not url:
+            return jsonify({'error': 'Παρακαλώ εισάγετε κείμενο ή URL'}), 400
         
         if url and not text:
+            # Validate URL format
+            if not url.startswith(('http://', 'https://')):
+                return jsonify({'error': 'Μη έγκυρη διεύθυνση URL'}), 400
+                
             text = extract_text_from_url(url)
             if text.startswith("Error"):
                 return jsonify({'error': text}), 400
         
-        if not text.strip():
-            return jsonify({'error': 'Παρακαλώ εισάγετε κείμενο ή URL'}), 400
+        # Check minimum text length
+        if len(text) < 50:
+            return jsonify({'error': 'Το κείμενο είναι πολύ σύντομο για ανάλυση (ελάχιστο 50 χαρακτήρες)'}), 400
         
+        # Check maximum text length
+        if len(text) > 10000:
+            return jsonify({'error': 'Το κείμενο είναι πολύ μεγάλο (μέγιστο 10,000 χαρακτήρες)'}), 400
+        
+        # Perform analysis
         analysis = analyze_greek_news(text, source)
         
         return jsonify({
             'analysis': analysis,
-            'text_length': len(text)
+            'text_length': len(text),
+            'source': source if source else 'Άγνωστη',
+            'success': True
         })
         
     except Exception as e:
-        return jsonify({'error': f'Σφάλμα: {str(e)}'}), 500
+        return jsonify({'error': f'Σφάλμα: {str(e)}', 'success': False}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

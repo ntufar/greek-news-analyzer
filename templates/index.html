@@ -126,7 +126,11 @@
                                     <i class="fas fa-file-text me-2"></i>Κείμενο Άρθρου
                                 </label>
                                 <textarea class="form-control" id="articleText" rows="8" 
-                                    placeholder="Επικολλήστε εδώ το κείμενο του άρθρου..."></textarea>
+                                    placeholder="Επικολλήστε εδώ το κείμενο του άρθρου..." 
+                                    maxlength="10000" oninput="updateCharCount()"></textarea>
+                                <div class="form-text">
+                                    <span id="charCount">0</span> / 10,000 χαρακτήρες (ελάχιστο 50)
+                                </div>
                             </div>
                             
                             <div class="mb-3" id="urlInput" style="display: none;">
@@ -163,8 +167,20 @@
                         </div>
                         
                         <div class="analysis-card p-4" id="result" style="display: none;">
-                            <h4><i class="fas fa-chart-line me-2"></i>Αποτελέσματα Ανάλυσης</h4>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4><i class="fas fa-chart-line me-2"></i>Αποτελέσματα Ανάλυσης</h4>
+                                <button class="btn btn-outline-secondary btn-sm" onclick="copyAnalysis()">
+                                    <i class="fas fa-copy me-1"></i>Αντιγραφή
+                                </button>
+                            </div>
                             <div class="analysis-text" id="analysisText"></div>
+                            <div class="mt-3 pt-3 border-top">
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Μήκος κειμένου: <span id="textLength">0</span> χαρακτήρες | 
+                                    Πηγή: <span id="sourceName">Άγνωστη</span>
+                                </small>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -188,6 +204,43 @@
             }
         }
         
+        function updateCharCount() {
+            const textarea = document.getElementById('articleText');
+            const charCount = document.getElementById('charCount');
+            const count = textarea.value.length;
+            charCount.textContent = count;
+            
+            // Change color based on count
+            if (count < 50) {
+                charCount.style.color = '#dc3545';
+            } else if (count > 9000) {
+                charCount.style.color = '#ffc107';
+            } else {
+                charCount.style.color = '#28a745';
+            }
+        }
+        
+        function copyAnalysis() {
+            const analysisText = document.getElementById('analysisText').textContent;
+            navigator.clipboard.writeText(analysisText).then(() => {
+                // Show success message
+                const button = event.target.closest('button');
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check me-1"></i>Αντιγράφηκε!';
+                button.classList.remove('btn-outline-secondary');
+                button.classList.add('btn-success');
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.classList.remove('btn-success');
+                    button.classList.add('btn-outline-secondary');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                alert('Αποτυχία αντιγραφής');
+            });
+        }
+        
         document.getElementById('analysisForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -198,6 +251,11 @@
             
             if (inputType === 'text' && !text.trim()) {
                 alert('Παρακαλώ εισάγετε κείμενο άρθρου');
+                return;
+            }
+            
+            if (inputType === 'text' && text.length < 50) {
+                alert('Το κείμενο πρέπει να έχει τουλάχιστον 50 χαρακτήρες');
                 return;
             }
             
@@ -230,6 +288,8 @@
                 }
                 
                 document.getElementById('analysisText').textContent = data.analysis;
+                document.getElementById('textLength').textContent = data.text_length || 0;
+                document.getElementById('sourceName').textContent = data.source || 'Άγνωστη';
                 document.getElementById('result').style.display = 'block';
                 document.getElementById('result').className = 'analysis-card p-4';
                 
