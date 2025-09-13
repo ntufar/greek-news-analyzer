@@ -41,6 +41,12 @@ ssh -i your-key.pem ubuntu@your-instance-ip
 curl -O https://raw.githubusercontent.com/ntufar/greek-news-analyzer/main/aws-deploy.sh
 chmod +x aws-deploy.sh
 ./aws-deploy.sh
+
+# The script will pause and ask you to add your API key
+# Edit the .env file when prompted:
+nano .env
+# Add: GEMINI_API_KEY=your_actual_api_key_here
+# Save and exit (Ctrl+X, Y, Enter)
 ```
 
 ### **4. Verify Deployment**
@@ -114,11 +120,20 @@ sudo nginx -t
 
 ## 🔒 **Security Considerations**
 
-1. **Firewall:** Only open necessary ports
-2. **SSH Key:** Use key-based authentication
-3. **Updates:** Regular system updates
-4. **Monitoring:** Set up CloudWatch alarms
-5. **Backups:** Regular EBS snapshots
+1. **API Keys:** Never commit API keys to Git
+2. **Environment Variables:** Store sensitive data in .env files
+3. **Firewall:** Only open necessary ports
+4. **SSH Key:** Use key-based authentication
+5. **Updates:** Regular system updates
+6. **Monitoring:** Set up CloudWatch alarms
+7. **Backups:** Regular EBS snapshots
+
+### **API Key Security**
+- ✅ **Never commit** API keys to Git
+- ✅ **Use .env files** for local development
+- ✅ **Set environment variables** on the server
+- ✅ **Rotate keys** if compromised
+- ✅ **Use IAM roles** for AWS services when possible
 
 ## 📊 **Performance Optimization**
 
