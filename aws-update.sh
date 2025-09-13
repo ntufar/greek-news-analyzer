@@ -94,9 +94,31 @@ pip install -r requirements.txt
 echo "📱 Installing PWA dependencies..."
 pip install Pillow
 
-# Generate PWA icons
-echo "🎨 Generating PWA icons..."
-python3 generate_icons.py
+    # Generate PWA icons
+    echo "🎨 Generating PWA icons..."
+    
+    # Try to generate icons with Pillow first
+    if python3 generate_icons.py 2>/dev/null; then
+        echo "✅ Icons generated with Pillow"
+    else
+        echo "⚠️  Pillow failed, creating simple icons..."
+        python3 create_simple_icons.py
+    fi
+    
+    # Verify icons were created
+    if [ ! -d "static/icons" ]; then
+        echo "❌ Icons directory not found, creating it..."
+        mkdir -p static/icons
+    fi
+    
+    # Ensure all required icons exist
+    for size in 72 96 128 144 152 192 384 512; do
+        if [ ! -f "static/icons/icon-${size}x${size}.png" ]; then
+            echo "Creating missing icon: icon-${size}x${size}.png"
+            python3 create_simple_icons.py
+            break
+        fi
+    done
 
 # Create/update .env file
 echo "⚙️  Updating environment configuration..."
