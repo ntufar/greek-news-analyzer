@@ -135,6 +135,15 @@ EOF
 
 # Update Nginx configuration with improved settings
 echo "🌐 Updating Nginx configuration..."
+
+# Create rate limiting configuration
+echo "🔧 Creating rate limiting configuration..."
+sudo tee /etc/nginx/conf.d/rate-limiting.conf > /dev/null << 'EOF'
+# Rate limiting zones
+limit_req_zone $binary_remote_addr zone=api:10m rate=10r/m;
+limit_req_zone $binary_remote_addr zone=general:10m rate=100r/h;
+EOF
+
 if [ -f "/etc/nginx/sites-available/greek-news-analyzer" ]; then
     # Ubuntu/Debian style
     sudo tee /etc/nginx/sites-available/greek-news-analyzer > /dev/null << EOF
@@ -152,10 +161,6 @@ server {
     add_header Cache-Control "public, max-age=31536000" always;
     add_header Cross-Origin-Embedder-Policy "require-corp" always;
     add_header Cross-Origin-Opener-Policy "same-origin" always;
-
-    # Rate limiting
-    limit_req_zone \$binary_remote_addr zone=api:10m rate=10r/m;
-    limit_req_zone \$binary_remote_addr zone=general:10m rate=100r/h;
 
     location / {
         limit_req zone=general burst=20 nodelay;
@@ -223,10 +228,6 @@ server {
     add_header Cache-Control "public, max-age=31536000" always;
     add_header Cross-Origin-Embedder-Policy "require-corp" always;
     add_header Cross-Origin-Opener-Policy "same-origin" always;
-
-    # Rate limiting
-    limit_req_zone \$binary_remote_addr zone=api:10m rate=10r/m;
-    limit_req_zone \$binary_remote_addr zone=general:10m rate=100r/h;
 
     location / {
         limit_req zone=general burst=20 nodelay;
