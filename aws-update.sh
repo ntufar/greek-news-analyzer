@@ -94,6 +94,19 @@ pip install -r requirements.txt
 echo "📱 Installing PWA dependencies..."
 pip install Pillow
 
+# Install Certbot for SSL certificates
+echo "🔒 Installing SSL certificate tools..."
+if ! command -v certbot &> /dev/null; then
+    if command -v yum &> /dev/null; then
+        # Amazon Linux / CentOS
+        sudo yum install -y certbot python3-certbot-nginx
+    elif command -v apt-get &> /dev/null; then
+        # Ubuntu / Debian
+        sudo apt-get update
+        sudo apt-get install -y certbot python3-certbot-nginx
+    fi
+fi
+
     # Generate PWA icons
     echo "🎨 Generating PWA icons..."
     
@@ -304,6 +317,16 @@ else
 fi
 
 # Display final information
+# Setup SSL certificate (optional)
+echo "🔒 Setting up SSL certificate..."
+if [ ! -f "/etc/letsencrypt/live/$(curl -s http://169.254.169.254/latest/meta-data/public-hostname)/fullchain.pem" ]; then
+    echo "📋 To enable HTTPS and service workers, run:"
+    echo "   sudo certbot --nginx -d $(curl -s http://169.254.169.254/latest/meta-data/public-hostname)"
+    echo "   This will enable HTTPS and allow service workers to work properly."
+else
+    echo "✅ SSL certificate already exists"
+fi
+
 echo ""
 echo "🎉 Update completed successfully!"
 echo "🌐 Your app is available at: http://$PUBLIC_IP"
