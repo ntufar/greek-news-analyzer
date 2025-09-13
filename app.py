@@ -1,8 +1,6 @@
 import os
 import re
 from flask import Flask, render_template, request, jsonify
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
 import google.generativeai as genai
 import requests
 from bs4 import BeautifulSoup
@@ -12,14 +10,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-
-# Configure rate limiting
-limiter = Limiter(
-    app=app,
-    key_func=get_remote_address,
-    default_limits=["200 per day", "50 per hour"],
-    storage_uri="memory://"  # In production, use Redis: "redis://localhost:6379"
-)
 
 # Configure Gemini API
 genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
@@ -116,7 +106,6 @@ def index():
     return render_template('index.html')
 
 @app.route('/analyze', methods=['POST'])
-@limiter.limit("10 per minute")  # More restrictive for analysis endpoint
 def analyze():
     try:
         data = request.get_json()
@@ -160,47 +149,6 @@ def analyze():
         
     except Exception as e:
         return jsonify({'error': f'Σφάλμα: {str(e)}', 'success': False}), 500
-
-# Rate limit error handler
-@app.errorhandler(429)
-def ratelimit_handler(e):
-    """Handle rate limit exceeded errors"""
-    return jsonify({
-        'error': 'Έχετε υπερβεί το όριο αιτημάτων. Παρακαλώ περιμένετε πριν κάνετε νέα ανάλυση.',
-        'retry_after': e.retry_after,
-        'limit': str(e.description),
-        'success': False
-    }), 429
-
-# Rate limit status endpoint
-@app.route('/rate-limit-status')
-@limiter.limit("5 per minute")
-def rate_limit_status():
-    """Get current rate limit status for the user"""
-    try:
-        return jsonify({
-            'status': 'active',
-            'limits': {
-                'daily': '200 per day',
-                'hourly': '50 per hour', 
-                'analysis': '10 per minute'
-            },
-            'message': 'Rate limiting is active. Check response headers for current usage.'
-        })
-    except Exception as e:
-        return jsonify({
-            'error': f'Σφάλμα λήψης κατάστασης: {str(e)}'
-        }), 500
-
-# Health check endpoint
-@app.route('/health')
-def health_check():
-    """Health check endpoint for monitoring"""
-    return jsonify({
-        'status': 'healthy',
-        'service': 'Greek News Analyzer',
-        'version': '1.0.0'
-    })
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))

@@ -151,12 +151,6 @@
                     <div class="header">
                         <h1><i class="fas fa-newspaper me-3"></i>Ανάλυση Ελληνικών Ειδήσεων</h1>
                         <p class="mb-0">Ελέγξτε αν ένα άρθρο περιέχει στοιχεία προπαγάνδας</p>
-                        <div class="rate-limit-info mt-2">
-                            <small class="text-white-50">
-                                <i class="fas fa-clock me-1"></i>
-                                Όρια: 10 αναλύσεις/λεπτό, 50/ώρα, 200/ημέρα
-                            </small>
-                        </div>
                     </div>
                     
                     <div class="p-4">
@@ -333,13 +327,6 @@
                 });
                 
                 const data = await response.json();
-                
-                // Handle rate limiting errors specifically
-                if (response.status === 429) {
-                    const retryAfter = data.retry_after || 60;
-                    const minutes = Math.ceil(retryAfter / 60);
-                    throw new Error(`Έχετε υπερβεί το όριο αιτημάτων. Παρακαλώ περιμένετε ${minutes} λεπτό(ά) πριν κάνετε νέα ανάλυση.`);
-                }
                 
                 if (data.error) {
                     throw new Error(data.error);
