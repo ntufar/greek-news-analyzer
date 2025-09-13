@@ -208,29 +208,7 @@ server {
         proxy_read_timeout 30s;
     }
 
-    # PWA static files
-    location /static/ {
-        expires 1y;
-        add_header Cache-Control "public, immutable";
-        add_header Cross-Origin-Embedder-Policy "require-corp";
-        add_header Cross-Origin-Opener-Policy "same-origin";
-    }
-
-    # Service Worker
-    location /static/sw.js {
-        expires 0;
-        add_header Cache-Control "no-cache, no-store, must-revalidate";
-        add_header Cross-Origin-Embedder-Policy "require-corp";
-        add_header Cross-Origin-Opener-Policy "same-origin";
-    }
-
-    # Manifest
-    location /static/manifest.json {
-        expires 1d;
-        add_header Content-Type "application/manifest+json";
-        add_header Cross-Origin-Embedder-Policy "require-corp";
-        add_header Cross-Origin-Opener-Policy "same-origin";
-    }
+    # All static files are handled by Flask app
 }
 EOF
 else
@@ -275,29 +253,7 @@ server {
         proxy_read_timeout 30s;
     }
 
-    # PWA static files
-    location /static/ {
-        expires 1y;
-        add_header Cache-Control "public, immutable";
-        add_header Cross-Origin-Embedder-Policy "require-corp";
-        add_header Cross-Origin-Opener-Policy "same-origin";
-    }
-
-    # Service Worker
-    location /static/sw.js {
-        expires 0;
-        add_header Cache-Control "no-cache, no-store, must-revalidate";
-        add_header Cross-Origin-Embedder-Policy "require-corp";
-        add_header Cross-Origin-Opener-Policy "same-origin";
-    }
-
-    # Manifest
-    location /static/manifest.json {
-        expires 1d;
-        add_header Content-Type "application/manifest+json";
-        add_header Cross-Origin-Embedder-Policy "require-corp";
-        add_header Cross-Origin-Opener-Policy "same-origin";
-    }
+    # All static files are handled by Flask app
 }
 EOF
 fi
