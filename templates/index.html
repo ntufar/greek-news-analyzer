@@ -7,10 +7,13 @@
     
     <!-- PWA Meta Tags -->
     <meta name="description" content="Αναλύστε ελληνικά άρθρα ειδήσεων για στοιχεία προπαγάνδας και προκατάληψης">
-    <meta name="theme-color" content="#1e3c72">
+    <meta name="theme-color" content="#2563eb">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="News Analyzer">
+    <meta name="apple-mobile-web-app-title" content="Greek News Analyzer">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Greek News Analyzer">
+    <meta name="apple-touch-fullscreen" content="yes">
     
     <!-- PWA Manifest -->
     <link rel="manifest" href="/static/manifest.json">
@@ -266,14 +269,26 @@
 
         // Register Service Worker
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/static/sw.js')
-                    .then((registration) => {
-                        console.log('SW registered: ', registration);
-                    })
-                    .catch((registrationError) => {
-                        console.log('SW registration failed: ', registrationError);
+            window.addEventListener('load', async () => {
+                try {
+                    const registration = await navigator.serviceWorker.register('/static/sw.js', {
+                        scope: '/'
                     });
+                    console.log('SW registered: ', registration);
+                    
+                    // Check for updates
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                // New content is available, reload the page
+                                window.location.reload();
+                            }
+                        });
+                    });
+                } catch (error) {
+                    console.log('SW registration failed: ', error);
+                }
             });
         }
 

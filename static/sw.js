@@ -1,9 +1,15 @@
 // Service Worker for Greek News Analyzer PWA
-const CACHE_NAME = 'greek-news-analyzer-v1';
+const CACHE_NAME = 'greek-news-analyzer-v2';
 const urlsToCache = [
   '/',
   '/static/manifest.json',
+  '/static/icons/icon-72x72.png',
+  '/static/icons/icon-96x96.png',
+  '/static/icons/icon-128x128.png',
+  '/static/icons/icon-144x144.png',
+  '/static/icons/icon-152x152.png',
   '/static/icons/icon-192x192.png',
+  '/static/icons/icon-384x384.png',
   '/static/icons/icon-512x512.png'
 ];
 
