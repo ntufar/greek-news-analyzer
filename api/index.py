@@ -157,13 +157,17 @@ def analyze_greek_news(text, source=""):
         return f"Σφάλμα στην ανάλυση: {str(e)}"
 
 class handler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        if self.path == '/':
-            self.send_response(200)
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
+    def get_main_html(self, url_params=None):
+        """Generate the main HTML page with optional URL parameters for sharing"""
+        if url_params is None:
+            url_params = {}
             
-            html = """
+        # Extract shared data from URL parameters
+        shared_url = url_params.get('url', [None])[0] if url_params.get('url') else None
+        shared_title = url_params.get('title', [None])[0] if url_params.get('title') else None
+        shared_text = url_params.get('text', [None])[0] if url_params.get('text') else None
+        
+        return """
             <!DOCTYPE html>
             <html lang="el">
             <head>
@@ -578,6 +582,8 @@ class handler(BaseHTTPRequestHandler):
                         const title = urlParams.get('title');
                         const text = urlParams.get('text');
 
+                        console.log('URL parameters:', { url, title, text });
+
                         if (url) {
                             // Pre-fill URL input
                             document.getElementById('inputType').value = 'url';
@@ -587,9 +593,16 @@ class handler(BaseHTTPRequestHandler):
                             // Auto-analyze if it's a news URL
                             if (isNewsUrl(url)) {
                                 setTimeout(() => {
+                                    console.log('Auto-analyzing shared URL:', url);
                                     document.getElementById('analysisForm').dispatchEvent(new Event('submit'));
                                 }, 1000);
                             }
+                        } else if (text) {
+                            // If text is provided instead of URL, use text input
+                            document.getElementById('inputType').value = 'text';
+                            document.getElementById('text').value = text;
+                            toggleInputType();
+                            updateCharCount();
                         }
 
                         if (title) {
@@ -743,6 +756,32 @@ class handler(BaseHTTPRequestHandler):
             </body>
             </html>
             """
+            return html
+    
+    def do_GET(self):
+        if self.path == '/':
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            
+            html = self.get_main_html()
+            self.wfile.write(html.encode())
+            
+        elif self.path.startswith('/?') or (self.path != '/' and '?' in self.path):
+            # Handle main page with potential URL parameters for sharing
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            
+            # Check for URL parameters (for shared links)
+            url_params = {}
+            if '?' in self.path:
+                from urllib.parse import parse_qs, urlparse
+                parsed_url = urlparse(self.path)
+                url_params = parse_qs(parsed_url.query)
+            
+            # Generate the same HTML as the main route
+            html = self.get_main_html(url_params)
             self.wfile.write(html.encode())
             
         elif self.path == '/health':
