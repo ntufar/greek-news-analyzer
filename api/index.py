@@ -168,16 +168,38 @@ class handler(BaseHTTPRequestHandler):
             <html lang="el">
             <head>
                 <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
                 <title>Ανάλυση Ελληνικών Ειδήσεων</title>
+                
+                <!-- PWA Meta Tags -->
+                <meta name="description" content="Αναλύστε ελληνικά άρθρα ειδήσεων για στοιχεία προπαγάνδας και προκατάληψης">
+                <meta name="theme-color" content="#667eea">
+                <meta name="apple-mobile-web-app-capable" content="yes">
+                <meta name="apple-mobile-web-app-status-bar-style" content="default">
+                <meta name="apple-mobile-web-app-title" content="Greek News Analyzer">
+                <meta name="mobile-web-app-capable" content="yes">
+                <meta name="application-name" content="Greek News Analyzer">
+                <meta name="apple-touch-fullscreen" content="yes">
+                
+                <!-- PWA Manifest -->
+                <link rel="manifest" href="/static/manifest.json">
+                
+                <!-- Icons for different platforms -->
+                <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/icon-32x32.png">
+                <link rel="icon" type="image/png" sizes="16x16" href="/static/icons/icon-16x16.png">
+                <link rel="apple-touch-icon" href="/static/icons/icon-192x192.png">
+                <link rel="apple-touch-icon" sizes="152x152" href="/static/icons/icon-152x152.png">
+                <link rel="apple-touch-icon" sizes="180x180" href="/static/icons/icon-192x192.png">
                 <style>
                     body { 
                         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
                         max-width: 900px; 
                         margin: 0 auto; 
-                        padding: 20px; 
+                        padding: 10px; 
                         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                         min-height: 100vh;
+                        -webkit-font-smoothing: antialiased;
+                        -moz-osx-font-smoothing: grayscale;
                     }
                     .container { 
                         background: rgba(255, 255, 255, 0.95); 
@@ -321,6 +343,105 @@ class handler(BaseHTTPRequestHandler):
                         border-radius: 5px;
                         margin: 10px 0;
                     }
+                    
+                    /* Mobile-specific styles */
+                    @media (max-width: 768px) {
+                        body {
+                            padding: 5px;
+                        }
+                        .container {
+                            padding: 20px;
+                            border-radius: 15px;
+                            margin: 5px;
+                        }
+                        .header {
+                            padding: 15px;
+                            border-radius: 10px;
+                            margin-bottom: 20px;
+                        }
+                        .header h1 {
+                            font-size: 1.5rem;
+                            margin-bottom: 10px;
+                        }
+                        .header p {
+                            font-size: 0.9rem;
+                        }
+                        input, textarea, select {
+                            font-size: 16px; /* Prevents zoom on iOS */
+                            padding: 15px;
+                        }
+                        textarea {
+                            height: 150px;
+                        }
+                        button {
+                            padding: 18px 30px;
+                            font-size: 18px;
+                            margin-top: 15px;
+                        }
+                        .analysis-text {
+                            font-size: 16px;
+                        }
+                        .analysis-text h2 {
+                            font-size: 1.2rem;
+                        }
+                        .analysis-text h3 {
+                            font-size: 1.1rem;
+                        }
+                    }
+                    
+                    @media (max-width: 480px) {
+                        .container {
+                            padding: 15px;
+                            margin: 2px;
+                        }
+                        .header h1 {
+                            font-size: 1.3rem;
+                        }
+                        .input-group {
+                            margin-bottom: 15px;
+                        }
+                        button {
+                            padding: 20px 30px;
+                            font-size: 20px;
+                        }
+                    }
+                    
+                    /* PWA Install Button */
+                    .install-button {
+                        position: fixed;
+                        top: 20px;
+                        right: 20px;
+                        background: #28a745;
+                        color: white;
+                        border: none;
+                        padding: 10px 15px;
+                        border-radius: 20px;
+                        font-size: 14px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        z-index: 1000;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                        display: none;
+                    }
+                    
+                    .install-button:hover {
+                        background: #218838;
+                        transform: translateY(-1px);
+                    }
+                    
+                    /* Touch improvements */
+                    button, input, textarea, select {
+                        -webkit-tap-highlight-color: transparent;
+                        touch-action: manipulation;
+                    }
+                    
+                    /* Prevent text selection on buttons */
+                    button {
+                        -webkit-user-select: none;
+                        -moz-user-select: none;
+                        -ms-user-select: none;
+                        user-select: none;
+                    }
                 </style>
             </head>
             <body>
@@ -358,6 +479,10 @@ class handler(BaseHTTPRequestHandler):
                         <button type="submit" id="analyzeBtn">Ανάλυση Άρθρου</button>
                     </form>
                     
+                    <button id="installBtn" class="install-button">
+                        📱 Εγκατάσταση
+                    </button>
+                    
                     <div class="loading" id="loading">
                         <div class="spinner"></div>
                         <p>Ανάλυση σε εξέλιξη...</p>
@@ -370,6 +495,165 @@ class handler(BaseHTTPRequestHandler):
                 </div>
                 
                 <script>
+                    // PWA Installation and Service Worker
+                    let deferredPrompt;
+                    let isInstalled = false;
+
+                    // Check if app is already installed
+                    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
+                        isInstalled = true;
+                        console.log('App is running in standalone mode');
+                    }
+
+                    // Register Service Worker
+                    if ('serviceWorker' in navigator) {
+                        window.addEventListener('load', async () => {
+                            try {
+                                console.log('Attempting to register service worker...');
+                                const registration = await navigator.serviceWorker.register('/static/sw.js', {
+                                    scope: '/'
+                                });
+                                console.log('SW registered successfully: ', registration);
+                                
+                                // Check for updates
+                                registration.addEventListener('updatefound', () => {
+                                    console.log('Service worker update found');
+                                    const newWorker = registration.installing;
+                                    newWorker.addEventListener('statechange', () => {
+                                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                            console.log('New service worker installed, reloading page');
+                                            window.location.reload();
+                                        }
+                                    });
+                                });
+                            } catch (error) {
+                                console.error('SW registration failed: ', error);
+                            }
+                        });
+                    } else {
+                        console.log('Service Worker not supported');
+                    }
+
+                    // Handle PWA install prompt
+                    window.addEventListener('beforeinstallprompt', (e) => {
+                        e.preventDefault();
+                        deferredPrompt = e;
+                        showInstallButton();
+                    });
+
+                    // Handle app installed
+                    window.addEventListener('appinstalled', (evt) => {
+                        console.log('App was installed');
+                        isInstalled = true;
+                        hideInstallButton();
+                    });
+
+                    function showInstallButton() {
+                        if (!isInstalled && deferredPrompt) {
+                            const installButton = document.getElementById('installBtn');
+                            installButton.style.display = 'block';
+                        }
+                    }
+
+                    function hideInstallButton() {
+                        const installButton = document.getElementById('installBtn');
+                        installButton.style.display = 'none';
+                    }
+
+                    // Install button click handler
+                    document.getElementById('installBtn').addEventListener('click', async () => {
+                        if (deferredPrompt) {
+                            deferredPrompt.prompt();
+                            const { outcome } = await deferredPrompt.userChoice;
+                            console.log(`User response to the install prompt: ${outcome}`);
+                            deferredPrompt = null;
+                            hideInstallButton();
+                        }
+                    });
+
+                    // Handle URL parameters for deep linking
+                    function handleUrlParameters() {
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const url = urlParams.get('url');
+                        const title = urlParams.get('title');
+                        const text = urlParams.get('text');
+
+                        if (url) {
+                            // Pre-fill URL input
+                            document.getElementById('inputType').value = 'url';
+                            document.getElementById('url').value = url;
+                            toggleInputType();
+                            
+                            // Auto-analyze if it's a news URL
+                            if (isNewsUrl(url)) {
+                                setTimeout(() => {
+                                    document.getElementById('analysisForm').dispatchEvent(new Event('submit'));
+                                }, 1000);
+                            }
+                        }
+
+                        if (title) {
+                            document.getElementById('source').value = title;
+                        }
+                    }
+
+                    function isNewsUrl(url) {
+                        const newsDomains = [
+                            'kathimerini.gr', 'tovima.gr', 'naftemporiki.gr', 'protothema.gr',
+                            'skai.gr', 'ert.gr', 'ant1.gr', 'mega.gr', 'alpha.gr',
+                            'news247.gr', 'in.gr', 'lifo.gr', 'efsyn.gr'
+                        ];
+                        return newsDomains.some(domain => url.includes(domain));
+                    }
+
+                    // Handle share target
+                    if ('serviceWorker' in navigator && 'navigator' in window) {
+                        navigator.serviceWorker.addEventListener('message', (event) => {
+                            if (event.data && event.data.type === 'SHARE_TARGET') {
+                                const { title, text, url } = event.data.data;
+                                if (url) {
+                                    document.getElementById('inputType').value = 'url';
+                                    document.getElementById('url').value = url;
+                                    toggleInputType();
+                                }
+                                if (title) {
+                                    document.getElementById('source').value = title;
+                                }
+                            }
+                        });
+                    }
+
+                    // Check for shared data from service worker
+                    async function checkSharedData() {
+                        if ('caches' in window) {
+                            try {
+                                const cache = await caches.open('shared-data');
+                                const response = await cache.match('shared-data');
+                                if (response) {
+                                    const data = await response.json();
+                                    if (data.url) {
+                                        document.getElementById('inputType').value = 'url';
+                                        document.getElementById('url').value = data.url;
+                                        toggleInputType();
+                                    }
+                                    if (data.title) {
+                                        document.getElementById('source').value = data.title;
+                                    }
+                                    // Clear the shared data after using it
+                                    await cache.delete('shared-data');
+                                }
+                            } catch (error) {
+                                console.log('No shared data found');
+                            }
+                        }
+                    }
+
+                    // Initialize on page load
+                    document.addEventListener('DOMContentLoaded', () => {
+                        handleUrlParameters();
+                        checkSharedData();
+                    });
+
                     function toggleInputType() {
                         const inputType = document.getElementById('inputType').value;
                         const textInput = document.getElementById('textInput');
@@ -471,6 +755,55 @@ class handler(BaseHTTPRequestHandler):
                 'message': 'Greek News Analyzer is running'
             }
             self.wfile.write(json.dumps(response).encode())
+            
+        elif self.path == '/static/manifest.json':
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.end_headers()
+            
+            try:
+                with open('static/manifest.json', 'r', encoding='utf-8') as f:
+                    manifest_content = f.read()
+                self.wfile.write(manifest_content.encode())
+            except FileNotFoundError:
+                self.send_response(404)
+                self.end_headers()
+                self.wfile.write(b'Manifest not found')
+                
+        elif self.path == '/static/sw.js':
+            self.send_response(200)
+            self.send_header('Content-type', 'application/javascript')
+            self.send_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+            self.send_header('Service-Worker-Allowed', '/')
+            self.end_headers()
+            
+            try:
+                with open('static/sw.js', 'r', encoding='utf-8') as f:
+                    sw_content = f.read()
+                self.wfile.write(sw_content.encode())
+            except FileNotFoundError:
+                self.send_response(404)
+                self.end_headers()
+                self.wfile.write(b'Service worker not found')
+                
+        elif self.path.startswith('/static/icons/'):
+            # Handle icon requests
+            icon_name = self.path.split('/')[-1]
+            icon_path = f'static/icons/{icon_name}'
+            
+            try:
+                with open(icon_path, 'rb') as f:
+                    icon_content = f.read()
+                
+                self.send_response(200)
+                self.send_header('Content-type', 'image/png')
+                self.send_header('Cache-Control', 'public, max-age=31536000')
+                self.end_headers()
+                self.wfile.write(icon_content)
+            except FileNotFoundError:
+                self.send_response(404)
+                self.end_headers()
+                self.wfile.write(b'Icon not found')
             
         else:
             self.send_response(404)

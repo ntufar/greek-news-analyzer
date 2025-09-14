@@ -1,9 +1,8 @@
 // Service Worker for Greek News Analyzer PWA
-const CACHE_NAME = 'greek-news-analyzer-v3';
+const CACHE_NAME = 'greek-news-analyzer-v4';
 const urlsToCache = [
   '/',
   '/static/manifest.json'
-  // Icons will be cached on demand to avoid 404 errors
 ];
 
 console.log('Service Worker: Script loaded');
@@ -21,6 +20,26 @@ self.addEventListener('install', (event) => {
         console.log('Service Worker: Cached all resources');
         return self.skipWaiting();
       })
+  );
+});
+
+// Activate event - clean up old caches
+self.addEventListener('activate', (event) => {
+  console.log('Service Worker: Activate event');
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('Service Worker: Deleting old cache:', cacheName);
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    }).then(() => {
+      console.log('Service Worker: Claiming clients');
+      return self.clients.claim();
+    })
   );
 });
 
@@ -42,7 +61,7 @@ self.addEventListener('message', (event) => {
     
     // Store shared data for the main app to use
     self.registration.showNotification('Greek News Analyzer', {
-      body: `Analyzing: ${title || text || url}`,
+      body: `Ανάλυση: ${title || text || url}`,
       icon: '/static/icons/icon-192x192.png',
       badge: '/static/icons/icon-72x72.png',
       tag: 'news-analysis',
@@ -95,3 +114,12 @@ async function doBackgroundSync() {
   // Handle any pending analysis requests
   console.log('Background sync triggered');
 }
+
+// Handle notification clicks
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  
+  event.waitUntil(
+    clients.openWindow('/')
+  );
+});

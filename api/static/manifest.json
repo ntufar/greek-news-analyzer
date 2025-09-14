@@ -1,14 +1,14 @@
 {
-  "name": "Greek News Analyzer",
+  "name": "Ανάλυση Ελληνικών Ειδήσεων",
   "short_name": "GreekNews",
-  "description": "Analyze Greek news articles with AI",
+  "description": "Αναλύστε ελληνικά άρθρα ειδήσεων για στοιχεία προπαγάνδας",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#2563eb",
+  "theme_color": "#667eea",
   "orientation": "portrait-primary",
   "scope": "/",
-  "lang": "en",
+  "lang": "el",
   "dir": "ltr",
   "categories": ["news", "utilities", "productivity"],
   "id": "greek-news-analyzer",
@@ -84,9 +84,9 @@
   ],
   "shortcuts": [
     {
-      "name": "Analyze News",
-      "short_name": "Analyze",
-      "description": "Quickly analyze a news article",
+      "name": "Ανάλυση Ειδήσεων",
+      "short_name": "Ανάλυση",
+      "description": "Γρήγορη ανάλυση άρθρου ειδήσεων",
       "url": "/?action=analyze",
       "icons": [
         {
