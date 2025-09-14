@@ -5,8 +5,6 @@ import hashlib
 import time
 from functools import wraps
 from flask import Flask, render_template, request, jsonify
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
 import google.generativeai as genai
 import requests
 from bs4 import BeautifulSoup
@@ -21,12 +19,7 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
-# Configure rate limiting
-limiter = Limiter(
-    key_func=get_remote_address,
-    default_limits=["100 per hour", "10 per minute"]
-)
-limiter.init_app(app)
+# Rate limiting removed for Vercel compatibility
 
 # Configure Gemini API
 genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
@@ -45,7 +38,7 @@ def log_request(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         start_time = time.time()
-        client_ip = get_remote_address()
+        client_ip = request.environ.get('HTTP_X_FORWARDED_FOR', request.environ.get('REMOTE_ADDR', 'unknown'))
         logger.info(f"Request from {client_ip} to {func.__name__}")
         
         try:
@@ -230,15 +223,10 @@ def status():
         'status': 'running',
         'timestamp': time.time(),
         'cache_size': len(analysis_cache),
-        'rate_limits': {
-            'default': '100 per hour, 10 per minute',
-            'analyze': '5 per minute'
-        },
         'api_status': 'operational'
     })
 
 @app.route('/analyze', methods=['POST'])
-@limiter.limit("5 per minute")  # More restrictive for analysis endpoint
 @log_request
 def analyze():
     try:
