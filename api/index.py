@@ -1,25 +1,16 @@
 import os
-import re
-import logging
-import hashlib
-import time
-from functools import wraps
+import json
 from flask import Flask, render_template, request, jsonify
 import google.generativeai as genai
 import requests
 from bs4 import BeautifulSoup
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv()
 
 # Configure logging
+import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
-
-# Rate limiting removed for Vercel compatibility
 
 # Configure Gemini API
 genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
@@ -30,32 +21,13 @@ analysis_cache = {}
 
 def get_cache_key(text, source=""):
     """Generate a cache key for the analysis"""
+    import hashlib
     content = f"{text[:1000]}_{source}".encode('utf-8')
     return hashlib.md5(content).hexdigest()
 
-def log_request(func):
-    """Decorator to log API requests"""
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        start_time = time.time()
-        client_ip = request.environ.get('HTTP_X_FORWARDED_FOR', request.environ.get('REMOTE_ADDR', 'unknown'))
-        logger.info(f"Request from {client_ip} to {func.__name__}")
-        
-        try:
-            result = func(*args, **kwargs)
-            duration = time.time() - start_time
-            logger.info(f"Request completed in {duration:.2f}s")
-            return result
-        except Exception as e:
-            duration = time.time() - start_time
-            logger.error(f"Request failed after {duration:.2f}s: {str(e)}")
-            raise
-    return wrapper
-
 def extract_text_from_url(url):
-    """Extract text content from a news URL with improved error handling"""
+    """Extract text content from a news URL"""
     try:
-        # Validate URL
         if not url.startswith(('http://', 'https://')):
             raise ValueError("Invalid URL format")
             
@@ -63,18 +35,10 @@ def extract_text_from_url(url):
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
             'Accept-Language': 'el-GR,el;q=0.9,en;q=0.8',
-            'Accept-Encoding': 'gzip, deflate',
-            'Connection': 'keep-alive',
         }
         
-        logger.info(f"Extracting text from URL: {url}")
         response = requests.get(url, headers=headers, timeout=15, allow_redirects=True)
         response.raise_for_status()
-        
-        # Check content type
-        content_type = response.headers.get('content-type', '').lower()
-        if 'text/html' not in content_type:
-            raise ValueError(f"Unsupported content type: {content_type}")
         
         soup = BeautifulSoup(response.content, 'html.parser')
         
@@ -98,28 +62,24 @@ def extract_text_from_url(url):
         if main_content:
             text = main_content.get_text()
         else:
-            # Fallback to body content
             body = soup.find('body')
             text = body.get_text() if body else soup.get_text()
         
         # Clean up text
+        import re
         text = re.sub(r'\s+', ' ', text).strip()
         
         if len(text) < 100:
             raise ValueError("Insufficient text content extracted")
             
-        logger.info(f"Successfully extracted {len(text)} characters from URL")
-        return text[:3000]  # Limit to 3000 characters for API efficiency
+        return text[:3000]  # Limit to 3000 characters
         
-    except requests.exceptions.RequestException as e:
-        logger.error(f"Request error for URL {url}: {str(e)}")
-        return f"Error fetching URL: {str(e)}"
     except Exception as e:
         logger.error(f"Error extracting text from {url}: {str(e)}")
         return f"Error extracting text: {str(e)}"
 
 def analyze_greek_news(text, source=""):
-    """Analyze Greek news text for propaganda indicators using Gemini with caching"""
+    """Analyze Greek news text for propaganda indicators using Gemini"""
     try:
         # Check cache first
         cache_key = get_cache_key(text, source)
@@ -127,7 +87,6 @@ def analyze_greek_news(text, source=""):
             logger.info("Returning cached analysis result")
             return analysis_cache[cache_key]
         
-        # Enhanced prompt with more detailed analysis criteria
         prompt = f"""
         Αναλύστε αυτό το ελληνικό άρθρο για πιθανά στοιχεία προπαγάνδας και προκατάληψης:
 
@@ -212,7 +171,7 @@ def health():
     """Health check endpoint"""
     return jsonify({
         'status': 'healthy',
-        'timestamp': time.time(),
+        'timestamp': os.environ.get('VERCEL_REGION', 'unknown'),
         'cache_size': len(analysis_cache)
     })
 
@@ -221,13 +180,12 @@ def status():
     """Status endpoint with more detailed information"""
     return jsonify({
         'status': 'running',
-        'timestamp': time.time(),
+        'timestamp': os.environ.get('VERCEL_REGION', 'unknown'),
         'cache_size': len(analysis_cache),
         'api_status': 'operational'
     })
 
 @app.route('/analyze', methods=['POST'])
-@log_request
 def analyze():
     try:
         data = request.get_json()
@@ -243,7 +201,6 @@ def analyze():
             return jsonify({'error': 'Παρακαλώ εισάγετε κείμενο ή URL'}), 400
         
         if url and not text:
-            # Validate URL format
             if not url.startswith(('http://', 'https://')):
                 return jsonify({'error': 'Μη έγκυρη διεύθυνση URL'}), 400
                 
