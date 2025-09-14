@@ -6,6 +6,7 @@ import hashlib
 import google.generativeai as genai
 import requests
 from bs4 import BeautifulSoup
+import markdown
 
 # Configure Gemini AI
 genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
@@ -18,6 +19,21 @@ def get_cache_key(text, source=""):
     """Generate a cache key for the analysis"""
     content = f"{text[:1000]}_{source}".encode('utf-8')
     return hashlib.md5(content).hexdigest()
+
+def markdown_to_html(markdown_text):
+    """Convert markdown text to HTML with proper styling"""
+    # Configure markdown with extensions for better formatting
+    md = markdown.Markdown(extensions=['extra', 'nl2br', 'sane_lists'])
+    html = md.convert(markdown_text)
+    
+    # Add some custom styling for better presentation
+    styled_html = f"""
+    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333;">
+        {html}
+    </div>
+    """
+    
+    return styled_html
 
 def extract_text_from_url(url):
     """Extract text content from a news URL"""
@@ -130,9 +146,12 @@ def analyze_greek_news(text, source=""):
         if not response or not response.text:
             raise ValueError("Empty response from Gemini API")
         
+        # Convert markdown to HTML
+        html_analysis = markdown_to_html(response.text)
+        
         # Cache the result
-        analysis_cache[cache_key] = response.text
-        return response.text
+        analysis_cache[cache_key] = html_analysis
+        return html_analysis
         
     except Exception as e:
         return f"Σφάλμα στην ανάλυση: {str(e)}"
@@ -250,9 +269,44 @@ class handler(BaseHTTPRequestHandler):
                         100% { transform: rotate(360deg); }
                     }
                     .analysis-text {
-                        white-space: pre-wrap;
                         line-height: 1.6;
                         font-size: 14px;
+                    }
+                    .analysis-text h1, .analysis-text h2, .analysis-text h3, .analysis-text h4, .analysis-text h5, .analysis-text h6 {
+                        color: #1e3c72;
+                        margin-top: 1.5rem;
+                        margin-bottom: 0.5rem;
+                        font-weight: 600;
+                    }
+                    .analysis-text h2 {
+                        font-size: 1.3rem;
+                        border-bottom: 2px solid #e9ecef;
+                        padding-bottom: 0.3rem;
+                    }
+                    .analysis-text h3 {
+                        font-size: 1.1rem;
+                        color: #495057;
+                    }
+                    .analysis-text ul, .analysis-text ol {
+                        padding-left: 1.5rem;
+                        margin-bottom: 1rem;
+                    }
+                    .analysis-text li {
+                        margin-bottom: 0.5rem;
+                    }
+                    .analysis-text strong {
+                        color: #1e3c72;
+                        font-weight: 600;
+                    }
+                    .analysis-text p {
+                        margin-bottom: 1rem;
+                    }
+                    .analysis-text blockquote {
+                        border-left: 4px solid #007bff;
+                        padding-left: 1rem;
+                        margin: 1rem 0;
+                        font-style: italic;
+                        color: #6c757d;
                     }
                     .char-count {
                         font-size: 12px;
