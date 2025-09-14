@@ -223,6 +223,11 @@ def health():
         'cache_size': len(analysis_cache)
     })
 
+@app.route('/about')
+def about():
+    """About page"""
+    return render_template('about.html')
+
 @app.route('/status')
 def status():
     """Status endpoint with more detailed information"""
