@@ -2,17 +2,23 @@
 
 An AI-powered web application that analyzes Greek news articles for propaganda indicators, bias, and reliability using Google's Gemini AI.
 
+🌐 **Live Demo:** [https://greek-news-analyzer.vercel.app/](https://greek-news-analyzer.vercel.app/)
+
 ![Python](https://img.shields.io/badge/python-v3.8+-blue.svg)
-![Flask](https://img.shields.io/badge/flask-v3.0.0-green.svg)
+![Vercel](https://img.shields.io/badge/deployed%20on-vercel-black.svg)
+![PWA](https://img.shields.io/badge/PWA-enabled-4285F4.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 ## Features
 
 - 🔍 **AI-Powered Analysis**: Uses Google Gemini AI to detect propaganda indicators
 - 📰 **Multiple Input Methods**: Analyze text directly or extract content from URLs
-- 🌐 **Modern Web Interface**: Responsive design with Bootstrap and Greek language support
+- 🌐 **Modern Web Interface**: Responsive design with Greek language support
+- 📱 **Mobile-First PWA**: Install on mobile devices and receive shared links
 - 📊 **Comprehensive Scoring**: 1-10 scale rating system for news reliability
 - 🎯 **Detailed Analysis**: Evaluates emotional manipulation, bias, fact vs opinion ratio, and more
+- 🚀 **Serverless Deployment**: Fast, scalable deployment on Vercel
+- 📲 **Share Target**: Receive and analyze shared news links directly
 
 ## Analysis Criteria
 
@@ -25,9 +31,21 @@ The analyzer evaluates news articles based on:
 5. **Language Analysis** - Detection of propaganda techniques
 6. **Logical Fallacies** - Identification of argumentative errors
 
-## Screenshots
+## Quick Start
 
-![Greek News Analyzer Interface](https://via.placeholder.com/800x400/667eea/ffffff?text=Greek+News+Analyzer+Interface)
+**Try it now:** [https://greek-news-analyzer.vercel.app/](https://greek-news-analyzer.vercel.app/)
+
+### Mobile Installation
+1. Open the app on your mobile device
+2. Tap the "📱 Εγκατάσταση" (Install) button
+3. Add to home screen for easy access
+4. Share news links directly to the app for instant analysis
+
+### Desktop Usage
+1. Visit the live demo link above
+2. Paste Greek news text or URL
+3. Get instant AI-powered analysis
+4. View detailed propaganda indicators and bias assessment
 
 ## Installation
 
@@ -124,13 +142,16 @@ Analyze a Greek news article for propaganda indicators.
 
 ```
 greek-news-analyzer/
-├── app.py                 # Main Flask application
-├── requirements.txt       # Python dependencies
-├── .env.example          # Environment variables template
-├── .gitignore            # Git ignore rules
-├── templates/
-│   └── index.html        # Web interface
-└── README.md             # This file
+├── api/
+│   ├── index.py          # Vercel serverless function
+│   ├── requirements.txt  # Python dependencies for Vercel
+│   ├── static/          # PWA assets (manifest, icons, service worker)
+│   └── templates/       # HTML templates
+├── app.py               # Local Flask application
+├── requirements.txt     # Python dependencies for local development
+├── vercel.json         # Vercel configuration
+├── .gitignore          # Git ignore rules
+└── README.md           # This file
 ```
 
 ### Adding New Features
@@ -157,15 +178,43 @@ We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.
 
 ## Deployment
 
-### Heroku
+### Vercel (Recommended)
 
+The app is currently deployed on Vercel with serverless functions for optimal performance:
+
+1. **Fork this repository**
+2. **Connect to Vercel**: Import your fork in Vercel dashboard
+3. **Set environment variable**: Add `GEMINI_API_KEY` in Vercel project settings
+4. **Deploy**: Automatic deployment on every push to main branch
+
+**Live Demo:** [https://greek-news-analyzer.vercel.app/](https://greek-news-analyzer.vercel.app/)
+
+### Local Development
+
+```bash
+# Clone and setup
+git clone https://github.com/ntufar/greek-news-analyzer.git
+cd greek-news-analyzer
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Set environment variable
+export GEMINI_API_KEY=your_api_key_here
+
+# Run locally
+python app.py
+```
+
+### Other Platforms
+
+#### Heroku
 1. Install Heroku CLI
 2. Create a Heroku app: `heroku create your-app-name`
 3. Set environment variables: `heroku config:set GEMINI_API_KEY=your_key`
 4. Deploy: `git push heroku main`
 
-### Docker
-
+#### Docker
 ```bash
 # Build image
 docker build -t greek-news-analyzer .
@@ -173,14 +222,6 @@ docker build -t greek-news-analyzer .
 # Run container
 docker run -p 5000:5000 -e GEMINI_API_KEY=your_key greek-news-analyzer
 ```
-
-### VPS/Cloud
-
-1. Set up a Python environment on your server
-2. Clone the repository
-3. Install dependencies
-4. Set up environment variables
-5. Use a WSGI server like Gunicorn: `gunicorn -w 4 -b 0.0.0.0:5000 app:app`
 
 ## Environment Variables
 
