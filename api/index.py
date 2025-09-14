@@ -756,7 +756,7 @@ class handler(BaseHTTPRequestHandler):
             </body>
             </html>
             """
-            return html
+        return html
     
     def do_GET(self):
         if self.path == '/':
