@@ -188,6 +188,8 @@ class handler(BaseHTTPRequestHandler):
                 <!-- PWA Manifest -->
                 <link rel="manifest" href="/static/manifest.json">
                 
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9549967181261078" crossorigin="anonymous"></script>
+                
                 <!-- Icons for different platforms -->
                 <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/icon-32x32.png">
                 <link rel="icon" type="image/png" sizes="16x16" href="/static/icons/icon-16x16.png">
@@ -784,6 +786,8 @@ class handler(BaseHTTPRequestHandler):
             
             <!-- PWA Manifest -->
             <link rel="manifest" href="/static/manifest.json">
+            
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9549967181261078" crossorigin="anonymous"></script>
             
             <!-- Icons for different platforms -->
             <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/icon-32x32.png">
