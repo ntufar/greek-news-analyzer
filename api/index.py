@@ -1140,6 +1140,20 @@ class handler(BaseHTTPRequestHandler):
                 self.send_response(404)
                 self.end_headers()
                 self.wfile.write(b'Service worker not found')
+        elif self.path == '/ads.txt':
+            # Serve IAB ads.txt from static folder
+            try:
+                with open('static/ads.txt', 'r', encoding='utf-8') as f:
+                    content = f.read()
+                self.send_response(200)
+                self.send_header('Content-type', 'text/plain; charset=utf-8')
+                self.send_header('Cache-Control', 'public, max-age=3600')
+                self.end_headers()
+                self.wfile.write(content.encode('utf-8'))
+            except FileNotFoundError:
+                self.send_response(404)
+                self.end_headers()
+                self.wfile.write(b'ads.txt not found')
                 
         elif self.path.startswith('/static/icons/'):
             # Handle icon requests
