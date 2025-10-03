@@ -1141,16 +1141,26 @@ class handler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(b'Service worker not found')
         elif self.path == '/ads.txt':
-            # Serve IAB ads.txt from static folder
-            try:
-                with open('static/ads.txt', 'r', encoding='utf-8') as f:
-                    content = f.read()
-                self.send_response(200)
-                self.send_header('Content-type', 'text/plain; charset=utf-8')
-                self.send_header('Cache-Control', 'public, max-age=3600')
-                self.end_headers()
-                self.wfile.write(content.encode('utf-8'))
-            except FileNotFoundError:
+            # Serve IAB ads.txt; try root static and then api/static for compatibility
+            candidate_paths = [
+                os.path.join('static', 'ads.txt'),              # project root static
+                os.path.join(os.path.dirname(__file__), 'static', 'ads.txt')  # api/static
+            ]
+            file_found = False
+            for file_path in candidate_paths:
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        content = f.read()
+                    self.send_response(200)
+                    self.send_header('Content-type', 'text/plain; charset=utf-8')
+                    self.send_header('Cache-Control', 'public, max-age=3600')
+                    self.end_headers()
+                    self.wfile.write(content.encode('utf-8'))
+                    file_found = True
+                    break
+                except FileNotFoundError:
+                    continue
+            if not file_found:
                 self.send_response(404)
                 self.end_headers()
                 self.wfile.write(b'ads.txt not found')
