@@ -1155,6 +1155,21 @@ class handler(BaseHTTPRequestHandler):
                 self.send_response(404)
                 self.end_headers()
                 self.wfile.write(b'Icon not found')
+        elif re.match(r'^/google[a-z0-9]+\.html$', self.path):
+            # Serve Google Search Console verification files placed under api/static/
+            filename = self.path.lstrip('/')
+            file_path = os.path.join('static', filename)
+            try:
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                self.send_response(200)
+                self.send_header('Content-type', 'text/html; charset=utf-8')
+                self.end_headers()
+                self.wfile.write(content.encode('utf-8'))
+            except FileNotFoundError:
+                self.send_response(404)
+                self.end_headers()
+                self.wfile.write(b'Verification file not found')
             
         else:
             self.send_response(404)
