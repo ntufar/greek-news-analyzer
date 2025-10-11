@@ -462,6 +462,19 @@ class handler(BaseHTTPRequestHandler):
                         </div>
                     </div>
                     
+                    <!-- Top Ad Unit -->
+                    <div style="text-align: center; margin: 20px 0;">
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="ca-pub-9549967181261078"
+                             data-ad-slot="5866895841"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                        <script>
+                             (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
+                    </div>
+                    
                     <form id="analysisForm">
                         <div class="input-group">
                             <label for="inputType">Τρόπος Εισαγωγής:</label>
@@ -502,6 +515,19 @@ class handler(BaseHTTPRequestHandler):
                     <div id="result" class="result" style="display: none;">
                         <h3>Αποτελέσματα Ανάλυσης:</h3>
                         <div id="analysis" class="analysis-text"></div>
+                    </div>
+                    
+                    <!-- Bottom Ad Unit -->
+                    <div style="text-align: center; margin: 20px 0;">
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="ca-pub-9549967181261078"
+                             data-ad-slot="5866895841"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                        <script>
+                             (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
                     </div>
                 </div>
                 
@@ -1052,6 +1078,19 @@ class handler(BaseHTTPRequestHandler):
                         <li>Μοιραστείτε την εφαρμογή με φίλους και οικογένεια</li>
                         <li>Προτείνετε νέες λειτουργίες ανάλυσης</li>
                     </ul>
+                    
+                    <!-- Middle Ad Unit on About Page -->
+                    <div style="text-align: center; margin: 30px 0;">
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="ca-pub-9549967181261078"
+                             data-ad-slot="5866895841"
+                             data-ad-format="auto"
+                             data-full-width-responsive="true"></ins>
+                        <script>
+                             (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
+                    </div>
                     
                     <h2>📄 Άδεια Χρήσης</h2>
                     <p>Αυτό το έργο είναι διαθέσιμο υπό την άδεια MIT. Μπορείτε να το χρησιμοποιήσετε, να το τροποποιήσετε και να το διανείμετε ελεύθερα.</p>
