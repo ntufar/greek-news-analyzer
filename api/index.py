@@ -1180,11 +1180,13 @@ class handler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(b'Service worker not found')
         elif self.path in ['/ads.txt', '/Ads.txt']:
-            # Serve IAB ads.txt/Ads.txt; try root static and then api/static for compatibility
-            filename = 'ads.txt' if self.path == '/ads.txt' else 'Ads.txt'
+            # Serve IAB ads.txt/Ads.txt from ads.txt file
+            # Try multiple locations for compatibility
             candidate_paths = [
-                os.path.join('static', filename),              # project root static
-                os.path.join(os.path.dirname(__file__), 'static', filename)  # api/static
+                os.path.join('static', 'ads.txt'),              # project root static lowercase
+                os.path.join(os.path.dirname(__file__), 'static', 'ads.txt'),  # api/static lowercase
+                os.path.join('static', 'Ads.txt'),              # fallback: capitalized
+                os.path.join(os.path.dirname(__file__), 'static', 'Ads.txt')   # fallback: api/static capitalized
             ]
             file_found = False
             for file_path in candidate_paths:

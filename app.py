@@ -242,6 +242,33 @@ def status():
         'api_status': 'operational'
     })
 
+@app.route('/ads.txt')
+@app.route('/Ads.txt')
+def ads_txt():
+    """Serve ads.txt file (IAB standard)"""
+    try:
+        # Try to find the file with lowercase first, then fallback to capitalized
+        candidate_paths = [
+            os.path.join('static', 'ads.txt'),  # lowercase
+            os.path.join('static', 'Ads.txt')   # capitalized fallback
+        ]
+        
+        for file_path in candidate_paths:
+            if os.path.exists(file_path):
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                response = app.response_class(
+                    content,
+                    mimetype='text/plain; charset=utf-8'
+                )
+                response.headers['Cache-Control'] = 'public, max-age=3600'
+                return response
+        
+        return 'ads.txt not found', 404
+    except Exception as e:
+        logger.error(f"Error serving ads.txt: {str(e)}")
+        return f'Error: {str(e)}', 500
+
 @app.route('/analyze', methods=['POST'])
 @limiter.limit("5 per minute")  # More restrictive for analysis endpoint
 @log_request
