@@ -462,7 +462,26 @@ class handler(BaseHTTPRequestHandler):
                         </div>
                     </div>
                     
-                    <!-- Top Ad Unit -->
+                    <!-- Additional Content Section to Ensure Substantial Publisher Content -->
+                    <div style="background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%); border-radius: 15px; border-left: 5px solid #4caf50; padding: 20px; margin: 20px 0;">
+                        <h3 style="color: #2e7d32; font-size: 1.3rem; margin-bottom: 1rem;">
+                            📖 Οδηγίες Χρήσης
+                        </h3>
+                        <p style="line-height: 1.8; color: #424242; margin-bottom: 1rem;">
+                            Για να αναλύσετε ένα άρθρο, ακολουθήστε αυτά τα απλά βήματα:
+                        </p>
+                        <ol style="line-height: 2; color: #424242; padding-left: 1.5rem;">
+                            <li><strong>Επιλέξτε τον τρόπο εισαγωγής:</strong> Μπορείτε να επικολλήσετε το κείμενο του άρθρου απευθείας ή να εισάγετε το URL του άρθρου για αυτόματη εξαγωγή.</li>
+                            <li><strong>Προσθέστε την πηγή (προαιρετικά):</strong> Εισάγετε το όνομα της εφημερίδας ή του ιστοτόπου για καλύτερη ανάλυση.</li>
+                            <li><strong>Κάντε κλικ στο κουμπί "Ανάλυση Άρθρου":</strong> Η τεχνητή νοημοσύνη θα αναλύσει το κείμενο σε λίγα δευτερόλεπτα.</li>
+                            <li><strong>Διαβάστε την αναλυτική αναφορά:</strong> Θα λάβετε λεπτομερή ανάλυση με συγκεκριμένα παραδείγματα και συστάσεις.</li>
+                        </ol>
+                        <div style="background: #e8f5e9; border-radius: 10px; border-left: 4px solid #4caf50; padding: 15px; margin-top: 15px;">
+                            <strong>Σημαντικό:</strong> Η ανάλυση είναι εντελώς αυτόματη και βασίζεται σε αλγόριθμους τεχνητής νοημοσύνης. Χρησιμοποιείται ως βοηθητικό εργαλείο και δεν αντικαθιστά την κριτική σκέψη.
+                        </div>
+                    </div>
+                    
+                    <!-- Top Ad Unit - Positioned after substantial content -->
                     <div style="text-align: center; margin: 20px 0;">
                         <ins class="adsbygoogle"
                              style="display:block"
@@ -517,7 +536,26 @@ class handler(BaseHTTPRequestHandler):
                         <div id="analysis" class="analysis-text"></div>
                     </div>
                     
-                    <!-- Bottom Ad Unit -->
+                    <!-- Additional Informative Content Before Bottom Ad -->
+                    <div style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border-radius: 15px; border-left: 5px solid #ff9800; padding: 20px; margin: 20px 0;">
+                        <h3 style="color: #e65100; font-size: 1.3rem; margin-bottom: 1rem;">
+                            ⚠️ Προειδοποίηση για την Παραπληροφόρηση
+                        </h3>
+                        <p style="line-height: 1.8; color: #5d4037; margin-bottom: 1rem;">
+                            Η παραπληροφόρηση είναι ένα σοβαρό πρόβλημα στην σύγχρονη εποχή. Πολλά άρθρα ειδήσεων μπορεί να περιέχουν:
+                        </p>
+                        <ul style="line-height: 2; color: #5d4037; padding-left: 1.5rem;">
+                            <li><strong>Μερικές πληροφορίες:</strong> Επιλεκτική παρουσίαση γεγονότων που εξυπηρετεί συγκεκριμένα συμφέροντα</li>
+                            <li><strong>Συναισθηματική χειραγώγηση:</strong> Χρήση φορτωμένων λέξεων για να προκαλέσουν συναισθήματα αντί για λογική σκέψη</li>
+                            <li><strong>Απομόνωση πληροφοριών:</strong> Παρουσίαση μόνο μιας πλευράς ενός θέματος</li>
+                            <li><strong>Λογικά σφάλματα:</strong> Χρήση λογικών πλάνων για να πείσουν τους αναγνώστες</li>
+                        </ul>
+                        <p style="line-height: 1.8; color: #5d4037; margin-top: 1rem; margin-bottom: 0;">
+                            Αυτή η εφαρμογή βοηθά στην αναγνώριση τέτοιων τεχνικών, αλλά πάντα να ελέγχετε πολλαπλές πηγές και να διατηρείτε κριτική σκέψη.
+                        </p>
+                    </div>
+                    
+                    <!-- Bottom Ad Unit - Positioned after substantial content -->
                     <div style="text-align: center; margin: 20px 0;">
                         <ins class="adsbygoogle"
                              style="display:block"
@@ -1079,7 +1117,23 @@ class handler(BaseHTTPRequestHandler):
                         <li>Προτείνετε νέες λειτουργίες ανάλυσης</li>
                     </ul>
                     
-                    <!-- Middle Ad Unit on About Page -->
+                    <!-- Additional Content Section Before Ad -->
+                    <div style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-radius: 15px; border-left: 5px solid #2196f3; padding: 25px; margin: 30px 0;">
+                        <h2 style="color: #1565c0; font-size: 1.4rem; margin-bottom: 1rem;">
+                            ⭐ Από πού Ξεκίνησε η Ιδέα
+                        </h2>
+                        <p style="line-height: 1.8; color: #424242; margin-bottom: 1rem;">
+                            Σε μια εποχή όπου η πληροφόρηση διαδίδεται με ταχύτητα φωτός και η παραπληροφόρηση μπορεί να έχει σοβαρές συνέπειες, η ανάγκη για εργαλεία που βοηθούν στην κριτική αξιολόγηση των ειδήσεων είναι πιο σημαντική από ποτέ.
+                        </p>
+                        <p style="line-height: 1.8; color: #424242; margin-bottom: 1rem;">
+                            Η ιδέα για αυτή την εφαρμογή προήλθε από την αναγνώριση ότι πολλοί πολίτες δυσκολεύονται να διακρίνουν την αξιόπιστη ενημέρωση από την προπαγάνδα. Χρησιμοποιώντας την τεχνητή νοημοσύνη, μπορούμε να παρέχουμε μια αντικειμενική ανάλυση που βοηθά τους χρήστες να κάνουν πιο ενημερωμένες αποφάσεις.
+                        </p>
+                        <p style="line-height: 1.8; color: #424242; margin-bottom: 0;">
+                            Η εφαρμογή είναι σε συνεχή ανάπτυξη και βελτίωση, με στόχο την παροχή όλο και πιο ακριβών και χρήσιμων αναλύσεων για την ελληνική κοινότητα.
+                        </p>
+                    </div>
+                    
+                    <!-- Ad Unit on About Page - Positioned after substantial content -->
                     <div style="text-align: center; margin: 30px 0;">
                         <ins class="adsbygoogle"
                              style="display:block"
