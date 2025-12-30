@@ -3,14 +3,13 @@ import json
 import os
 import re
 import hashlib
-import google.generativeai as genai
+from mistralai import Mistral
 import requests
 from bs4 import BeautifulSoup
 import markdown
 
-# Configure Gemini AI
-genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
-model = genai.GenerativeModel('gemini-2.0-flash-lite')
+# Configure Mistral AI
+mistral_client = Mistral(api_key=os.getenv('MISTRAL_API_KEY'))
 
 # Simple in-memory cache for analysis results
 analysis_cache = {}
@@ -87,7 +86,7 @@ def extract_text_from_url(url):
         return f"Error extracting text: {str(e)}"
 
 def analyze_greek_news(text, source=""):
-    """Analyze Greek news text for propaganda indicators using Gemini"""
+    """Analyze Greek news text for propaganda indicators using Mistral"""
     try:
         # Check cache first
         cache_key = get_cache_key(text, source)
@@ -141,13 +140,29 @@ def analyze_greek_news(text, source=""):
         Απαντήστε στα ελληνικά με σαφή, κατανοητό και δομημένο τρόπο.
         """
 
-        response = model.generate_content(prompt)
+        messages = [
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ]
         
-        if not response or not response.text:
-            raise ValueError("Empty response from Gemini API")
+        response = mistral_client.chat.complete(
+            model="mistral-large-latest",
+            messages=messages,
+            temperature=0.7
+        )
+        
+        if not response or not response.choices or len(response.choices) == 0:
+            raise ValueError("Empty response from Mistral API")
+        
+        analysis_text = response.choices[0].message.content
+        
+        if not analysis_text:
+            raise ValueError("Empty content in Mistral API response")
         
         # Convert markdown to HTML
-        html_analysis = markdown_to_html(response.text)
+        html_analysis = markdown_to_html(analysis_text)
         
         # Cache the result
         analysis_cache[cache_key] = html_analysis
@@ -1372,7 +1387,7 @@ class handler(BaseHTTPRequestHandler):
                     self.wfile.write(json.dumps(error_response).encode())
                     return
                 
-                # Perform analysis using Gemini AI
+                # Perform analysis using Mistral AI
                 analysis = analyze_greek_news(text, source)
                 
                 response = {
