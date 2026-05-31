@@ -59,7 +59,12 @@
             border-radius: 10px;
             border-left: 4px solid #007bff;
             margin-top: 1rem;
+            transition: border-color 0.3s;
         }
+        .analysis-card.card-grade-low { border-left-color: #dc3545; }
+        .analysis-card.card-grade-medium { border-left-color: #fd7e14; }
+        .analysis-card.card-grade-high { border-left-color: #ffc107; }
+        .analysis-card.card-grade-excellent { border-left-color: #28a745; }
         
         .loading { display: none; }
         
@@ -129,6 +134,10 @@
         }
         .analysis-text li { margin-bottom: 0.35rem; }
         .analysis-text strong { color: #1e3c72; }
+        .analysis-text .grade-low { color: #dc3545; }
+        .analysis-text .grade-medium { color: #fd7e14; }
+        .analysis-text .grade-high { color: #ffc107; }
+        .analysis-text .grade-excellent { color: #28a745; }
         .analysis-text p { margin-bottom: 0.75rem; }
         .analysis-text blockquote {
             border-left: 3px solid #007bff;
@@ -521,6 +530,27 @@
             }
         }
         
+        function colorizeGrade() {
+            const el = document.getElementById('analysisText');
+            if (!el) return;
+            let html = el.innerHTML;
+            let gradeCls = '';
+            html = html.replace(/(ΣΥΝΟΛΙΚΗ ΑΞΙΟΛΟΓΗΣΗ:\s*)(\d{1,3})/, (match, prefix, grade) => {
+                const num = parseInt(grade, 10);
+                let cls;
+                if (num >= 81) { cls = 'grade-excellent'; gradeCls = 'card-grade-excellent'; }
+                else if (num >= 61) { cls = 'grade-high'; gradeCls = 'card-grade-high'; }
+                else if (num >= 31) { cls = 'grade-medium'; gradeCls = 'card-grade-medium'; }
+                else { cls = 'grade-low'; gradeCls = 'card-grade-low'; }
+                return prefix + '<span class="' + cls + '">' + grade + '</span>';
+            });
+            el.innerHTML = html;
+            const card = document.getElementById('result');
+            if (card && gradeCls) {
+                card.className = card.className.replace(/card-grade-\S+/g, '').trim() + ' ' + gradeCls;
+            }
+        }
+        
         function copyAnalysis() {
             const analysisText = document.getElementById('analysisText').textContent;
             navigator.clipboard.writeText(analysisText).then(() => {
@@ -589,6 +619,7 @@
                 }
                 
                 document.getElementById('analysisText').innerHTML = marked.parse(data.analysis);
+                colorizeGrade();
                 document.getElementById('textLength').textContent = data.text_length || 0;
                 document.getElementById('sourceName').textContent = data.source || 'Άγνωστη';
                 document.getElementById('result').style.display = 'block';
