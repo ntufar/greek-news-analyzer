@@ -193,6 +193,7 @@ class handler(BaseHTTPRequestHandler):
                 <!-- PWA Meta Tags -->
                 <meta name="description" content="Αναλύστε ελληνικά άρθρα ειδήσεων για στοιχεία προπαγάνδας και προκατάληψης">
                 <meta name="keywords" content="ανάλυση ειδήσεων, ελληνικές ειδήσεις, προπαγάνδα, ανίχνευση προπαγάνδας, ανάλυση προκατάληψης, ελληνική ενημέρωση, αξιοπιστία ειδήσεων, fake news, παραπληροφόρηση, ανάλυση μέσων ενημέρωσης">
+                <meta name="msvalidate.01" content="7AE8D16C48F5201D71FAF4F7A52231E1" />
                 <meta name="theme-color" content="#1e3c72">
                 <meta name="apple-mobile-web-app-capable" content="yes">
                 <meta name="apple-mobile-web-app-status-bar-style" content="default">
