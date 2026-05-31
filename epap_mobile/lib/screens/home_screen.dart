@@ -287,6 +287,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onSelectionChanged: (set) => setState(() => _useUrl = set.first),
               style: SegmentedButton.styleFrom(
                 selectedBackgroundColor: const Color(0xFF1E3C72),
+                selectedForegroundColor: Colors.white,
               ),
             ),
             const SizedBox(height: 16),
