@@ -14,7 +14,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+/lib/
 lib64/
 parts/
 sdist/
@@ -152,3 +152,8 @@ Thumbs.db
 .env.production.local
 .vercel
 .env*
+
+#Android Keystore
+keystore.properties
+*.jks
+*.keystore
