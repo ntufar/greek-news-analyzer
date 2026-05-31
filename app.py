@@ -243,6 +243,11 @@ def about():
     """About page"""
     return render_template('about.html')
 
+@app.route('/privacy')
+def privacy():
+    """Privacy policy page"""
+    return render_template('privacy.html')
+
 @app.route('/status')
 def status():
     """Status endpoint with more detailed information"""

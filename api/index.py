@@ -387,6 +387,9 @@ class handler(BaseHTTPRequestHandler):
                             <a href="/about" style="color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 5px 14px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">
                                 <i class="fas fa-info-circle me-1"></i>Σχετικά
                             </a>
+                            <a href="/privacy" style="color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 5px 14px; border-radius: 6px; font-size: 0.85rem; font-weight: 500; margin-left: 6px;">
+                                <i class="fas fa-shield-alt me-1"></i>Απόρρητο
+                            </a>
                         </div>
                     </div>
                     
@@ -745,6 +748,9 @@ class handler(BaseHTTPRequestHandler):
                         }
                     });
                 </script>
+                <div class="text-center py-3 mt-4" style="border-top: 1px solid #dee2e6; font-size: 0.8rem; color: #6c757d;">
+                    <a href="/privacy" style="color: #6c757d; text-decoration: none;">Πολιτική Απορρήτου</a>
+                </div>
             </body>
             </html>
             """
@@ -995,6 +1001,211 @@ class handler(BaseHTTPRequestHandler):
                     <div style="text-align: center; margin-top: 2rem;">
                         <a href="/" class="back-button"><i class="fas fa-arrow-left me-1"></i>Επιστροφή στην Αρχική</a>
                     </div>
+                    <div class="text-center mt-4" style="padding-top: 1rem; border-top: 1px solid #e9ecef; font-size: 0.8rem; color: #6c757d;">
+                        <a href="/privacy" style="color: #6c757d; text-decoration: none;">Πολιτική Απορρήτου</a>
+                    </div>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+        return html
+    
+
+    def get_privacy_html(self):
+        """Generate the Privacy Policy page HTML"""
+        html = """
+        <!DOCTYPE html>
+        <html lang="el">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+            <title>Πολιτική Απορρήτου - ΕΠΑΠ</title>
+            
+            <meta name="description" content="Πολιτική απορρήτου της ΕΠΑΠ - Ελληνική Πλατφόρμα Ανάλυσης Παραπληροφόρησης">
+            <meta name="theme-color" content="#1e3c72">
+            <meta name="apple-mobile-web-app-capable" content="yes">
+            <meta name="apple-mobile-web-app-status-bar-style" content="default">
+            <meta name="apple-mobile-web-app-title" content="ΕΠΑΠ">
+            <meta name="mobile-web-app-capable" content="yes">
+            <meta name="application-name" content="ΕΠΑΠ">
+            
+            <link rel="manifest" href="/static/manifest.json">
+            
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9549967181261078" crossorigin="anonymous"></script>
+            
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+            
+            <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/icon-32x32.png">
+            <link rel="icon" type="image/png" sizes="16x16" href="/static/icons/icon-16x16.png">
+            <link rel="apple-touch-icon" href="/static/icons/icon-192x192.png">
+            
+            <style>
+                body {
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+                    max-width: 860px;
+                    margin: 0 auto;
+                    padding: 10px;
+                    background: linear-gradient(135deg, #e8edf5 0%, #d5dce8 100%);
+                    min-height: 100vh;
+                    -webkit-font-smoothing: antialiased;
+                }
+                .container {
+                    background: #fff;
+                    padding: 24px;
+                    border-radius: 12px;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+                }
+                .header {
+                    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+                    color: white;
+                    padding: 16px 20px;
+                    border-radius: 10px;
+                    text-align: center;
+                    margin-bottom: 24px;
+                }
+                .header h1 { margin: 0; font-size: 1.4rem; }
+                .header p { margin: 4px 0 0; font-size: 0.9rem; opacity: 0.85; }
+                .content { line-height: 1.7; color: #333; font-size: 0.95rem; }
+                .content h2 {
+                    color: #1e3c72;
+                    margin-top: 1.5rem;
+                    margin-bottom: 0.75rem;
+                    font-size: 1.2rem;
+                    border-bottom: 1px solid #e9ecef;
+                    padding-bottom: 0.35rem;
+                }
+                .content h3 {
+                    color: #2a5298;
+                    margin-top: 1.2rem;
+                    margin-bottom: 0.5rem;
+                    font-size: 1.05rem;
+                }
+                .content p { margin-bottom: 0.85rem; }
+                .content ul { margin-bottom: 0.85rem; padding-left: 1.5rem; }
+                .content li { margin-bottom: 0.5rem; }
+                .back-button {
+                    display: inline-block;
+                    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+                    color: white;
+                    padding: 10px 22px;
+                    border-radius: 8px;
+                    text-decoration: none;
+                    font-weight: 500;
+                    font-size: 0.95rem;
+                    transition: all 0.2s;
+                    margin-top: 16px;
+                }
+                .back-button:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+                .last-updated {
+                    font-size: 0.85rem;
+                    color: #6c757d;
+                    text-align: center;
+                    margin-top: 1.5rem;
+                    padding-top: 1rem;
+                    border-top: 1px solid #e9ecef;
+                }
+                .info-box {
+                    background: #e8f0fe;
+                    border-left: 4px solid #2196f3;
+                    padding: 14px 18px;
+                    margin: 1rem 0;
+                    border-radius: 8px;
+                    font-size: 0.9rem;
+                }
+                @media (max-width: 768px) {
+                    body { padding: 6px; }
+                    .container { padding: 16px; border-radius: 10px; margin: 4px; }
+                    .header { padding: 12px; border-radius: 8px; margin-bottom: 16px; }
+                    .header h1 { font-size: 1.2rem; }
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h1><span class="logo-alpha">Ε<span class="check">✓</span></span>Πολιτική Απορρήτου</h1>
+                    <p>ΕΠΑΠ - Εληνική Πλατφόρμα Ανάλυσης Παραπληροφόρισης</p>
+                </div>
+                
+                <div class="content">
+                    <p><strong>Τελευταία ενημέρωση:</strong> 31 Μαΐου 2026</p>
+
+                    <h2>1. Εισαγωγή</h2>
+                    <p>Η ΕΠΑΠ (Ελληνική Πλατφόρμα Ανάλυσης Παραπληροφόρησης) δεσμεύεται για την προστασία του απορρήτου σας. Αυτή η Πολιτική Απορρήτου εξηγεί πώς συλλέγουμε, χρησιμοποιούμε και προστατεύουμε τα δεδομένα σας όταν χρησιμοποιείτε την εφαρμογή μας.</p>
+                    <p>Χρησιμοποιώντας την εφαρμογή μας, συμφωνείτε με τις πρακτικές που περιγράφονται στην παρούσα πολιτική.</p>
+
+                    <h2>2. Δεδομένα που Συλλέγουμε</h2>
+                    
+                    <h3>2.1 Δεδομένα που Παρέχετε Εσείς</h3>
+                    <ul>
+                        <li><strong>Κείμενο άρθρων:</strong> Το κείμενο ή η διεύθυνση URL που εισάγετε για ανάλυση.</li>
+                        <li><strong>Πηγή ειδήσεων:</strong> Το όνομα του ειδησεογραφικού μέσου που αναφέρετε προαιρετικά.</li>
+                    </ul>
+
+                    <h3>2.2 Δεδομένα που Συλλέγονται Αυτόματα</h3>
+                    <ul>
+                        <li><strong>Διεύθυνση IP:</strong> Η διεύθυνση IP σας καταγράφεται προσωρινά για σκοπούς περιορισμού ρυθμού αιτήσεων (rate limiting) και ασφάλειας. Δεν αποθηκεύεται μόνιμα.</li>
+                        <li><strong>Δεδομένα χρήσης:</strong> Συλλέγονται ανώνυμα στατιστικά χρήσης μέσω της υπηρεσίας Google AdSense.</li>
+                    </ul>
+
+                    <h3>2.3 Δεδομένα Τρίτων</h3>
+                    <ul>
+                        <li><strong>Google AdSense:</strong> Χρησιμοποιούμε το Google AdSense για την προβολή διαφημίσεων.</li>
+                        <li><strong>Mistral AI:</strong> Τα κείμενα που υποβάλλετε αποστέλλονται στο Mistral AI API για επεξεργασία.</li>
+                    </ul>
+
+                    <h2>3. Πώς Χρησιμοποιούμε τα Δεδομένα σας</h2>
+                    <p>Χρησιμοποιούμε τα δεδομένα σας αποκλειστικά για:</p>
+                    <ul>
+                        <li>Την ανάλυση άρθρων ειδήσεων για εντοπισμό προπαγάνδας</li>
+                        <li>Τη βελτίωση της ποιότητας των υπηρεσιών μας</li>
+                        <li>Την προστασία από κακόβουλη χρήση</li>
+                        <li>Την προβολή σχετικών διαφημίσεων</li>
+                    </ul>
+
+                    <div class="info-box">
+                        <strong>Σημείωση:</strong> Δεν πωλούμε, δεν ενοικιάζουμε και δεν μοιραζόμαστε τα προσωπικά σας δεδομένα με τρίτους για σκοπούς μάρκετινγκ.
+                    </div>
+
+                    <h2>4. Διατήρηση Δεδομένων</h2>
+                    <p>Τα κείμενα που υποβάλλετε αποθηκεύονται προσωρινά στη μνήμη του διακομιστή για λόγους προσωρινής αποθήκευσης (caching) και διαγράφονται αυτόματα όταν γίνει επανεκκίνηση του διακομιστή. Δεν διατηρούμε μόνιμη βάση δεδομένων.</p>
+
+                    <h2>5. Ασφάλεια Δεδομένων</h2>
+                    <p>Λαμβάνουμε εύλογα μέτρα ασφαλείας για την προστασία των δεδομένων σας. Η επικοινωνία με τον διακομιστή γίνεται μέσω κρυπτογραφημένης σύνδεσης HTTPS.</p>
+
+                    <h2>6. Δικαιώματά σας</h2>
+                    <p>Σύμφωνα με τον GDPR, έχετε τα ακόλουθα δικαιώματα:</p>
+                    <ul>
+                        <li><strong>Δικαίωμα πρόσβασης:</strong> Να ζητήσετε αντίγραφο των δεδομένων σας</li>
+                        <li><strong>Δικαίωμα διαγραφής:</strong> Να ζητήσετε τη διαγραφή των δεδομένων σας</li>
+                        <li><strong>Δικαίωμα περιορισμού:</strong> Να περιορίσετε την επεξεργασία</li>
+                        <li><strong>Δικαίωμα εναντίωσης:</strong> Να εναντιωθείτε στην επεξεργασία</li>
+                        <li><strong>Δικαίωμα φορητότητας:</strong> Να λάβετε τα δεδομένα σας σε δομημένη μορφή</li>
+                    </ul>
+
+                    <h2>7. Παιδιά</h2>
+                    <p>Η εφαρμογή μας δεν απευθύνεται σε παιδιά κάτω των 13 ετών.</p>
+
+                    <h2>8. Σύνδεσμοι προς Τρίτους</h2>
+                    <p>Η εφαρμογή μας ενδέχεται να περιέχει συνδέσμους προς ιστότοπους τρίτων. Δεν ευθυνόμαστε για τις πρακτικές απορρήτου αυτών των ιστότοπων.</p>
+
+                    <h2>9. Αλλαγές στην Πολιτική Απορρήτου</h2>
+                    <p>Ενδέχεται να ενημερώνουμε αυτήν την πολιτική από καιρό σε καιρό. Οι αλλαγές θα δημοσιεύονται σε αυτήν τη σελίδα.</p>
+
+                    <h2>10. Επικοινωνία</h2>
+                    <ul>
+                        <li><strong>Email:</strong> <a href="mailto:ntufar@gmail.com">ntufar@gmail.com</a></li>
+                        <li><strong>GitHub:</strong> <a href="https://github.com/ntufar/epap" target="_blank">https://github.com/ntufar/epap</a></li>
+                    </ul>
+
+                    <div class="last-updated">
+                        Τελευταία ενημέρωση: 31 Μαΐου 2026
+                    </div>
+
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <a href="/" class="back-button">Επιστροφή στην Αρχική</a>
+                    </div>
                 </div>
             </div>
         </body>
@@ -1034,6 +1245,14 @@ class handler(BaseHTTPRequestHandler):
             self.end_headers()
             
             html = self.get_about_html()
+            self.wfile.write(html.encode())
+            
+        elif self.path == '/privacy':
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            
+            html = self.get_privacy_html()
             self.wfile.write(html.encode())
             
         elif self.path == '/health':
