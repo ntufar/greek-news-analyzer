@@ -1276,6 +1276,60 @@ class handler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(b'ads.txt not found')
                 
+        elif self.path in ['/robots.txt', '/Robots.txt']:
+            # Serve robots.txt
+            candidate_paths = [
+                os.path.join('static', 'robots.txt'),
+                os.path.join(os.path.dirname(__file__), 'static', 'robots.txt'),
+                os.path.join('static', 'Robots.txt'),
+                os.path.join(os.path.dirname(__file__), 'static', 'Robots.txt')
+            ]
+            file_found = False
+            for file_path in candidate_paths:
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        content = f.read()
+                    self.send_response(200)
+                    self.send_header('Content-type', 'text/plain; charset=utf-8')
+                    self.send_header('Cache-Control', 'public, max-age=86400')
+                    self.end_headers()
+                    self.wfile.write(content.encode('utf-8'))
+                    file_found = True
+                    break
+                except FileNotFoundError:
+                    continue
+            if not file_found:
+                self.send_response(404)
+                self.end_headers()
+                self.wfile.write(b'robots.txt not found')
+
+        elif self.path in ['/sitemap.xml', '/Sitemap.xml']:
+            # Serve sitemap.xml
+            candidate_paths = [
+                os.path.join('static', 'sitemap.xml'),
+                os.path.join(os.path.dirname(__file__), 'static', 'sitemap.xml'),
+                os.path.join('static', 'Sitemap.xml'),
+                os.path.join(os.path.dirname(__file__), 'static', 'Sitemap.xml')
+            ]
+            file_found = False
+            for file_path in candidate_paths:
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        content = f.read()
+                    self.send_response(200)
+                    self.send_header('Content-type', 'application/xml; charset=utf-8')
+                    self.send_header('Cache-Control', 'public, max-age=86400')
+                    self.end_headers()
+                    self.wfile.write(content.encode('utf-8'))
+                    file_found = True
+                    break
+                except FileNotFoundError:
+                    continue
+            if not file_found:
+                self.send_response(404)
+                self.end_headers()
+                self.wfile.write(b'sitemap.xml not found')
+
         elif self.path.startswith('/static/icons/'):
             # Handle icon requests
             icon_name = self.path.split('/')[-1]

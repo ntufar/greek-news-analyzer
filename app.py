@@ -284,6 +284,54 @@ def ads_txt():
         logger.error(f"Error serving ads.txt: {str(e)}")
         return f'Error: {str(e)}', 500
 
+@app.route('/robots.txt')
+@app.route('/Robots.txt')
+def robots_txt():
+    """Serve robots.txt file"""
+    try:
+        candidate_paths = [
+            os.path.join('static', 'robots.txt'),
+            os.path.join('static', 'Robots.txt')
+        ]
+        for file_path in candidate_paths:
+            if os.path.exists(file_path):
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                response = app.response_class(
+                    content,
+                    mimetype='text/plain; charset=utf-8'
+                )
+                response.headers['Cache-Control'] = 'public, max-age=86400'
+                return response
+        return 'robots.txt not found', 404
+    except Exception as e:
+        logger.error(f"Error serving robots.txt: {str(e)}")
+        return f'Error: {str(e)}', 500
+
+@app.route('/sitemap.xml')
+@app.route('/Sitemap.xml')
+def sitemap_xml():
+    """Serve sitemap.xml file"""
+    try:
+        candidate_paths = [
+            os.path.join('static', 'sitemap.xml'),
+            os.path.join('static', 'Sitemap.xml')
+        ]
+        for file_path in candidate_paths:
+            if os.path.exists(file_path):
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                response = app.response_class(
+                    content,
+                    mimetype='application/xml; charset=utf-8'
+                )
+                response.headers['Cache-Control'] = 'public, max-age=86400'
+                return response
+        return 'sitemap.xml not found', 404
+    except Exception as e:
+        logger.error(f"Error serving sitemap.xml: {str(e)}")
+        return f'Error: {str(e)}', 500
+
 @app.route('/analyze', methods=['POST'])
 @limiter.limit("5 per minute")  # More restrictive for analysis endpoint
 @log_request
