@@ -1,6 +1,9 @@
-name: Mobile Build
+name: Mobile Build & Release
 
-on: [push]
+on:
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   android:
@@ -54,11 +57,10 @@ jobs:
     - name: Build release APK
       run: flutter build apk --release
 
-    - name: Upload APK
-      uses: actions/upload-artifact@v4
+    - name: Upload APK to release
+      uses: softprops/action-gh-release@v2
       with:
-        name: android-release-apk
-        path: epap_mobile/build/app/outputs/flutter-apk/app-release.apk
+        files: epap_mobile/build/app/outputs/flutter-apk/app-release.apk
 
   ios:
     runs-on: macos-latest
@@ -92,8 +94,12 @@ jobs:
     - name: Build iOS (no codesign)
       run: flutter build ios --release --no-codesign
 
-    - name: Upload iOS build
-      uses: actions/upload-artifact@v4
+    - name: Zip iOS build
+      run: |
+        cd build/ios/iphoneos
+        zip -r Runner.app.zip Runner.app
+
+    - name: Upload iOS build to release
+      uses: softprops/action-gh-release@v2
       with:
-        name: ios-release-build
-        path: epap_mobile/build/ios/iphoneos/Runner.app
+        files: epap_mobile/build/ios/iphoneos/Runner.app.zip
