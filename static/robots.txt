@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://greeknewsanalyzer.com/sitemap.xml
+Sitemap: https://greek-news-analyzer.vercel.app/sitemap.xml
