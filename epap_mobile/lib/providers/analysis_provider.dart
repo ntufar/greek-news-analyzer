@@ -10,10 +10,9 @@ class AnalysisProvider extends ChangeNotifier {
   final DatabaseService _databaseService;
 
   AnalysisProvider({
-    required ApiService apiService,
-    required DatabaseService databaseService,
-  })  : _apiService = apiService,
-        _databaseService = databaseService;
+    required this._apiService,
+    required this._databaseService,
+  });
 
   AnalysisState _state = AnalysisState.idle;
   AnalysisResult? _currentResult;

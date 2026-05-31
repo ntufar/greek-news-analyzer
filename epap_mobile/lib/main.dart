@@ -38,7 +38,7 @@ class _EpapAppRoot extends StatefulWidget {
 }
 
 class _EpapAppRootState extends State<_EpapAppRoot> {
-  ThemeMode _themeMode = ThemeMode.system;
+  final ThemeMode _themeMode = ThemeMode.system;
   final _navigatorKey = GlobalKey<NavigatorState>();
 
   String? _pendingSharedText;

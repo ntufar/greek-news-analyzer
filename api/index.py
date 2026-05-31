@@ -160,13 +160,10 @@ def analyze_greek_news(text, source=""):
         
         if not analysis_text:
             raise ValueError("Empty content in Mistral API response")
-        
-        # Convert markdown to HTML
-        html_analysis = markdown_to_html(analysis_text)
-        
-        # Cache the result
-        analysis_cache[cache_key] = html_analysis
-        return html_analysis
+
+        # Cache the result (keep as markdown for mobile app)
+        analysis_cache[cache_key] = analysis_text
+        return analysis_text
         
     except Exception as e:
         return f"Σφάλμα στην ανάλυση: {str(e)}"
@@ -680,7 +677,7 @@ class handler(BaseHTTPRequestHandler):
                         const charCount = document.getElementById('charCount');
                         const count = textarea.value.length;
                         charCount.textContent = count + ' / 10,000 χαρακτήρες (ελάχιστο 50)';
-                        
+
                         if (count < 50) {
                             charCount.style.color = '#dc3545';
                         } else if (count > 9000) {
@@ -688,6 +685,37 @@ class handler(BaseHTTPRequestHandler):
                         } else {
                             charCount.style.color = '#28a745';
                         }
+                    }
+
+                    function convertMarkdownToHTML(markdown) {
+                        // Simple markdown to HTML converter for basic formatting
+                        let html = markdown;
+
+                        // Convert headers
+                        html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+                        html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+                        html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+
+                        // Convert bold
+                        html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+                        // Convert italic
+                        html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+
+                        // Convert lists
+                        html = html.replace(/^\- (.*$)/gim, '<li>$1</li>');
+                        html = html.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
+
+                        // Convert line breaks
+                        html = html.replace(/\n\n/g, '</p><p>');
+                        html = html.replace(/\n/g, '<br>');
+
+                        // Wrap in paragraph if not already wrapped
+                        if (!html.startsWith('<')) {
+                            html = '<p>' + html + '</p>';
+                        }
+
+                        return html;
                     }
                     
                     document.getElementById('analysisForm').addEventListener('submit', async function(e) {
@@ -734,7 +762,9 @@ class handler(BaseHTTPRequestHandler):
                             if (data.error) {
                                 document.getElementById('analysis').innerHTML = '<div class="error">Σφάλμα: ' + data.error + '</div>';
                             } else {
-                                document.getElementById('analysis').innerHTML = data.analysis;
+                                // Convert markdown to HTML for display
+                                const htmlContent = convertMarkdownToHTML(data.analysis);
+                                document.getElementById('analysis').innerHTML = htmlContent;
                                 colorizeGrade();
                             }
                             

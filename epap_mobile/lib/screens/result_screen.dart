@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:share_plus/share_plus.dart';
 import '../providers/analysis_provider.dart';
 import '../utils/score_extractor.dart';
@@ -59,10 +59,8 @@ class ResultScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 ...parsed.sections.entries.map(
-                  (entry) => CriteriaCard(
-                    title: entry.key,
-                    content: entry.value,
-                  ),
+                  (entry) =>
+                      CriteriaCard(title: entry.key, content: entry.value),
                 ),
                 const SizedBox(height: 16),
                 _buildFullAnalysis(context, parsed.rawMarkdown),
@@ -93,20 +91,32 @@ class ResultScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            MarkdownBody(
+            Html(
               data: markdown,
-              styleSheet: MarkdownStyleSheet(
-                p: TextStyle(
-                  fontSize: 14,
-                  height: 1.5,
+              style: {
+                "body": Style(
+                  fontSize: FontSize(14),
+                  lineHeight: const LineHeight(1.5),
                   color: isDark ? Colors.grey.shade300 : Colors.black87,
+                  margin: Margins.zero,
+                  padding: HtmlPaddings.zero,
                 ),
-                h2: TextStyle(
-                  fontSize: 16,
+                "h2": Style(
+                  fontSize: FontSize(16),
                   fontWeight: FontWeight.bold,
-                  color: isDark ? Colors.grey.shade200 : const Color(0xFF1E3C72),
+                  color: isDark
+                      ? Colors.grey.shade200
+                      : const Color(0xFF1E3C72),
                 ),
-              ),
+                "h3": Style(
+                  fontSize: FontSize(16),
+                  fontWeight: FontWeight.bold,
+                  color: isDark
+                      ? Colors.grey.shade200
+                      : const Color(0xFF1E3C72),
+                ),
+                "strong": Style(fontWeight: FontWeight.bold),
+              },
             ),
           ],
         ),
