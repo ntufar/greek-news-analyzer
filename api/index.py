@@ -6,8 +6,6 @@ import hashlib
 from mistralai import Mistral
 import requests
 from bs4 import BeautifulSoup
-import markdown
-
 # Configure Mistral AI
 mistral_client = Mistral(api_key=os.getenv('MISTRAL_API_KEY'))
 
@@ -18,21 +16,6 @@ def get_cache_key(text, source=""):
     """Generate a cache key for the analysis"""
     content = f"{text[:1000]}_{source}".encode('utf-8')
     return hashlib.md5(content).hexdigest()
-
-def markdown_to_html(markdown_text):
-    """Convert markdown text to HTML with proper styling"""
-    # Configure markdown with extensions for better formatting
-    md = markdown.Markdown(extensions=['extra', 'nl2br', 'sane_lists'])
-    html = md.convert(markdown_text)
-    
-    # Add some custom styling for better presentation
-    styled_html = f"""
-    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333;">
-        {html}
-    </div>
-    """
-    
-    return styled_html
 
 def extract_text_from_url(url):
     """Extract text content from a news URL"""
@@ -205,7 +188,8 @@ class handler(BaseHTTPRequestHandler):
                 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9549967181261078" crossorigin="anonymous"></script>
                 
                 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-                
+                <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+
                 <!-- Icons for different platforms -->
                 <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/icon-32x32.png">
                 <link rel="icon" type="image/png" sizes="16x16" href="/static/icons/icon-16x16.png">
@@ -688,34 +672,21 @@ class handler(BaseHTTPRequestHandler):
                     }
 
                     function convertMarkdownToHTML(markdown) {
-                        // Simple markdown to HTML converter for basic formatting
-                        let html = markdown;
-
-                        // Convert headers
-                        html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
-                        html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
-                        html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
-
-                        // Convert bold
-                        html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-
-                        // Convert italic
-                        html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
-
-                        // Convert lists
-                        html = html.replace(/^\- (.*$)/gim, '<li>$1</li>');
-                        html = html.replace(/(<li>.*<\/li>)/s, '<ul>$1</ul>');
-
-                        // Convert line breaks
-                        html = html.replace(/\n\n/g, '</p><p>');
-                        html = html.replace(/\n/g, '<br>');
-
-                        // Wrap in paragraph if not already wrapped
-                        if (!html.startsWith('<')) {
-                            html = '<p>' + html + '</p>';
+                        // Use marked.js library to convert markdown to HTML
+                        try {
+                            if (typeof marked !== 'undefined' && typeof marked.parse === 'function') {
+                                return marked.parse(markdown);
+                            } else if (typeof marked !== 'undefined' && typeof marked === 'function') {
+                                // Fallback for older marked versions
+                                return marked(markdown);
+                            } else {
+                                console.error('Marked library not loaded');
+                                return '<pre>' + markdown + '</pre>';
+                            }
+                        } catch (e) {
+                            console.error('Error parsing markdown:', e);
+                            return '<pre>' + markdown + '</pre>';
                         }
-
-                        return html;
                     }
                     
                     document.getElementById('analysisForm').addEventListener('submit', async function(e) {
