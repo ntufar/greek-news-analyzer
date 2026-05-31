@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.3] - 2026-05-31
+
+### Fixed
+- Corrected Google Play upload action input names (snake_case → camelCase)
+- Granted GitHub release write permissions in workflow (fix 403 error)
+
 ## [0.0.2] - 2026-05-31
 
 ### Added
