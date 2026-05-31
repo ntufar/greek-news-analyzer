@@ -66,13 +66,13 @@ jobs:
     - name: Upload AAB to Google Play
       uses: r0adkll/upload-google-play@v1
       with:
-        service_account_json: ${{ secrets.PLAY_STORE_SERVICE_ACCOUNT_JSON }}
-        package_name: io.github.ntufar.epap
-        release_files: epap_mobile/build/app/outputs/bundle/release/app-release.aab
+        serviceAccountJsonPlainText: ${{ secrets.PLAY_STORE_SERVICE_ACCOUNT_JSON }}
+        packageName: io.github.ntufar.epap
+        releaseFiles: epap_mobile/build/app/outputs/bundle/release/app-release.aab
         track: production
         status: completed
-        release_name: ${{ github.ref_name }}
-        whats_new_dir: epap_mobile/android/whatsnew
+        releaseName: ${{ github.ref_name }}
+        whatsNewDirectory: epap_mobile/android/whatsnew
 
     - name: Upload APK to GitHub release
       uses: softprops/action-gh-release@v2
