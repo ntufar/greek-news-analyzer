@@ -71,7 +71,7 @@ jobs:
         serviceAccountJsonPlainText: ${{ secrets.PLAY_STORE_SERVICE_ACCOUNT_JSON }}
         packageName: io.github.ntufar.epap
         releaseFiles: epap_mobile/build/app/outputs/bundle/release/app-release.aab
-        track: production
+        tracks: production
         status: completed
         releaseName: ${{ github.ref_name }}
         whatsNewDirectory: epap_mobile/android/whatsnew
