@@ -8,6 +8,16 @@ An AI-powered web application that analyzes Greek news articles for propaganda i
 ![Vercel](https://img.shields.io/badge/deployed%20on-vercel-black.svg)
 ![PWA](https://img.shields.io/badge/PWA-enabled-4285F4.svg)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![CI](https://img.shields.io/github/actions/workflow/status/ntufar/epap/ci.yml?branch=main&label=CI)
+![Mobile Build](https://img.shields.io/github/actions/workflow/status/ntufar/epap/mobile.yml?label=Mobile%20Build)
+![Coverage](https://img.shields.io/codecov/c/github/ntufar/epap)
+![Flutter](https://img.shields.io/badge/Flutter-3.12+-02569B.svg?logo=flutter)
+![Android](https://img.shields.io/badge/Android-34DDDDDD.svg?logo=android)
+![iOS](https://img.shields.io/badge/iOS-17-000000.svg?logo=apple)
+![Docker](https://img.shields.io/badge/docker-ready-2496ED.svg?logo=docker)
+![Last Commit](https://img.shields.io/github/last-commit/ntufar/epap)
+![Release](https://img.shields.io/github/v/release/ntufar/epap)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
 ## Features
 
