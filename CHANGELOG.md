@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.2] - 2026-05-31
+
+### Added
+- Automated Google Play publishing on version tags
+- Custom app launcher icons (custom icon replacing Flutter default)
+
+### Changed
+- CI builds AAB (Android App Bundle) for Play Store in addition to APK
+- Improved adaptive icon configuration for Android
+
 ## [0.0.1] - 2026-05-31
 
 ### Added

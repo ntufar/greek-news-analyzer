@@ -38,6 +38,9 @@ jobs:
     - name: Install dependencies
       run: flutter pub get
 
+    - name: Generate launcher icons
+      run: dart run flutter_launcher_icons
+
     - name: Run tests
       run: flutter test
 
@@ -57,10 +60,25 @@ jobs:
     - name: Build release APK
       run: flutter build apk --release
 
-    - name: Upload APK to release
+    - name: Build release App Bundle
+      run: flutter build appbundle --release
+
+    - name: Upload AAB to Google Play
+      uses: r0adkll/upload-google-play@v1
+      with:
+        service_account_json: ${{ secrets.PLAY_STORE_SERVICE_ACCOUNT_JSON }}
+        package_name: io.github.ntufar.epap
+        release_files: epap_mobile/build/app/outputs/bundle/release/app-release.aab
+        track: production
+        status: completed
+        release_name: ${{ github.ref_name }}
+        whats_new_dir: epap_mobile/android/whatsnew
+
+    - name: Upload APK to GitHub release
       uses: softprops/action-gh-release@v2
       with:
-        files: epap_mobile/build/app/outputs/flutter-apk/app-release.apk
+        files: |
+          epap_mobile/build/app/outputs/flutter-apk/app-release.apk
 
   ios:
     runs-on: macos-latest
