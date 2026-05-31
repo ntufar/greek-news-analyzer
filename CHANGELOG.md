@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.6] - 2026-06-01
+
+### Fixed
+- Added missing `ACCESS_NETWORK_STATE` permission and ensured `INTERNET` permission is properly included in release AAB
+
 ## [0.0.5] - 2026-06-01
 
 ### Changed
