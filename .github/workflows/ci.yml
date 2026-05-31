@@ -110,39 +110,4 @@ jobs:
         curl -f http://localhost:5000/ || exit 1
         docker stop test-container
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-    
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    
-    - name: Build Docker image
-      run: |
-        docker build -t epap:${{ github.sha }} .
-    
-    - name: Install Heroku CLI
-      run: |
-        curl https://cli-assets.heroku.com/install.sh | sh
-    
-    - name: Log in to Heroku Container Registry
-      run: docker login registry.heroku.com --username=_ --password=${{ secrets.HEROKU_API_KEY }}
-    
-    - name: Push and release Docker image
-      run: |
-        docker tag epap:${{ github.sha }} registry.heroku.com/epap/web
-        docker push registry.heroku.com/epap/web
-        heroku container:release web --app epap
-      env:
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+
