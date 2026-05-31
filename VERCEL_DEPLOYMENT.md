@@ -1,6 +1,6 @@
-# Vercel Deployment Guide for Greek News Analyzer
+# Vercel Deployment Guide for ΕΠΑΠ
 
-This guide will help you deploy your Greek News Analyzer Flask application on Vercel.
+This guide will help you deploy your ΕΠΑΠ Flask application on Vercel.
 
 ## Prerequisites
 
@@ -13,7 +13,7 @@ This guide will help you deploy your Greek News Analyzer Flask application on Ve
 Your project now has the following structure for Vercel deployment:
 
 ```
-greek-news-analyzer/
+epap/
 ├── api/
 │   ├── index.py              # Main Flask application (serverless function)
 │   ├── requirements.txt      # Python dependencies
@@ -163,4 +163,4 @@ If you encounter any issues:
 
 ---
 
-**Your Greek News Analyzer is now ready for Vercel deployment! 🇬🇷**
+**Your ΕΠΑΠ is now ready for Vercel deployment! 🇬🇷**

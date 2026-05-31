@@ -1,5 +1,5 @@
-// Service Worker for Greek News Analyzer PWA
-const CACHE_NAME = 'greek-news-analyzer-v4';
+// Service Worker for ΕΠΑΠ PWA
+const CACHE_NAME = 'epap-v4';
 const urlsToCache = [
   '/',
   '/static/manifest.json'
@@ -60,7 +60,7 @@ self.addEventListener('message', (event) => {
     const { title, text, url } = event.data;
     
     // Store shared data for the main app to use
-    self.registration.showNotification('Greek News Analyzer', {
+    self.registration.showNotification('ΕΠΑΠ', {
       body: `Ανάλυση: ${title || text || url}`,
       icon: '/static/icons/icon-192x192.png',
       badge: '/static/icons/icon-72x72.png',

@@ -14,7 +14,7 @@ def test_index_route(client):
     """Test that the index route returns the main page."""
     response = client.get('/')
     assert response.status_code == 200
-    assert b'Greek News Analyzer' in response.data or b'Ανάλυση Ελληνικών Ειδήσεων' in response.data
+    assert 'ΕΠΑΠ' in response.data.decode('utf-8')
 
 def test_analyze_route_no_data(client):
     """Test analyze route with no data."""

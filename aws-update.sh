@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# AWS EC2 Update Script for Greek News Analyzer
+# AWS EC2 Update Script for ΕΠΑΠ
 # This script updates an existing deployment with the latest version
 # Usage: ./aws-update.sh [GEMINI_API_KEY]
 # If no API key provided, it will keep the existing one
 
-echo "🚀 Updating Greek News Analyzer on AWS EC2..."
+echo "🚀 Updating ΕΠΑΠ on AWS EC2..."
 
 # Check if we're in the right directory
 if [ ! -f "app.py" ]; then
@@ -23,13 +23,13 @@ fi
 # Determine the user (ec2-user for Amazon Linux, ubuntu for Ubuntu)
 if id "ec2-user" &>/dev/null; then
     APP_USER="ec2-user"
-    APP_DIR="/var/www/greek-news-analyzer"
+    APP_DIR="/var/www/epap"
 elif id "ubuntu" &>/dev/null; then
     APP_USER="ubuntu"
-    APP_DIR="/var/www/greek-news-analyzer"
+    APP_DIR="/var/www/epap"
 else
     APP_USER=$(whoami)
-    APP_DIR="/var/www/greek-news-analyzer"
+    APP_DIR="/var/www/epap"
 fi
 
 echo "👤 Using user: $APP_USER"
@@ -70,8 +70,8 @@ else
 fi
 
 # Stop the service
-echo "⏹️  Stopping Greek News Analyzer service..."
-sudo systemctl stop greek-news-analyzer
+echo "⏹️  Stopping ΕΠΑΠ service..."
+sudo systemctl stop epap
 
 # Navigate to app directory
 cd "$APP_DIR"
@@ -150,9 +150,9 @@ EOF
 
 # Update systemd service with improved configuration
 echo "🔧 Updating systemd service configuration..."
-sudo tee /etc/systemd/system/greek-news-analyzer.service > /dev/null << EOF
+sudo tee /etc/systemd/system/epap.service > /dev/null << EOF
 [Unit]
-Description=Greek News Analyzer
+Description=ΕΠΑΠ
 After=network.target
 
 [Service]
@@ -179,9 +179,9 @@ limit_req_zone $binary_remote_addr zone=api:10m rate=1r/s;
 limit_req_zone $binary_remote_addr zone=general:10m rate=2r/s;
 EOF
 
-if [ -f "/etc/nginx/sites-available/greek-news-analyzer" ]; then
+if [ -f "/etc/nginx/sites-available/epap" ]; then
     # Ubuntu/Debian style
-    sudo tee /etc/nginx/sites-available/greek-news-analyzer > /dev/null << EOF
+    sudo tee /etc/nginx/sites-available/epap > /dev/null << EOF
 server {
     listen 80;
     server_name _;
@@ -226,7 +226,7 @@ server {
 EOF
 else
     # Amazon Linux style
-    sudo tee /etc/nginx/conf.d/greek-news-analyzer.conf > /dev/null << EOF
+    sudo tee /etc/nginx/conf.d/epap.conf > /dev/null << EOF
 server {
     listen 80;
     server_name _;
@@ -282,8 +282,8 @@ fi
 # Reload systemd and restart services
 echo "🔄 Reloading systemd and restarting services..."
 sudo systemctl daemon-reload
-sudo systemctl enable greek-news-analyzer
-sudo systemctl start greek-news-analyzer
+sudo systemctl enable epap
+sudo systemctl start epap
 sudo systemctl restart nginx
 
 # Wait a moment for services to start
@@ -291,11 +291,11 @@ sleep 5
 
 # Check service status
 echo "📊 Checking service status..."
-if sudo systemctl is-active --quiet greek-news-analyzer; then
-    echo "✅ Greek News Analyzer service is running"
+if sudo systemctl is-active --quiet epap; then
+    echo "✅ ΕΠΑΠ service is running"
 else
-    echo "❌ Greek News Analyzer service failed to start"
-    echo "📝 Check logs: sudo journalctl -u greek-news-analyzer -f"
+    echo "❌ ΕΠΑΠ service failed to start"
+    echo "📝 Check logs: sudo journalctl -u epap -f"
     exit 1
 fi
 
@@ -334,9 +334,9 @@ echo "🏥 Health check: http://$PUBLIC_IP/health"
 echo "📊 Status info: http://$PUBLIC_IP/status"
 echo ""
 echo "📋 Service management commands:"
-echo "   Status: sudo systemctl status greek-news-analyzer"
-echo "   Logs:   sudo journalctl -u greek-news-analyzer -f"
-echo "   Restart: sudo systemctl restart greek-news-analyzer"
+echo "   Status: sudo systemctl status epap"
+echo "   Logs:   sudo journalctl -u epap -f"
+echo "   Restart: sudo systemctl restart epap"
 echo ""
 echo "🔧 New features included:"
 echo "   ✅ Rate limiting (5 requests/minute for analysis)"

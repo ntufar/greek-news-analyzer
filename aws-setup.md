@@ -40,7 +40,7 @@ ssh -i your-key.pem ubuntu@your-instance-ip
 #### **For Ubuntu/Debian:**
 ```bash
 # Download and run the deployment script
-curl -O https://raw.githubusercontent.com/ntufar/greek-news-analyzer/main/aws-deploy.sh
+curl -O https://raw.githubusercontent.com/ntufar/epap/main/aws-deploy.sh
 chmod +x aws-deploy.sh
 ./aws-deploy.sh
 ```
@@ -48,7 +48,7 @@ chmod +x aws-deploy.sh
 #### **For Amazon Linux:**
 ```bash
 # Download and run the Amazon Linux deployment script
-curl -O https://raw.githubusercontent.com/ntufar/greek-news-analyzer/main/aws-deploy-amazon-linux.sh
+curl -O https://raw.githubusercontent.com/ntufar/epap/main/aws-deploy-amazon-linux.sh
 chmod +x aws-deploy-amazon-linux.sh
 ./aws-deploy-amazon-linux.sh
 ```
@@ -65,10 +65,10 @@ nano .env
 ### **4. Verify Deployment**
 ```bash
 # Check if service is running
-sudo systemctl status greek-news-analyzer
+sudo systemctl status epap
 
 # Check logs
-sudo journalctl -u greek-news-analyzer -f
+sudo journalctl -u epap -f
 
 # Test the application
 curl http://localhost:5000
@@ -114,17 +114,17 @@ free -h
 
 ```bash
 # Restart application
-sudo systemctl restart greek-news-analyzer
+sudo systemctl restart epap
 
 # View logs
-sudo journalctl -u greek-news-analyzer -f
+sudo journalctl -u epap -f
 
 # Update application (Manual)
-cd /var/www/greek-news-analyzer
+cd /var/www/epap
 git pull
 source venv/bin/activate
 pip install -r requirements.txt
-sudo systemctl restart greek-news-analyzer
+sudo systemctl restart epap
 
 # Check Nginx status
 sudo systemctl status nginx
@@ -136,7 +136,7 @@ sudo nginx -t
 ### **Automatic Update (Recommended)**
 ```bash
 # Download and run the update script
-curl -O https://raw.githubusercontent.com/ntufar/greek-news-analyzer/main/aws-update.sh
+curl -O https://raw.githubusercontent.com/ntufar/epap/main/aws-update.sh
 chmod +x aws-update.sh
 
 # Update with existing API key (keeps current configuration)
@@ -167,10 +167,10 @@ chmod +x aws-update.sh
 ### **Manual Update (Alternative)**
 ```bash
 # Stop the service
-sudo systemctl stop greek-news-analyzer
+sudo systemctl stop epap
 
 # Navigate to app directory
-cd /var/www/greek-news-analyzer
+cd /var/www/epap
 
 # Pull latest changes
 git fetch origin
@@ -187,14 +187,14 @@ pip install -r requirements.txt
 python3 generate_icons.py
 
 # Restart service
-sudo systemctl start greek-news-analyzer
+sudo systemctl start epap
 sudo systemctl restart nginx
 ```
 
 ### **Verify Update**
 ```bash
 # Check service status
-sudo systemctl status greek-news-analyzer
+sudo systemctl status epap
 
 # Test PWA features
 curl http://your-server-ip/health
@@ -232,7 +232,7 @@ curl http://your-server-ip/static/manifest.json
 
 ### **Service Won't Start**
 ```bash
-sudo journalctl -u greek-news-analyzer -n 50
+sudo journalctl -u epap -n 50
 ```
 
 ### **Out of Memory**
@@ -254,10 +254,10 @@ sudo kill -9 <PID>
 curl -I http://your-server-ip/static/manifest.json
 
 # Check if icons exist
-ls -la /var/www/greek-news-analyzer/static/icons/
+ls -la /var/www/epap/static/icons/
 
 # Regenerate icons if missing
-cd /var/www/greek-news-analyzer
+cd /var/www/epap
 python3 generate_icons.py
 
 # Check Nginx configuration

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# AWS EC2 Deployment Script for Greek News Analyzer
+# AWS EC2 Deployment Script for ΕΠΑΠ
 # Run this on your EC2 instance after initial setup
 # Usage: ./aws-deploy.sh <GEMINI_API_KEY>
 
@@ -13,7 +13,7 @@ if [ -z "$1" ]; then
 fi
 
 GEMINI_API_KEY="$1"
-echo "🚀 Setting up Greek News Analyzer on AWS EC2..."
+echo "🚀 Setting up ΕΠΑΠ on AWS EC2..."
 
 # Update system
 sudo apt update && sudo apt upgrade -y
@@ -25,12 +25,12 @@ sudo apt install -y python3 python3-venv python3-dev python3-pip
 sudo apt install -y nginx supervisor git curl
 
 # Create application directory
-sudo mkdir -p /var/www/greek-news-analyzer
-sudo chown $USER:$USER /var/www/greek-news-analyzer
-cd /var/www/greek-news-analyzer
+sudo mkdir -p /var/www/epap
+sudo chown $USER:$USER /var/www/epap
+cd /var/www/epap
 
 # Clone repository
-git clone https://github.com/ntufar/greek-news-analyzer.git .
+git clone https://github.com/ntufar/epap.git .
 
 # Create virtual environment
 python3 -m venv venv
@@ -49,16 +49,16 @@ EOF
 echo "✅ Environment file created with provided API key"
 
 # Create systemd service
-sudo tee /etc/systemd/system/greek-news-analyzer.service > /dev/null << EOF
+sudo tee /etc/systemd/system/epap.service > /dev/null << EOF
 [Unit]
-Description=Greek News Analyzer
+Description=ΕΠΑΠ
 After=network.target
 
 [Service]
 User=$USER
-WorkingDirectory=/var/www/greek-news-analyzer
-Environment=PATH=/var/www/greek-news-analyzer/venv/bin
-ExecStart=/var/www/greek-news-analyzer/venv/bin/gunicorn --bind 127.0.0.1:5000 --workers 2 --timeout 120 app:app
+WorkingDirectory=/var/www/epap
+Environment=PATH=/var/www/epap/venv/bin
+ExecStart=/var/www/epap/venv/bin/gunicorn --bind 127.0.0.1:5000 --workers 2 --timeout 120 app:app
 Restart=always
 
 [Install]
@@ -66,7 +66,7 @@ WantedBy=multi-user.target
 EOF
 
 # Configure Nginx
-sudo tee /etc/nginx/sites-available/greek-news-analyzer > /dev/null << EOF
+sudo tee /etc/nginx/sites-available/epap > /dev/null << EOF
 server {
     listen 80;
     server_name _;
@@ -82,7 +82,7 @@ server {
 EOF
 
 # Enable site
-sudo ln -s /etc/nginx/sites-available/greek-news-analyzer /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/epap /etc/nginx/sites-enabled/
 sudo rm /etc/nginx/sites-enabled/default
 
 # Test nginx configuration
@@ -90,11 +90,11 @@ sudo nginx -t
 
 # Start services
 sudo systemctl daemon-reload
-sudo systemctl enable greek-news-analyzer
-sudo systemctl start greek-news-analyzer
+sudo systemctl enable epap
+sudo systemctl start epap
 sudo systemctl restart nginx
 
 echo "✅ Setup complete!"
 echo "🌐 Your app should be available at: http://$(curl -s ifconfig.me)"
-echo "📊 Check status: sudo systemctl status greek-news-analyzer"
-echo "📝 View logs: sudo journalctl -u greek-news-analyzer -f"
+echo "📊 Check status: sudo systemctl status epap"
+echo "📝 View logs: sudo journalctl -u epap -f"

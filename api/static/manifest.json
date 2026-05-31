@@ -1,7 +1,7 @@
 {
-  "name": "Ανάλυση Ελληνικών Ειδήσεων",
-  "short_name": "GreekNews",
-  "description": "Αναλύστε ελληνικά άρθρα ειδήσεων για στοιχεία προπαγάνδας",
+  "name": "ΕΠΑΠ Εληνική Πλατφόρμα Ανάλυσης Παραπληροφόρισης",
+  "short_name": "ΕΠΑΠ",
+  "description": "Εληνική Πλατφόρμα Ανάλυσης Παραπληροφόρισης",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -11,7 +11,7 @@
   "lang": "el",
   "dir": "ltr",
   "categories": ["news", "utilities", "productivity"],
-  "id": "greek-news-analyzer",
+  "id": "epap",
   "icons": [
     {
       "src": "/static/icons/icon-72x72.png",
@@ -108,7 +108,7 @@
   },
   "protocol_handlers": [
     {
-      "protocol": "web+greeknews",
+      "protocol": "web+epap",
       "url": "/analyze?url=%s"
     }
   ],

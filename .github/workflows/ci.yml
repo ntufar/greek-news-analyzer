@@ -100,12 +100,12 @@ jobs:
     
     - name: Build Docker image
       run: |
-        docker build -t greek-news-analyzer:${{ github.sha }} .
-        docker tag greek-news-analyzer:${{ github.sha }} greek-news-analyzer:latest
+        docker build -t epap:${{ github.sha }} .
+        docker tag epap:${{ github.sha }} epap:latest
     
     - name: Test Docker image
       run: |
-        docker run --rm -d -p 5000:5000 --name test-container greek-news-analyzer:latest
+        docker run --rm -d -p 5000:5000 --name test-container epap:latest
         sleep 10
         curl -f http://localhost:5000/ || exit 1
         docker stop test-container
@@ -122,6 +122,6 @@ jobs:
       uses: akhileshns/heroku-deploy@v3.12.12
       with:
         heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-        heroku_app_name: "greek-news-analyzer"
+        heroku_app_name: "epap"
         heroku_email: "ntufar@example.com"
         usedocker: true

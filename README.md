@@ -1,8 +1,8 @@
-# Greek News Analyzer 🇬🇷
+# ΕΠΑΠ Εληνική Πλατφόρμα Ανάλυσης Παραπληροφόρισης 🇬🇷
 
 An AI-powered web application that analyzes Greek news articles for propaganda indicators, bias, and reliability using Google's Gemini AI.
 
-🌐 **Live Demo:** [https://greek-news-analyzer.vercel.app/](https://greek-news-analyzer.vercel.app/)
+🌐 **Live Demo:** [https://epap.vercel.app/](https://epap.vercel.app/)
 
 ![Python](https://img.shields.io/badge/python-v3.8+-blue.svg)
 ![Vercel](https://img.shields.io/badge/deployed%20on-vercel-black.svg)
@@ -33,7 +33,7 @@ The analyzer evaluates news articles based on:
 
 ## Quick Start
 
-**Try it now:** [https://greek-news-analyzer.vercel.app/](https://greek-news-analyzer.vercel.app/)
+**Try it now:** [https://epap.vercel.app/](https://epap.vercel.app/)
 
 ### Mobile Installation
 1. Open the app on your mobile device
@@ -59,8 +59,8 @@ The analyzer evaluates news articles based on:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/ntufar/greek-news-analyzer.git
-   cd greek-news-analyzer
+   git clone https://github.com/ntufar/epap.git
+   cd epap
    ```
 
 2. **Create a virtual environment**
@@ -141,7 +141,7 @@ Analyze a Greek news article for propaganda indicators.
 ### Project Structure
 
 ```
-greek-news-analyzer/
+epap/
 ├── api/
 │   ├── index.py          # Vercel serverless function
 │   ├── requirements.txt  # Python dependencies for Vercel
@@ -187,14 +187,14 @@ The app is currently deployed on Vercel with serverless functions for optimal pe
 3. **Set environment variable**: Add `GEMINI_API_KEY` in Vercel project settings
 4. **Deploy**: Automatic deployment on every push to main branch
 
-**Live Demo:** [https://greek-news-analyzer.vercel.app/](https://greek-news-analyzer.vercel.app/)
+**Live Demo:** [https://epap.vercel.app/](https://epap.vercel.app/)
 
 ### Local Development
 
 ```bash
 # Clone and setup
-git clone https://github.com/ntufar/greek-news-analyzer.git
-cd greek-news-analyzer
+git clone https://github.com/ntufar/epap.git
+cd epap
 
 # Install dependencies
 pip install -r requirements.txt
@@ -217,10 +217,10 @@ python app.py
 #### Docker
 ```bash
 # Build image
-docker build -t greek-news-analyzer .
+docker build -t epap .
 
 # Run container
-docker run -p 5000:5000 -e GEMINI_API_KEY=your_key greek-news-analyzer
+docker run -p 5000:5000 -e GEMINI_API_KEY=your_key epap
 ```
 
 ## Environment Variables
@@ -264,7 +264,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you encounter any issues or have questions:
 
-1. Check the [Issues](https://github.com/ntufar/greek-news-analyzer/issues) page
+1. Check the [Issues](https://github.com/ntufar/epap/issues) page
 2. Create a new issue with detailed information
 3. Contact the maintainers
 

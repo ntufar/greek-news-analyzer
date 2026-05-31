@@ -1,17 +1,17 @@
 {
-  "name": "Greek News Analyzer",
-  "short_name": "GreekNews",
-  "description": "Analyze Greek news articles with AI",
+  "name": "ΕΠΑΠ Εληνική Πλατφόρμα Ανάλυσης Παραπληροφόρισης",
+  "short_name": "ΕΠΑΠ",
+  "description": "Εληνική Πλατφόρμα Ανάλυσης Παραπληροφόρισης",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#1e3c72",
   "orientation": "portrait-primary",
   "scope": "/",
-  "lang": "en",
+  "lang": "el",
   "dir": "ltr",
   "categories": ["news", "utilities", "productivity"],
-  "id": "greek-news-analyzer",
+  "id": "epap",
   "icons": [
     {
       "src": "/static/icons/icon-72x72.png",
@@ -84,9 +84,9 @@
   ],
   "shortcuts": [
     {
-      "name": "Analyze News",
-      "short_name": "Analyze",
-      "description": "Quickly analyze a news article",
+      "name": "Ανάλυση Ειδήσεων",
+      "short_name": "Ανάλυση",
+      "description": "Γρήγορη ανάλυση άρθρου ειδήσεων",
       "url": "/?action=analyze",
       "icons": [
         {
@@ -108,7 +108,7 @@
   },
   "protocol_handlers": [
     {
-      "protocol": "web+greeknews",
+      "protocol": "web+epap",
       "url": "/analyze?url=%s"
     }
   ],

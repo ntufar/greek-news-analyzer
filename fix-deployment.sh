@@ -15,7 +15,7 @@ GEMINI_API_KEY="$1"
 echo "🔧 Fixing deployment issues..."
 
 # Navigate to the application directory
-cd /var/www/greek-news-analyzer
+cd /var/www/epap
 
 # Check if we're in the right directory
 if [ ! -f "requirements.txt" ]; then
@@ -23,13 +23,13 @@ if [ ! -f "requirements.txt" ]; then
     
     # Remove everything and start fresh
     cd /var/www
-    sudo rm -rf greek-news-analyzer
-    sudo mkdir -p greek-news-analyzer
-    sudo chown ec2-user:ec2-user greek-news-analyzer
-    cd greek-news-analyzer
+    sudo rm -rf epap
+    sudo mkdir -p epap
+    sudo chown ec2-user:ec2-user epap
+    cd epap
     
     # Clone the repository properly
-    git clone https://github.com/ntufar/greek-news-analyzer.git .
+    git clone https://github.com/ntufar/epap.git .
     
     echo "✅ Repository cloned successfully"
 fi
@@ -52,4 +52,4 @@ FLASK_DEBUG=False
 EOF
 
 echo "✅ Fixed! Environment file created with provided API key"
-echo "Now run: sudo systemctl start greek-news-analyzer"
+echo "Now run: sudo systemctl start epap"
