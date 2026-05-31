@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.5] - 2026-06-01
+
+### Changed
+- Replaced server-side Python markdown rendering with client-side `marked.js` (v12.0.0) in web templates
+- Replaced `flutter_html` with `flutter_markdown` for native markdown rendering in Flutter mobile app
+
 ## [0.0.4] - 2026-05-31
 
 ### Added
