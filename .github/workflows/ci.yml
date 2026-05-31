@@ -137,14 +137,12 @@ jobs:
         curl https://cli-assets.heroku.com/install.sh | sh
     
     - name: Log in to Heroku Container Registry
-      run: heroku container:login
-      env:
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      run: docker login registry.heroku.com --username=_ --password=${{ secrets.HEROKU_API_KEY }}
     
     - name: Push and release Docker image
       run: |
         docker tag epap:${{ github.sha }} registry.heroku.com/epap/web
         docker push registry.heroku.com/epap/web
-        heroku container:release web
+        heroku container:release web --app epap
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
