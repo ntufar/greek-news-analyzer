@@ -15,7 +15,7 @@ An AI-powered web application that analyzes Greek news articles for propaganda i
 - 📰 **Multiple Input Methods**: Analyze text directly or extract content from URLs
 - 🌐 **Modern Web Interface**: Responsive design with Greek language support
 - 📱 **Mobile-First PWA**: Install on mobile devices and receive shared links
-- 📊 **Comprehensive Scoring**: 1-10 scale rating system for news reliability
+- 📊 **Comprehensive Scoring**: 1-100 scale rating system for news reliability
 - 🎯 **Detailed Analysis**: Evaluates emotional manipulation, bias, fact vs opinion ratio, and more
 - 🚀 **Serverless Deployment**: Fast, scalable deployment on Vercel
 - 📲 **Share Target**: Receive and analyze shared news links directly
@@ -109,7 +109,7 @@ The analyzer evaluates news articles based on:
 ### Understanding Results
 
 The analyzer provides:
-- **Overall Score**: 1-10 rating (1 = potential propaganda, 10 = reliable news)
+- **Overall Score**: 1-100 rating (1 = potential propaganda, 100 = reliable news)
 - **Detailed Analysis**: Breakdown of propaganda indicators in Greek
 - **Source Assessment**: Evaluation of the news source's credibility
 

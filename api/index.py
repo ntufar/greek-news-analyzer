@@ -99,9 +99,9 @@ def analyze_greek_news(text, source=""):
         Κείμενο: {text[:2000]}
         Πηγή: {source if source else "Άγνωστη"}
 
-        Παρακαλώ αξιολογήστε από 1-10 (1=πιθανή προπαγάνδα, 10=αξιόπισες ειδήσεις) και δώστε λεπτομερή ανάλυση:
+        Παρακαλώ αξιολογήστε από 1-100 (1=πιθανή προπαγάνδα, 100=αξιόπισες ειδήσεις) και δώστε λεπτομερή ανάλυση:
 
-        **ΣΥΝΟΛΙΚΗ ΑΞΙΟΛΟΓΗΣΗ: [Βαθμολογία 1-10]**
+        **ΣΥΝΟΛΙΚΗ ΑΞΙΟΛΟΓΗΣΗ: [Βαθμολογία 1-100]**
 
         **1. ΣΥΝΑΙΣΘΗΜΑΤΙΚΗ ΧΕΙΡΑΓΩΓΗΣΗ:**
         - Χρήση φορτωμένων λέξεων και φράσεων
@@ -491,9 +491,6 @@ class handler(BaseHTTPRequestHandler):
                             <li><strong>Κάντε κλικ στο κουμπί "Ανάλυση Άρθρου":</strong> Η τεχνητή νοημοσύνη θα αναλύσει το κείμενο σε λίγα δευτερόλεπτα.</li>
                             <li><strong>Διαβάστε την αναλυτική αναφορά:</strong> Θα λάβετε λεπτομερή ανάλυση με συγκεκριμένα παραδείγματα και συστάσεις.</li>
                         </ol>
-                        <div style="background: #e8f5e9; border-radius: 10px; border-left: 4px solid #4caf50; padding: 15px; margin-top: 15px;">
-                            <strong>Σημαντικό:</strong> Η ανάλυση είναι εντελώς αυτόματη και βασίζεται σε αλγόριθμους τεχνητής νοημοσύνης. Χρησιμοποιείται ως βοηθητικό εργαλείο και δεν αντικαθιστά την κριτική σκέψη.
-                        </div>
                     </div>
                     
                     <!-- Top Ad Unit - Positioned after substantial content -->
@@ -514,17 +511,17 @@ class handler(BaseHTTPRequestHandler):
                             <label for="inputType">Τρόπος Εισαγωγής:</label>
                             <select id="inputType" onchange="toggleInputType()">
                                 <option value="text">Κείμενο άρθρου</option>
-                                <option value="url">URL άρθρου</option>
+                                <option value="url" selected>URL άρθρου</option>
                             </select>
                         </div>
                         
-                        <div class="input-group" id="textInput">
+                        <div class="input-group" id="textInput" style="display: none;">
                             <label for="text">Κείμενο Άρθρου:</label>
                             <textarea id="text" placeholder="Επικολλήστε εδώ το κείμενο του άρθρου..." maxlength="10000" oninput="updateCharCount()"></textarea>
                             <div class="char-count" id="charCount">0 / 10,000 χαρακτήρες (ελάχιστο 50)</div>
                         </div>
                         
-                        <div class="input-group" id="urlInput" style="display: none;">
+                        <div class="input-group" id="urlInput">
                             <label for="url">URL Άρθρου:</label>
                             <input type="url" id="url" placeholder="https://example.com/article">
                         </div>
@@ -1080,7 +1077,7 @@ class handler(BaseHTTPRequestHandler):
                         <li><strong>Ανάλυση Γεγονός vs Άποψη:</strong> Ισορροπία μεταξύ πραγματικών γεγονότων και σχολιασμού</li>
                         <li><strong>Αξιοπιστία Πηγής:</strong> Αξιολόγηση της αξιοπιστίας της πηγής ειδήσεων</li>
                         <li><strong>Τεχνικές Προπαγάνδας:</strong> Εντοπισμός τεχνικών προπαγάνδας και λογικών σφαλμάτων</li>
-                        <li><strong>Σύστημα Βαθμολόγησης:</strong> Βαθμολόγηση 1-10 για την αξιοπιστία των ειδήσεων</li>
+                        <li><strong>Σύστημα Βαθμολόγησης:</strong> Βαθμολόγηση 1-100 για την αξιοπιστία των ειδήσεων</li>
                     </ul>
                     
                     <h2>🚀 Τεχνολογίες</h2>

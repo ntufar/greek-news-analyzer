@@ -24,7 +24,7 @@ Added a comprehensive introduction section at the top of the page that includes:
   - Facts vs Opinions
   - Source Reliability
   - Logical Fallacies
-  - Scoring System (1-10)
+  - Scoring System (1-100)
 - **How It Works** - Clear explanation of the tool's functionality
 
 ### 2. Added "Why Use This Tool" Section

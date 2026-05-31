@@ -220,7 +220,7 @@
                                         </li>
                                         <li style="padding: 8px 0; border-bottom: 1px solid #dee2e6;">
                                             <i class="fas fa-check-circle me-2" style="color: #28a745;"></i>
-                                            <strong>Βαθμολόγηση:</strong> Αξιολόγηση 1-10 για την αξιοπιστία του άρθρου
+                                            <strong>Βαθμολόγηση:</strong> Αξιολόγηση 1-100 για την αξιοπιστία του άρθρου
                                         </li>
                                     </ul>
                                 </div>
@@ -252,11 +252,11 @@
                                 </label>
                                 <select class="form-select" id="inputType" onchange="toggleInputType()">
                                     <option value="text">Κείμενο άρθρου</option>
-                                    <option value="url">URL άρθρου</option>
+                                    <option value="url" selected>URL άρθρου</option>
                                 </select>
                             </div>
                             
-                            <div class="mb-3" id="textInput">
+                            <div class="mb-3" id="textInput" style="display: none;">
                                 <label for="articleText" class="form-label fw-bold">
                                     <i class="fas fa-file-text me-2"></i>Κείμενο Άρθρου
                                 </label>
@@ -268,7 +268,7 @@
                                 </div>
                             </div>
                             
-                            <div class="mb-3" id="urlInput" style="display: none;">
+                            <div class="mb-3" id="urlInput">
                                 <label for="articleUrl" class="form-label fw-bold">
                                     <i class="fas fa-link me-2"></i>URL Άρθρου
                                 </label>

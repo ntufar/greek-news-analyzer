@@ -225,7 +225,7 @@
                                         </li>
                                         <li style="padding: 8px 0; border-bottom: 1px solid #dee2e6;">
                                             <i class="fas fa-check-circle me-2" style="color: #28a745;"></i>
-                                            <strong>Βαθμολόγηση:</strong> Αξιολόγηση 1-10 για την αξιοπιστία του άρθρου
+                                            <strong>Βαθμολόγηση:</strong> Αξιολόγηση 1-100 για την αξιοπιστία του άρθρου
                                         </li>
                                     </ul>
                                 </div>
@@ -251,10 +251,6 @@
                                 <li><strong>Κάντε κλικ στο κουμπί "Ανάλυση Άρθρου":</strong> Η τεχνητή νοημοσύνη θα αναλύσει το κείμενο σε λίγα δευτερόλεπτα.</li>
                                 <li><strong>Διαβάστε την αναλυτική αναφορά:</strong> Θα λάβετε λεπτομερή ανάλυση με συγκεκριμένα παραδείγματα και συστάσεις.</li>
                             </ol>
-                            <div class="alert alert-success mt-3 mb-0" style="border-radius: 10px; border-left: 4px solid #4caf50; background: #e8f5e9;">
-                                <i class="fas fa-check-circle me-2"></i>
-                                <strong>Σημαντικό:</strong> Η ανάλυση είναι εντελώς αυτόματη και βασίζεται σε αλγόριθμους τεχνητής νοημοσύνης. Χρησιμοποιείται ως βοηθητικό εργαλείο και δεν αντικαθιστά την κριτική σκέψη.
-                            </div>
                         </div>
                         
                         <!-- Top Ad Unit - Positioned after substantial content -->
@@ -277,11 +273,11 @@
                                 </label>
                                 <select class="form-select" id="inputType" onchange="toggleInputType()">
                                     <option value="text">Κείμενο άρθρου</option>
-                                    <option value="url">URL άρθρου</option>
+                                    <option value="url" selected>URL άρθρου</option>
                                 </select>
                             </div>
                             
-                            <div class="mb-3" id="textInput">
+                            <div class="mb-3" id="textInput" style="display: none;">
                                 <label for="articleText" class="form-label fw-bold">
                                     <i class="fas fa-file-text me-2"></i>Κείμενο Άρθρου
                                 </label>
@@ -293,7 +289,7 @@
                                 </div>
                             </div>
                             
-                            <div class="mb-3" id="urlInput" style="display: none;">
+                            <div class="mb-3" id="urlInput">
                                 <label for="articleUrl" class="form-label fw-bold">
                                     <i class="fas fa-link me-2"></i>URL Άρθρου
                                 </label>
