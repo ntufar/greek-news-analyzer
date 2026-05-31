@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.4] - 2026-05-31
+
+### Added
+- Greek privacy policy page at /privacy (required for Google Play Store)
+
+### Changed
+- Migrated `track` → `tracks` in Play upload action (fix deprecation warning)
+
 ## [0.0.3] - 2026-05-31
 
 ### Fixed
