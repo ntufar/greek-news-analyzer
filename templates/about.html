@@ -25,207 +25,134 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/static/icons/icon-16x16.png">
     <link rel="apple-touch-icon" href="/static/icons/icon-192x192.png">
     
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
     <style>
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            max-width: 900px; 
-            margin: 0 auto; 
-            padding: 10px; 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 10px;
+            background: linear-gradient(135deg, #e8edf5 0%, #d5dce8 100%);
             min-height: 100vh;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
-        .container { 
-            background: rgba(255, 255, 255, 0.95); 
-            padding: 30px; 
-            border-radius: 20px; 
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
+        .container {
+            background: #fff;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
         }
         .header {
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
-            padding: 20px;
-            border-radius: 15px;
+            padding: 16px 20px;
+            border-radius: 10px;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
         }
-        .header h1 {
-            margin: 0 0 10px 0;
-            font-size: 2rem;
-        }
-        .header p {
-            margin: 0;
-            opacity: 0.9;
-        }
-        .content {
-            line-height: 1.8;
-            color: #333;
-        }
+        .header h1 { margin: 0; font-size: 1.4rem; }
+        .header p { margin: 4px 0 0; font-size: 0.9rem; opacity: 0.85; }
+        .content { line-height: 1.7; color: #333; font-size: 0.95rem; }
         .content h2 {
             color: #1e3c72;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-            border-bottom: 2px solid #e9ecef;
-            padding-bottom: 0.5rem;
-        }
-        .content h3 {
-            color: #495057;
             margin-top: 1.5rem;
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.75rem;
             font-size: 1.2rem;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 0.35rem;
         }
-        .content p {
-            margin-bottom: 1.2rem;
-            text-align: justify;
-        }
+        .content p { margin-bottom: 0.85rem; }
         .author-card {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border: 2px solid #dee2e6;
-            border-radius: 15px;
-            padding: 25px;
-            margin: 2rem 0;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 1.5rem 0;
             text-align: center;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
         .author-avatar {
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            margin: 0 auto 15px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            margin: 0 auto 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 1.5rem;
             color: white;
             font-weight: bold;
         }
-        .author-name {
-            font-size: 1.4rem;
-            font-weight: 600;
-            color: #1e3c72;
-            margin-bottom: 5px;
-        }
-        .author-title {
-            color: #6c757d;
-            margin-bottom: 15px;
-            font-style: italic;
-        }
+        .author-name { font-size: 1.15rem; font-weight: 600; color: #1e3c72; margin-bottom: 4px; }
+        .author-title { color: #6c757d; margin-bottom: 12px; font-style: italic; font-size: 0.9rem; }
+        .author-card p { font-size: 0.9rem; color: #495057; }
         .github-link {
             display: inline-block;
             background: #24292e;
             color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
+            padding: 8px 18px;
+            border-radius: 8px;
             text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            margin: 5px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            margin: 4px;
         }
-        .github-link:hover {
-            background: #0366d6;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
+        .github-link:hover { background: #0366d6; }
         .back-button {
             display: inline-block;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
-            padding: 12px 25px;
-            border-radius: 25px;
+            padding: 10px 22px;
+            border-radius: 8px;
             text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            margin-top: 20px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            margin-top: 16px;
         }
-        .back-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-        }
-        .feature-list {
-            list-style: none;
-            padding: 0;
-        }
+        .back-button:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .feature-list { list-style: none; padding: 0; }
         .feature-list li {
             background: #f8f9fa;
-            margin: 8px 0;
-            padding: 12px 20px;
-            border-radius: 10px;
-            border-left: 4px solid #667eea;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 1rem 0;
-        }
-        .tech-badge {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 15px;
+            margin: 6px 0;
+            padding: 10px 16px;
+            border-radius: 8px;
+            border-left: 3px solid #2a5298;
             font-size: 0.9rem;
+        }
+        .tech-stack { display: flex; flex-wrap: wrap; gap: 8px; margin: 0.75rem 0; }
+        .tech-badge {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
             font-weight: 500;
         }
-        
-        /* Mobile-specific styles */
         @media (max-width: 768px) {
-            body {
-                padding: 5px;
-            }
-            .container {
-                padding: 20px;
-                border-radius: 15px;
-                margin: 5px;
-            }
-            .header {
-                padding: 15px;
-                border-radius: 10px;
-                margin-bottom: 20px;
-            }
-            .header h1 {
-                font-size: 1.5rem;
-            }
-            .content h2 {
-                font-size: 1.3rem;
-            }
-            .content h3 {
-                font-size: 1.1rem;
-            }
-            .author-card {
-                padding: 20px;
-                margin: 1.5rem 0;
-            }
-            .author-avatar {
-                width: 60px;
-                height: 60px;
-                font-size: 1.5rem;
-            }
-            .author-name {
-                font-size: 1.2rem;
-            }
-            .tech-stack {
-                justify-content: center;
-            }
+            body { padding: 6px; }
+            .container { padding: 16px; border-radius: 10px; margin: 4px; }
+            .header { padding: 12px; border-radius: 8px; margin-bottom: 16px; }
+            .header h1 { font-size: 1.2rem; }
+            .author-card { padding: 16px; margin: 1rem 0; }
+            .tech-stack { justify-content: center; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🇬🇷 Σχετικά με την Εφαρμογή</h1>
+            <h1><i class="fas fa-newspaper me-2"></i>Σχετικά με την Εφαρμογή</h1>
             <p>Ανάλυση Ελληνικών Ειδήσεων με Τεχνητή Νοημοσύνη</p>
         </div>
         
         <div class="content">
-            <h2>🎯 Σκοπός της Εφαρμογής</h2>
+            <h2><i class="fas fa-bullseye me-2"></i>Σκοπός της Εφαρμογής</h2>
             <p>Η εφαρμογή "Ανάλυση Ελληνικών Ειδήσεων" δημιουργήθηκε με στόχο την προστασία των πολιτών από την προπαγάνδα και την παραπληροφόρηση. Χρησιμοποιώντας την τεχνητή νοημοσύνη Google Gemini, η εφαρμογή αναλύει ελληνικά άρθρα ειδήσεων και εντοπίζει στοιχεία προπαγάνδας, προκατάληψης και χειραγώγησης.</p>
             
-            <h2>🔍 Χαρακτηριστικά Ανάλυσης</h2>
+            <h2><i class="fas fa-search me-2"></i>Χαρακτηριστικά Ανάλυσης</h2>
             <ul class="feature-list">
                 <li><strong>Εντοπισμός Συναισθηματικής Χειραγώγησης:</strong> Αναγνώριση φορτωμένων όρων και συναισθηματικών τριγέρων</li>
                 <li><strong>Αξιολόγηση Προκατάληψης:</strong> Εντοπισμός πολιτικών και ιδεολογικών κλίσεων</li>
@@ -235,7 +162,7 @@
                 <li><strong>Σύστημα Βαθμολόγησης:</strong> Βαθμολόγηση 1-100 για την αξιοπιστία των ειδήσεων</li>
             </ul>
             
-            <h2>🚀 Τεχνολογίες</h2>
+            <h2><i class="fas fa-code me-2"></i>Τεχνολογίες</h2>
             <div class="tech-stack">
                 <span class="tech-badge">Python 3.8+</span>
                 <span class="tech-badge">Google Gemini AI</span>
@@ -246,7 +173,7 @@
                 <span class="tech-badge">Mobile-First Design</span>
             </div>
             
-            <h2>📱 Mobile & PWA Features</h2>
+            <h2><i class="fas fa-mobile-alt me-2"></i>Mobile & PWA Features</h2>
             <p>Η εφαρμογή είναι σχεδιασμένη mobile-first και υποστηρίζει:</p>
             <ul class="feature-list">
                 <li><strong>Εγκατάσταση σε Mobile:</strong> Προσθήκη στην αρχική οθόνη του κινητού</li>
@@ -261,21 +188,21 @@
                 <div class="author-title">Developer & Creator</div>
                 <p>Αυτή η εφαρμογή δημιουργήθηκε με αγάπη για την ελληνική κοινότητα και την προστασία της από την παραπληροφόρηση. Στόχος είναι η παροχή ενός εργαλείου που θα βοηθήσει τους πολίτες να κάνουν πιο ενημερωμένες επιλογές.</p>
                 <a href="https://github.com/ntufar" target="_blank" class="github-link">
-                    👨‍💻 GitHub Profile
+                    <i class="fab fa-github me-1"></i>GitHub Profile
                 </a>
             </div>
             
-            <div class="author-card" style="background: linear-gradient(135deg, #e8f4fd 0%, #d1ecf1 100%); border-color: #bee5eb;">
-                <div class="author-avatar" style="background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);">NT</div>
+            <div class="author-card" style="background: #e8f4fd; border-color: #bee5eb;">
+                <div class="author-avatar" style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);">NT</div>
                 <div class="author-name">Νίκος Τσολοζίδης</div>
                 <div class="author-title">Ιδέα & Έμπνευση</div>
-                <p>Η ιδέα για αυτή την εφαρμογή ανήκει στον Νίκο Τσολοζίδη, ο οποίος πρότεινε την ανάπτυξη ενός εργαλείου ανάλυσης ελληνικών ειδήσεων για την προστασία των πολιτών από την προπαγάνδα.</p>
+                <p>Η ιδέα για αυτή την εφαρμογή ανήκει στον Νίκο Τσολοζίδη, ο οποίος πρότεινε την ανάπτυξη ενός εργαλείου ανάλυσης ελληνικών ειδήσεων.</p>
                 <a href="https://www.facebook.com/tsolozidis.nick" target="_blank" class="github-link" style="background: #1877f2;">
-                    📘 Facebook Profile
+                    <i class="fab fa-facebook me-1"></i>Facebook Profile
                 </a>
             </div>
             
-            <h2>🤝 Συνεισφορά</h2>
+            <h2><i class="fas fa-hands-helping me-2"></i>Συνεισφορά</h2>
             <p>Αν θέλετε να συμβάλετε στην ανάπτυξη της εφαρμογής, μπορείτε να:</p>
             <ul class="feature-list">
                 <li>Αναφέρετε bugs ή προτάσεις βελτίωσης</li>
@@ -284,19 +211,13 @@
                 <li>Προτείνετε νέες λειτουργίες ανάλυσης</li>
             </ul>
             
-            <!-- Additional Content Section Before Ad -->
-            <div style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-radius: 15px; border-left: 5px solid #2196f3; padding: 25px; margin: 30px 0;">
-                <h2 style="color: #1565c0; font-size: 1.4rem; margin-bottom: 1rem;">
-                    <i class="fas fa-star me-2"></i>Από πού Ξεκίνησε η Ιδέα
-                </h2>
-                <p style="line-height: 1.8; color: #424242; margin-bottom: 1rem;">
-                    Σε μια εποχή όπου η πληροφόρηση διαδίδεται με ταχύτητα φωτός και η παραπληροφόρηση μπορεί να έχει σοβαρές συνέπειες, η ανάγκη για εργαλεία που βοηθούν στην κριτική αξιολόγηση των ειδήσεων είναι πιο σημαντική από ποτέ.
+            <div class="info-card" style="background: #e8f0fe; border-left: 4px solid #2196f3; padding: 16px 20px; margin: 20px 0; border-radius: 10px;">
+                <h3 style="color: #1565c0; font-size: 1rem; margin-bottom: 0.5rem;"><i class="fas fa-star me-1"></i>Από πού Ξεκίνησε η Ιδέα</h3>
+                <p style="font-size: 0.9rem; line-height: 1.6; color: #424242; margin-bottom: 0.5rem;">
+                    Σε μια εποχή όπου η παραπληροφόρηση διαδίδεται γρήγορα, η ανάγκη για εργαλεία κριτικής αξιολόγησης είναι πιο σημαντική από ποτέ.
                 </p>
-                <p style="line-height: 1.8; color: #424242; margin-bottom: 1rem;">
-                    Η ιδέα για αυτή την εφαρμογή προήλθε από την αναγνώριση ότι πολλοί πολίτες δυσκολεύονται να διακρίνουν την αξιόπιστη ενημέρωση από την προπαγάνδα. Χρησιμοποιώντας την τεχνητή νοημοσύνη, μπορούμε να παρέχουμε μια αντικειμενική ανάλυση που βοηθά τους χρήστες να κάνουν πιο ενημερωμένες αποφάσεις.
-                </p>
-                <p style="line-height: 1.8; color: #424242; margin-bottom: 0;">
-                    Η εφαρμογή είναι σε συνεχή ανάπτυξη και βελτίωση, με στόχο την παροχή όλο και πιο ακριβών και χρήσιμων αναλύσεων για την ελληνική κοινότητα.
+                <p style="font-size: 0.9rem; line-height: 1.6; color: #424242; margin-bottom: 0;">
+                    Χρησιμοποιώντας την τεχνητή νοημοσύνη, παρέχουμε αντικειμενική ανάλυση που βοηθά τους χρήστες να κάνουν πιο ενημερωμένες αποφάσεις.
                 </p>
             </div>
             
@@ -313,11 +234,11 @@
                 </script>
             </div>
             
-            <h2>📄 Άδεια Χρήσης</h2>
+            <h2><i class="fas fa-file-alt me-2"></i>Άδεια Χρήσης</h2>
             <p>Αυτό το έργο είναι διαθέσιμο υπό την άδεια MIT. Μπορείτε να το χρησιμοποιήσετε, να το τροποποιήσετε και να το διανείμετε ελεύθερα.</p>
             
             <div style="text-align: center; margin-top: 2rem;">
-                <a href="/" class="back-button">← Επιστροφή στην Αρχική</a>
+                <a href="/" class="back-button"><i class="fas fa-arrow-left me-1"></i>Επιστροφή στην Αρχική</a>
             </div>
         </div>
     </div>

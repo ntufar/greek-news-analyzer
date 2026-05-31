@@ -205,6 +205,8 @@ class handler(BaseHTTPRequestHandler):
                 
                 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9549967181261078" crossorigin="anonymous"></script>
                 
+                <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+                
                 <!-- Icons for different platforms -->
                 <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/icon-32x32.png">
                 <link rel="icon" type="image/png" sizes="16x16" href="/static/icons/icon-16x16.png">
@@ -212,256 +214,147 @@ class handler(BaseHTTPRequestHandler):
                 <link rel="apple-touch-icon" sizes="152x152" href="/static/icons/icon-152x152.png">
                 <link rel="apple-touch-icon" sizes="180x180" href="/static/icons/icon-192x192.png">
                 <style>
-                    body { 
-                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-                        max-width: 900px; 
-                        margin: 0 auto; 
-                        padding: 10px; 
-                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    body {
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+                        max-width: 860px;
+                        margin: 0 auto;
+                        padding: 10px;
+                        background: linear-gradient(135deg, #e8edf5 0%, #d5dce8 100%);
                         min-height: 100vh;
                         -webkit-font-smoothing: antialiased;
-                        -moz-osx-font-smoothing: grayscale;
                     }
-                    .container { 
-                        background: rgba(255, 255, 255, 0.95); 
-                        padding: 30px; 
-                        border-radius: 20px; 
-                        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-                        backdrop-filter: blur(10px);
+                    .container {
+                        background: #fff;
+                        padding: 24px;
+                        border-radius: 12px;
+                        box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
                     }
                     .header {
                         background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
                         color: white;
-                        padding: 20px;
-                        border-radius: 15px;
+                        padding: 16px 20px;
+                        border-radius: 10px;
                         text-align: center;
-                        margin-bottom: 30px;
-                    }
-                    .input-group {
                         margin-bottom: 20px;
                     }
+                    .header h1 { margin: 0; font-size: 1.4rem; }
+                    .header p { margin: 4px 0 0; font-size: 0.9rem; opacity: 0.85; }
+                    .input-group { margin-bottom: 12px; }
                     label {
                         display: block;
-                        margin-bottom: 8px;
+                        margin-bottom: 4px;
                         font-weight: 600;
                         color: #333;
+                        font-size: 0.9rem;
                     }
                     input, textarea, select {
                         width: 100%;
-                        padding: 12px;
-                        border: 2px solid #e9ecef;
-                        border-radius: 10px;
-                        font-size: 16px;
-                        transition: border-color 0.3s ease;
+                        padding: 10px 12px;
+                        border: 1.5px solid #e0e3e8;
+                        border-radius: 8px;
+                        font-size: 0.95rem;
+                        transition: border-color 0.2s;
                         box-sizing: border-box;
                     }
                     input:focus, textarea:focus, select:focus {
                         outline: none;
-                        border-color: #667eea;
-                        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+                        border-color: #2a5298;
+                        box-shadow: 0 0 0 3px rgba(42,82,152,0.12);
                     }
-                    textarea {
-                        height: 200px;
-                        resize: vertical;
-                    }
+                    textarea { height: 140px; resize: vertical; }
                     button {
-                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
                         color: white;
-                        padding: 15px 30px;
+                        padding: 10px 24px;
                         border: none;
-                        border-radius: 25px;
+                        border-radius: 8px;
                         cursor: pointer;
-                        font-size: 16px;
+                        font-size: 0.95rem;
                         font-weight: 600;
-                        transition: all 0.3s ease;
+                        transition: all 0.2s;
                         width: 100%;
-                        margin-top: 10px;
                     }
-                    button:hover {
-                        transform: translateY(-2px);
-                        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-                    }
-                    button:disabled {
-                        opacity: 0.6;
-                        cursor: not-allowed;
-                        transform: none;
-                    }
+                    button:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+                    button:disabled { opacity: 0.6; cursor: not-allowed; }
                     .result {
-                        margin-top: 30px;
-                        padding: 20px;
+                        margin-top: 16px;
+                        padding: 16px;
                         background: #f8f9fa;
-                        border-radius: 15px;
-                        border-left: 5px solid #007bff;
+                        border-radius: 10px;
+                        border-left: 4px solid #007bff;
                     }
-                    .loading {
-                        text-align: center;
-                        padding: 20px;
-                        display: none;
-                    }
+                    .loading { text-align: center; padding: 16px; display: none; }
                     .spinner {
-                        border: 4px solid #f3f3f3;
-                        border-top: 4px solid #667eea;
+                        border: 3px solid #f3f3f3;
+                        border-top: 3px solid #2a5298;
                         border-radius: 50%;
-                        width: 40px;
-                        height: 40px;
-                        animation: spin 1s linear infinite;
-                        margin: 0 auto 10px;
+                        width: 28px;
+                        height: 28px;
+                        animation: spin 0.8s linear infinite;
+                        margin: 0 auto 8px;
                     }
                     @keyframes spin {
                         0% { transform: rotate(0deg); }
                         100% { transform: rotate(360deg); }
                     }
-                    .analysis-text {
-                        line-height: 1.6;
-                        font-size: 14px;
-                    }
-                    .analysis-text h1, .analysis-text h2, .analysis-text h3, .analysis-text h4, .analysis-text h5, .analysis-text h6 {
-                        color: #1e3c72;
-                        margin-top: 1.5rem;
-                        margin-bottom: 0.5rem;
-                        font-weight: 600;
-                    }
+                    .analysis-text { line-height: 1.5; font-size: 0.95rem; }
                     .analysis-text h2 {
-                        font-size: 1.3rem;
-                        border-bottom: 2px solid #e9ecef;
-                        padding-bottom: 0.3rem;
+                        font-size: 1.1rem;
+                        color: #1e3c72;
+                        margin: 1rem 0 0.4rem;
+                        font-weight: 600;
+                        border-bottom: 1px solid #e9ecef;
+                        padding-bottom: 0.25rem;
                     }
                     .analysis-text h3 {
-                        font-size: 1.1rem;
+                        font-size: 1rem;
                         color: #495057;
-                    }
-                    .analysis-text ul, .analysis-text ol {
-                        padding-left: 1.5rem;
-                        margin-bottom: 1rem;
-                    }
-                    .analysis-text li {
-                        margin-bottom: 0.5rem;
-                    }
-                    .analysis-text strong {
-                        color: #1e3c72;
+                        margin: 0.8rem 0 0.3rem;
                         font-weight: 600;
                     }
-                    .analysis-text p {
-                        margin-bottom: 1rem;
+                    .analysis-text h4, .analysis-text h5, .analysis-text h6 {
+                        color: #1e3c72;
+                        margin: 0.8rem 0 0.3rem;
+                        font-weight: 600;
                     }
+                    .analysis-text ul, .analysis-text ol { padding-left: 1.3rem; margin-bottom: 0.75rem; }
+                    .analysis-text li { margin-bottom: 0.35rem; }
+                    .analysis-text strong { color: #1e3c72; }
+                    .analysis-text p { margin-bottom: 0.75rem; }
                     .analysis-text blockquote {
-                        border-left: 4px solid #007bff;
-                        padding-left: 1rem;
-                        margin: 1rem 0;
+                        border-left: 3px solid #007bff;
+                        padding-left: 0.75rem;
+                        margin: 0.75rem 0;
                         font-style: italic;
                         color: #6c757d;
                     }
-                    .char-count {
-                        font-size: 12px;
-                        color: #666;
-                        text-align: right;
-                        margin-top: 5px;
-                    }
-                    .error {
-                        color: #dc3545;
-                        background: #f8d7da;
-                        padding: 10px;
-                        border-radius: 5px;
-                        margin: 10px 0;
-                    }
+                    .char-count { font-size: 0.8rem; color: #666; margin-top: 4px; }
+                    .error { color: #dc3545; background: #f8d7da; padding: 8px 12px; border-radius: 6px; margin: 8px 0; }
                     
-                    /* Mobile-specific styles */
-                    @media (max-width: 768px) {
-                        body {
-                            padding: 5px;
-                        }
-                        .container {
-                            padding: 20px;
-                            border-radius: 15px;
-                            margin: 5px;
-                        }
-                        .header {
-                            padding: 15px;
-                            border-radius: 10px;
-                            margin-bottom: 20px;
-                        }
-                        .header h1 {
-                            font-size: 1.5rem;
-                            margin-bottom: 10px;
-                        }
-                        .header p {
-                            font-size: 0.9rem;
-                        }
-                        input, textarea, select {
-                            font-size: 16px; /* Prevents zoom on iOS */
-                            padding: 15px;
-                        }
-                        textarea {
-                            height: 150px;
-                        }
-                        button {
-                            padding: 18px 30px;
-                            font-size: 18px;
-                            margin-top: 15px;
-                        }
-                        .analysis-text {
-                            font-size: 16px;
-                        }
-                        .analysis-text h2 {
-                            font-size: 1.2rem;
-                        }
-                        .analysis-text h3 {
-                            font-size: 1.1rem;
-                        }
-                    }
-                    
-                    @media (max-width: 480px) {
-                        .container {
-                            padding: 15px;
-                            margin: 2px;
-                        }
-                        .header h1 {
-                            font-size: 1.3rem;
-                        }
-                        .input-group {
-                            margin-bottom: 15px;
-                        }
-                        button {
-                            padding: 20px 30px;
-                            font-size: 20px;
-                        }
-                    }
-                    
-                    /* PWA Install Button */
                     .install-button {
-                        position: fixed;
-                        top: 20px;
-                        right: 20px;
-                        background: #28a745;
-                        color: white;
-                        border: none;
-                        padding: 10px 15px;
-                        border-radius: 20px;
-                        font-size: 14px;
-                        font-weight: 600;
-                        cursor: pointer;
-                        z-index: 1000;
-                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                        position: fixed; top: 16px; right: 16px;
+                        background: #22c55e; color: white; border: none;
+                        padding: 8px 14px; border-radius: 8px;
+                        font-size: 0.85rem; font-weight: 600; cursor: pointer;
+                        z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.12);
                         display: none;
                     }
+                    .install-button:hover { background: #16a34a; }
                     
-                    .install-button:hover {
-                        background: #218838;
-                        transform: translateY(-1px);
-                    }
-                    
-                    /* Touch improvements */
                     button, input, textarea, select {
                         -webkit-tap-highlight-color: transparent;
                         touch-action: manipulation;
                     }
+                    button { -webkit-user-select: none; user-select: none; }
                     
-                    /* Prevent text selection on buttons */
-                    button {
-                        -webkit-user-select: none;
-                        -moz-user-select: none;
-                        -ms-user-select: none;
-                        user-select: none;
+                    @media (max-width: 768px) {
+                        body { padding: 6px; }
+                        .container { padding: 16px; border-radius: 10px; margin: 4px; }
+                        .header { padding: 12px; border-radius: 8px; margin-bottom: 16px; }
+                        .header h1 { font-size: 1.2rem; }
+                        input, textarea, select { font-size: 16px; padding: 12px; }
+                        textarea { height: 120px; }
+                        button { padding: 12px 20px; }
                     }
                 </style>
             </head>
@@ -470,45 +363,27 @@ class handler(BaseHTTPRequestHandler):
                     <div class="header">
                         <h1>🇬🇷 Ανάλυση Ελληνικών Ειδήσεων</h1>
                         <p>Ελέγξτε αν ένα άρθρο περιέχει στοιχεία προπαγάνδας</p>
-                        <div style="margin-top: 15px;">
-                            <a href="/about" style="color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 20px; font-size: 14px; font-weight: 500; transition: all 0.3s ease;">
-                                ℹ️ Σχετικά
+                        <div style="margin-top: 12px;">
+                            <a href="/about" style="color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 5px 14px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">
+                                <i class="fas fa-info-circle me-1"></i>Σχετικά
                             </a>
                         </div>
                     </div>
                     
-                    <!-- Additional Content Section to Ensure Substantial Publisher Content -->
-                    <div style="background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%); border-radius: 15px; border-left: 5px solid #4caf50; padding: 20px; margin: 20px 0;">
-                        <h3 style="color: #2e7d32; font-size: 1.3rem; margin-bottom: 1rem;">
-                            📖 Οδηγίες Χρήσης
-                        </h3>
-                        <p style="line-height: 1.8; color: #424242; margin-bottom: 1rem;">
-                            Για να αναλύσετε ένα άρθρο, ακολουθήστε αυτά τα απλά βήματα:
-                        </p>
-                        <ol style="line-height: 2; color: #424242; padding-left: 1.5rem;">
-                            <li><strong>Επιλέξτε τον τρόπο εισαγωγής:</strong> Μπορείτε να επικολλήσετε το κείμενο του άρθρου απευθείας ή να εισάγετε το URL του άρθρου για αυτόματη εξαγωγή.</li>
-                            <li><strong>Προσθέστε την πηγή (προαιρετικά):</strong> Εισάγετε το όνομα της εφημερίδας ή του ιστοτόπου για καλύτερη ανάλυση.</li>
-                            <li><strong>Κάντε κλικ στο κουμπί "Ανάλυση Άρθρου":</strong> Η τεχνητή νοημοσύνη θα αναλύσει το κείμενο σε λίγα δευτερόλεπτα.</li>
-                            <li><strong>Διαβάστε την αναλυτική αναφορά:</strong> Θα λάβετε λεπτομερή ανάλυση με συγκεκριμένα παραδείγματα και συστάσεις.</li>
+                    <div style="background: #f1f8e9; border-left: 4px solid #4caf50; border-radius: 10px; padding: 12px 16px; margin: 16px 0;">
+                        <h3 style="color: #2e7d32; font-size: 1rem; margin: 0 0 6px;"><i class="fas fa-book me-1"></i>Οδηγίες Χρήσης</h3>
+                        <ol style="margin: 0; padding-left: 1.2rem; color: #424242; font-size: 0.9rem; line-height: 1.7;">
+                            <li><strong>Επιλέξτε τρόπο εισαγωγής:</strong> Επικολλήστε κείμενο ή εισάγετε URL.</li>
+                            <li><strong>Προσθέστε την πηγή (προαιρετικά):</strong> Το όνομα της εφημερίδας.</li>
+                            <li><strong>Κάντε κλικ στο "Ανάλυση":</strong> Η AI αναλύει σε δευτερόλεπτα.</li>
+                            <li><strong>Διαβάστε την αναφορά:</strong> Ανάλυση με παραδείγματα και συστάσεις.</li>
                         </ol>
                     </div>
                     
-                    <!-- Top Ad Unit - Positioned after substantial content -->
-                    <div style="text-align: center; margin: 20px 0;">
-                        <ins class="adsbygoogle"
-                             style="display:block"
-                             data-ad-client="ca-pub-9549967181261078"
-                             data-ad-slot="5866895841"
-                             data-ad-format="auto"
-                             data-full-width-responsive="true"></ins>
-                        <script>
-                             (adsbygoogle = window.adsbygoogle || []).push({});
-                        </script>
-                    </div>
                     
                     <form id="analysisForm">
                         <div class="input-group">
-                            <label for="inputType">Τρόπος Εισαγωγής:</label>
+                            <label for="inputType"><i class="fas fa-edit me-1"></i>Τρόπος Εισαγωγής:</label>
                             <select id="inputType" onchange="toggleInputType()">
                                 <option value="text">Κείμενο άρθρου</option>
                                 <option value="url" selected>URL άρθρου</option>
@@ -516,59 +391,51 @@ class handler(BaseHTTPRequestHandler):
                         </div>
                         
                         <div class="input-group" id="textInput" style="display: none;">
-                            <label for="text">Κείμενο Άρθρου:</label>
+                            <label for="text"><i class="fas fa-file-text me-1"></i>Κείμενο Άρθρου:</label>
                             <textarea id="text" placeholder="Επικολλήστε εδώ το κείμενο του άρθρου..." maxlength="10000" oninput="updateCharCount()"></textarea>
-                            <div class="char-count" id="charCount">0 / 10,000 χαρακτήρες (ελάχιστο 50)</div>
+                            <div class="char-count" id="charCount">0 / 10,000 χαρακτήρες</div>
                         </div>
                         
                         <div class="input-group" id="urlInput">
-                            <label for="url">URL Άρθρου:</label>
+                            <label for="url"><i class="fas fa-link me-1"></i>URL Άρθρου:</label>
                             <input type="url" id="url" placeholder="https://example.com/article">
                         </div>
                         
                         <div class="input-group">
-                            <label for="source">Πηγή (προαιρετικό):</label>
-                            <input type="text" id="source" placeholder="π.χ. ΕΡΤ, ΣΚΑΪ, ANT1, κ.λπ.">
+                            <label for="source"><i class="fas fa-building me-1"></i>Πηγή (προαιρετικό):</label>
+                            <input type="text" id="source" placeholder="π.χ. ΕΡΤ, ΣΚΑΪ, ANT1">
                         </div>
                         
-                        <button type="submit" id="analyzeBtn">Ανάλυση Άρθρου</button>
+                        <button type="submit" id="analyzeBtn"><i class="fas fa-search me-1"></i>Ανάλυση Άρθρου</button>
                     </form>
                     
                     <button id="installBtn" class="install-button">
-                        📱 Εγκατάσταση
+                        <i class="fas fa-download me-1"></i>Εγκατάσταση
                     </button>
                     
                     <div class="loading" id="loading">
                         <div class="spinner"></div>
-                        <p>Ανάλυση σε εξέλιξη...</p>
+                        <p style="font-size: 0.9rem;">Ανάλυση σε εξέλιξη...</p>
                     </div>
                     
                     <div id="result" class="result" style="display: none;">
-                        <h3>Αποτελέσματα Ανάλυσης:</h3>
+                        <h5 style="margin: 0 0 8px;"><i class="fas fa-chart-line me-1"></i>Αποτελέσματα</h5>
                         <div id="analysis" class="analysis-text"></div>
                     </div>
                     
-                    <!-- Additional Informative Content Before Bottom Ad -->
-                    <div style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border-radius: 15px; border-left: 5px solid #ff9800; padding: 20px; margin: 20px 0;">
-                        <h3 style="color: #e65100; font-size: 1.3rem; margin-bottom: 1rem;">
-                            ⚠️ Προειδοποίηση για την Παραπληροφόρηση
-                        </h3>
-                        <p style="line-height: 1.8; color: #5d4037; margin-bottom: 1rem;">
-                            Η παραπληροφόρηση είναι ένα σοβαρό πρόβλημα στην σύγχρονη εποχή. Πολλά άρθρα ειδήσεων μπορεί να περιέχουν:
-                        </p>
-                        <ul style="line-height: 2; color: #5d4037; padding-left: 1.5rem;">
-                            <li><strong>Μερικές πληροφορίες:</strong> Επιλεκτική παρουσίαση γεγονότων που εξυπηρετεί συγκεκριμένα συμφέροντα</li>
-                            <li><strong>Συναισθηματική χειραγώγηση:</strong> Χρήση φορτωμένων λέξεων για να προκαλέσουν συναισθήματα αντί για λογική σκέψη</li>
-                            <li><strong>Απομόνωση πληροφοριών:</strong> Παρουσίαση μόνο μιας πλευράς ενός θέματος</li>
-                            <li><strong>Λογικά σφάλματα:</strong> Χρήση λογικών πλάνων για να πείσουν τους αναγνώστες</li>
+                    <div style="background: #fff7f0; border-left: 4px solid #f97316; border-radius: 10px; padding: 12px 16px; margin: 16px 0;">
+                        <h3 style="color: #c2410c; font-size: 1rem; margin: 0 0 4px;"><i class="fas fa-exclamation-triangle me-1"></i>Προειδοποίηση</h3>
+                        <p style="font-size: 0.9rem; color: #5d4037; margin: 0 0 4px;">Η παραπληροφόρηση είναι σοβαρό πρόβλημα. Τα άρθρα μπορεί να περιέχουν:</p>
+                        <ul style="margin: 0; padding-left: 1.2rem; color: #5d4037; font-size: 0.85rem; line-height: 1.6;">
+                            <li><strong>Μερικές πληροφορίες:</strong> Επιλεκτική παρουσίαση γεγονότων</li>
+                            <li><strong>Συναισθηματική χειραγώγηση:</strong> Φορτωμένες λέξεις αντί λογικής</li>
+                            <li><strong>Απομόνωση πληροφοριών:</strong> Μόνο μία πλευρά του θέματος</li>
+                            <li><strong>Λογικά σφάλματα:</strong> Λογικές πλάνες για πειθώ</li>
                         </ul>
-                        <p style="line-height: 1.8; color: #5d4037; margin-top: 1rem; margin-bottom: 0;">
-                            Αυτή η εφαρμογή βοηθά στην αναγνώριση τέτοιων τεχνικών, αλλά πάντα να ελέγχετε πολλαπλές πηγές και να διατηρείτε κριτική σκέψη.
-                        </p>
                     </div>
                     
-                    <!-- Bottom Ad Unit - Positioned after substantial content -->
-                    <div style="text-align: center; margin: 20px 0;">
+                    <!-- Bottom Ad Unit -->
+                    <div style="text-align: center; margin: 12px 0;">
                         <ins class="adsbygoogle"
                              style="display:block"
                              data-ad-client="ca-pub-9549967181261078"
@@ -865,212 +732,139 @@ class handler(BaseHTTPRequestHandler):
             
             <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9549967181261078" crossorigin="anonymous"></script>
             
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+            
             <!-- Icons for different platforms -->
             <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/icon-32x32.png">
             <link rel="icon" type="image/png" sizes="16x16" href="/static/icons/icon-16x16.png">
             <link rel="apple-touch-icon" href="/static/icons/icon-192x192.png">
             
             <style>
-                body { 
-                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-                    max-width: 900px; 
-                    margin: 0 auto; 
-                    padding: 10px; 
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                body {
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+                    max-width: 860px;
+                    margin: 0 auto;
+                    padding: 10px;
+                    background: linear-gradient(135deg, #e8edf5 0%, #d5dce8 100%);
                     min-height: 100vh;
                     -webkit-font-smoothing: antialiased;
-                    -moz-osx-font-smoothing: grayscale;
                 }
-                .container { 
-                    background: rgba(255, 255, 255, 0.95); 
-                    padding: 30px; 
-                    border-radius: 20px; 
-                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-                    backdrop-filter: blur(10px);
+                .container {
+                    background: #fff;
+                    padding: 24px;
+                    border-radius: 12px;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
                 }
                 .header {
                     background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
                     color: white;
-                    padding: 20px;
-                    border-radius: 15px;
+                    padding: 16px 20px;
+                    border-radius: 10px;
                     text-align: center;
-                    margin-bottom: 30px;
+                    margin-bottom: 24px;
                 }
-                .header h1 {
-                    margin: 0 0 10px 0;
-                    font-size: 2rem;
-                }
-                .header p {
-                    margin: 0;
-                    opacity: 0.9;
-                }
-                .content {
-                    line-height: 1.8;
-                    color: #333;
-                }
+                .header h1 { margin: 0; font-size: 1.4rem; }
+                .header p { margin: 4px 0 0; font-size: 0.9rem; opacity: 0.85; }
+                .content { line-height: 1.7; color: #333; font-size: 0.95rem; }
                 .content h2 {
                     color: #1e3c72;
-                    margin-top: 2rem;
-                    margin-bottom: 1rem;
-                    font-size: 1.5rem;
-                    border-bottom: 2px solid #e9ecef;
-                    padding-bottom: 0.5rem;
-                }
-                .content h3 {
-                    color: #495057;
                     margin-top: 1.5rem;
-                    margin-bottom: 0.8rem;
+                    margin-bottom: 0.75rem;
                     font-size: 1.2rem;
+                    border-bottom: 1px solid #e9ecef;
+                    padding-bottom: 0.35rem;
                 }
-                .content p {
-                    margin-bottom: 1.2rem;
-                    text-align: justify;
-                }
+                .content p { margin-bottom: 0.85rem; }
                 .author-card {
-                    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-                    border: 2px solid #dee2e6;
-                    border-radius: 15px;
-                    padding: 25px;
-                    margin: 2rem 0;
+                    background: #f8f9fa;
+                    border: 1px solid #dee2e6;
+                    border-radius: 10px;
+                    padding: 20px;
+                    margin: 1.5rem 0;
                     text-align: center;
-                    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
                 }
                 .author-avatar {
-                    width: 80px;
-                    height: 80px;
+                    width: 60px;
+                    height: 60px;
                     border-radius: 50%;
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                    margin: 0 auto 15px;
+                    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+                    margin: 0 auto 12px;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-size: 2rem;
+                    font-size: 1.5rem;
                     color: white;
                     font-weight: bold;
                 }
-                .author-name {
-                    font-size: 1.4rem;
-                    font-weight: 600;
-                    color: #1e3c72;
-                    margin-bottom: 5px;
-                }
-                .author-title {
-                    color: #6c757d;
-                    margin-bottom: 15px;
-                    font-style: italic;
-                }
+                .author-name { font-size: 1.15rem; font-weight: 600; color: #1e3c72; margin-bottom: 4px; }
+                .author-title { color: #6c757d; margin-bottom: 12px; font-style: italic; font-size: 0.9rem; }
+                .author-card p { font-size: 0.9rem; color: #495057; }
                 .github-link {
                     display: inline-block;
                     background: #24292e;
                     color: white;
-                    padding: 10px 20px;
-                    border-radius: 25px;
+                    padding: 8px 18px;
+                    border-radius: 8px;
                     text-decoration: none;
-                    font-weight: 600;
-                    transition: all 0.3s ease;
-                    margin: 5px;
+                    font-weight: 500;
+                    font-size: 0.9rem;
+                    transition: all 0.2s;
+                    margin: 4px;
                 }
-                .github-link:hover {
-                    background: #0366d6;
-                    transform: translateY(-2px);
-                    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-                }
+                .github-link:hover { background: #0366d6; }
                 .back-button {
                     display: inline-block;
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
                     color: white;
-                    padding: 12px 25px;
-                    border-radius: 25px;
+                    padding: 10px 22px;
+                    border-radius: 8px;
                     text-decoration: none;
-                    font-weight: 600;
-                    transition: all 0.3s ease;
-                    margin-top: 20px;
+                    font-weight: 500;
+                    font-size: 0.95rem;
+                    transition: all 0.2s;
+                    margin-top: 16px;
                 }
-                .back-button:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-                }
-                .feature-list {
-                    list-style: none;
-                    padding: 0;
-                }
+                .back-button:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+                .feature-list { list-style: none; padding: 0; }
                 .feature-list li {
                     background: #f8f9fa;
-                    margin: 8px 0;
-                    padding: 12px 20px;
-                    border-radius: 10px;
-                    border-left: 4px solid #667eea;
-                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                }
-                .tech-stack {
-                    display: flex;
-                    flex-wrap: wrap;
-                    gap: 10px;
-                    margin: 1rem 0;
-                }
-                .tech-badge {
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                    color: white;
-                    padding: 6px 12px;
-                    border-radius: 15px;
+                    margin: 6px 0;
+                    padding: 10px 16px;
+                    border-radius: 8px;
+                    border-left: 3px solid #2a5298;
                     font-size: 0.9rem;
+                }
+                .tech-stack { display: flex; flex-wrap: wrap; gap: 8px; margin: 0.75rem 0; }
+                .tech-badge {
+                    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+                    color: white;
+                    padding: 4px 12px;
+                    border-radius: 6px;
+                    font-size: 0.8rem;
                     font-weight: 500;
                 }
-                
-                /* Mobile-specific styles */
                 @media (max-width: 768px) {
-                    body {
-                        padding: 5px;
-                    }
-                    .container {
-                        padding: 20px;
-                        border-radius: 15px;
-                        margin: 5px;
-                    }
-                    .header {
-                        padding: 15px;
-                        border-radius: 10px;
-                        margin-bottom: 20px;
-                    }
-                    .header h1 {
-                        font-size: 1.5rem;
-                    }
-                    .content h2 {
-                        font-size: 1.3rem;
-                    }
-                    .content h3 {
-                        font-size: 1.1rem;
-                    }
-                    .author-card {
-                        padding: 20px;
-                        margin: 1.5rem 0;
-                    }
-                    .author-avatar {
-                        width: 60px;
-                        height: 60px;
-                        font-size: 1.5rem;
-                    }
-                    .author-name {
-                        font-size: 1.2rem;
-                    }
-                    .tech-stack {
-                        justify-content: center;
-                    }
+                    body { padding: 6px; }
+                    .container { padding: 16px; border-radius: 10px; margin: 4px; }
+                    .header { padding: 12px; border-radius: 8px; margin-bottom: 16px; }
+                    .header h1 { font-size: 1.2rem; }
+                    .author-card { padding: 16px; margin: 1rem 0; }
+                    .tech-stack { justify-content: center; }
                 }
             </style>
         </head>
         <body>
             <div class="container">
                 <div class="header">
-                    <h1>🇬🇷 Σχετικά με την Εφαρμογή</h1>
+                    <h1><i class="fas fa-newspaper me-2"></i>Σχετικά με την Εφαρμογή</h1>
                     <p>Ανάλυση Ελληνικών Ειδήσεων με Τεχνητή Νοημοσύνη</p>
                 </div>
                 
                 <div class="content">
-                    <h2>🎯 Σκοπός της Εφαρμογής</h2>
+                    <h2><i class="fas fa-bullseye me-2"></i>Σκοπός της Εφαρμογής</h2>
                     <p>Η εφαρμογή "Ανάλυση Ελληνικών Ειδήσεων" δημιουργήθηκε με στόχο την προστασία των πολιτών από την προπαγάνδα και την παραπληροφόρηση. Χρησιμοποιώντας την τεχνητή νοημοσύνη Google Gemini, η εφαρμογή αναλύει ελληνικά άρθρα ειδήσεων και εντοπίζει στοιχεία προπαγάνδας, προκατάληψης και χειραγώγησης.</p>
                     
-                    <h2>🔍 Χαρακτηριστικά Ανάλυσης</h2>
+                    <h2><i class="fas fa-search me-2"></i>Χαρακτηριστικά Ανάλυσης</h2>
                     <ul class="feature-list">
                         <li><strong>Εντοπισμός Συναισθηματικής Χειραγώγησης:</strong> Αναγνώριση φορτωμένων όρων και συναισθηματικών τριγέρων</li>
                         <li><strong>Αξιολόγηση Προκατάληψης:</strong> Εντοπισμός πολιτικών και ιδεολογικών κλίσεων</li>
@@ -1080,7 +874,7 @@ class handler(BaseHTTPRequestHandler):
                         <li><strong>Σύστημα Βαθμολόγησης:</strong> Βαθμολόγηση 1-100 για την αξιοπιστία των ειδήσεων</li>
                     </ul>
                     
-                    <h2>🚀 Τεχνολογίες</h2>
+                    <h2><i class="fas fa-code me-2"></i>Τεχνολογίες</h2>
                     <div class="tech-stack">
                         <span class="tech-badge">Python 3.8+</span>
                         <span class="tech-badge">Google Gemini AI</span>
@@ -1091,7 +885,7 @@ class handler(BaseHTTPRequestHandler):
                         <span class="tech-badge">Mobile-First Design</span>
                     </div>
                     
-                    <h2>📱 Mobile & PWA Features</h2>
+                    <h2><i class="fas fa-mobile-alt me-2"></i>Mobile & PWA Features</h2>
                     <p>Η εφαρμογή είναι σχεδιασμένη mobile-first και υποστηρίζει:</p>
                     <ul class="feature-list">
                         <li><strong>Εγκατάσταση σε Mobile:</strong> Προσθήκη στην αρχική οθόνη του κινητού</li>
@@ -1106,21 +900,21 @@ class handler(BaseHTTPRequestHandler):
                         <div class="author-title">Developer & Creator</div>
                         <p>Αυτή η εφαρμογή δημιουργήθηκε με αγάπη για την ελληνική κοινότητα και την προστασία της από την παραπληροφόρηση. Στόχος είναι η παροχή ενός εργαλείου που θα βοηθήσει τους πολίτες να κάνουν πιο ενημερωμένες επιλογές.</p>
                         <a href="https://github.com/ntufar" target="_blank" class="github-link">
-                            👨‍💻 GitHub Profile
+                            <i class="fab fa-github me-1"></i>GitHub Profile
                         </a>
                     </div>
                     
-                    <div class="author-card" style="background: linear-gradient(135deg, #e8f4fd 0%, #d1ecf1 100%); border-color: #bee5eb;">
-                        <div class="author-avatar" style="background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);">NT</div>
+                    <div class="author-card" style="background: #e8f4fd; border-color: #bee5eb;">
+                        <div class="author-avatar" style="background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);">NT</div>
                         <div class="author-name">Νίκος Τσολοζίδης</div>
                         <div class="author-title">Ιδέα & Έμπνευση</div>
-                        <p>Η ιδέα για αυτή την εφαρμογή ανήκει στον Νίκο Τσολοζίδη, ο οποίος πρότεινε την ανάπτυξη ενός εργαλείου ανάλυσης ελληνικών ειδήσεων για την προστασία των πολιτών από την προπαγάνδα.</p>
+                        <p>Η ιδέα για αυτή την εφαρμογή ανήκει στον Νίκο Τσολοζίδη, ο οποίος πρότεινε την ανάπτυξη ενός εργαλείου ανάλυσης ελληνικών ειδήσεων.</p>
                         <a href="https://www.facebook.com/tsolozidis.nick" target="_blank" class="github-link" style="background: #1877f2;">
-                            📘 Facebook Profile
+                            <i class="fab fa-facebook me-1"></i>Facebook Profile
                         </a>
                     </div>
                     
-                    <h2>🤝 Συνεισφορά</h2>
+                    <h2><i class="fas fa-hands-helping me-2"></i>Συνεισφορά</h2>
                     <p>Αν θέλετε να συμβάλετε στην ανάπτυξη της εφαρμογής, μπορείτε να:</p>
                     <ul class="feature-list">
                         <li>Αναφέρετε bugs ή προτάσεις βελτίωσης</li>
@@ -1129,24 +923,18 @@ class handler(BaseHTTPRequestHandler):
                         <li>Προτείνετε νέες λειτουργίες ανάλυσης</li>
                     </ul>
                     
-                    <!-- Additional Content Section Before Ad -->
-                    <div style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-radius: 15px; border-left: 5px solid #2196f3; padding: 25px; margin: 30px 0;">
-                        <h2 style="color: #1565c0; font-size: 1.4rem; margin-bottom: 1rem;">
-                            ⭐ Από πού Ξεκίνησε η Ιδέα
-                        </h2>
-                        <p style="line-height: 1.8; color: #424242; margin-bottom: 1rem;">
-                            Σε μια εποχή όπου η πληροφόρηση διαδίδεται με ταχύτητα φωτός και η παραπληροφόρηση μπορεί να έχει σοβαρές συνέπειες, η ανάγκη για εργαλεία που βοηθούν στην κριτική αξιολόγηση των ειδήσεων είναι πιο σημαντική από ποτέ.
+                    <div style="background: #e8f0fe; border-left: 4px solid #2196f3; padding: 16px 20px; margin: 20px 0; border-radius: 10px;">
+                        <h3 style="color: #1565c0; font-size: 1rem; margin-bottom: 0.5rem;"><i class="fas fa-star me-1"></i>Από πού Ξεκίνησε η Ιδέα</h3>
+                        <p style="font-size: 0.9rem; line-height: 1.6; color: #424242; margin-bottom: 0.5rem;">
+                            Σε μια εποχή όπου η παραπληροφόρηση διαδίδεται γρήγορα, η ανάγκη για εργαλεία κριτικής αξιολόγησης είναι πιο σημαντική από ποτέ.
                         </p>
-                        <p style="line-height: 1.8; color: #424242; margin-bottom: 1rem;">
-                            Η ιδέα για αυτή την εφαρμογή προήλθε από την αναγνώριση ότι πολλοί πολίτες δυσκολεύονται να διακρίνουν την αξιόπιστη ενημέρωση από την προπαγάνδα. Χρησιμοποιώντας την τεχνητή νοημοσύνη, μπορούμε να παρέχουμε μια αντικειμενική ανάλυση που βοηθά τους χρήστες να κάνουν πιο ενημερωμένες αποφάσεις.
-                        </p>
-                        <p style="line-height: 1.8; color: #424242; margin-bottom: 0;">
-                            Η εφαρμογή είναι σε συνεχή ανάπτυξη και βελτίωση, με στόχο την παροχή όλο και πιο ακριβών και χρήσιμων αναλύσεων για την ελληνική κοινότητα.
+                        <p style="font-size: 0.9rem; line-height: 1.6; color: #424242; margin-bottom: 0;">
+                            Χρησιμοποιώντας την τεχνητή νοημοσύνη, παρέχουμε αντικειμενική ανάλυση που βοηθά τους χρήστες να κάνουν πιο ενημερωμένες αποφάσεις.
                         </p>
                     </div>
                     
-                    <!-- Ad Unit on About Page - Positioned after substantial content -->
-                    <div style="text-align: center; margin: 30px 0;">
+                    <!-- Ad Unit on About Page -->
+                    <div style="text-align: center; margin: 20px 0;">
                         <ins class="adsbygoogle"
                              style="display:block"
                              data-ad-client="ca-pub-9549967181261078"
@@ -1158,11 +946,11 @@ class handler(BaseHTTPRequestHandler):
                         </script>
                     </div>
                     
-                    <h2>📄 Άδεια Χρήσης</h2>
+                    <h2><i class="fas fa-file-alt me-2"></i>Άδεια Χρήσης</h2>
                     <p>Αυτό το έργο είναι διαθέσιμο υπό την άδεια MIT. Μπορείτε να το χρησιμοποιήσετε, να το τροποποιήσετε και να το διανείμετε ελεύθερα.</p>
                     
                     <div style="text-align: center; margin-top: 2rem;">
-                        <a href="/" class="back-button">← Επιστροφή στην Αρχική</a>
+                        <a href="/" class="back-button"><i class="fas fa-arrow-left me-1"></i>Επιστροφή στην Αρχική</a>
                     </div>
                 </div>
             </div>
