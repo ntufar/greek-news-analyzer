@@ -71,13 +71,13 @@ def test_analyze_greek_news_error(mock_complete):
 def test_extract_text_from_url_success(mock_get):
     """Test successful text extraction from URL."""
     mock_response = MagicMock()
-    mock_response.content = b'<html><body><main><p>Test article content</p></main></body></html>'
+    mock_response.content = b'<html><body><main><p>' + b'Long article content. ' * 20 + b'</p></main></body></html>'
     mock_response.headers = {'content-type': 'text/html'}
     mock_response.raise_for_status.return_value = None
     mock_get.return_value = mock_response
     
     result = extract_text_from_url("https://example.com/article")
-    assert "Test article content" in result
+    assert "Long article content" in result
 
 @patch('app.requests.get')
 def test_extract_text_from_url_error(mock_get):
@@ -87,28 +87,28 @@ def test_extract_text_from_url_error(mock_get):
     result = extract_text_from_url("https://example.com/article")
     assert "Error extracting text" in result
 
-@patch('app.mistral_client.chat.complete')
-def test_analyze_route_success(client, mock_complete):
+def test_analyze_route_success(client):
     """Test successful analysis via API."""
-    mock_message = MagicMock()
-    mock_message.content = "Test analysis result"
-    mock_choice = MagicMock()
-    mock_choice.message = mock_message
-    mock_response = MagicMock()
-    mock_response.choices = [mock_choice]
-    mock_complete.return_value = mock_response
-    
-    response = client.post('/analyze', json={
-        'text': 'This is a longer Greek text that should be sufficient for analysis purposes and testing.',
-        'source': 'Test Source'
-    })
-    
-    assert response.status_code == 200
-    data = response.get_json()
-    assert 'analysis' in data
-    assert 'text_length' in data
-    assert 'source' in data
-    assert data['success'] is True
+    with patch('app.mistral_client.chat.complete') as mock_complete:
+        mock_message = MagicMock()
+        mock_message.content = "Test analysis result"
+        mock_choice = MagicMock()
+        mock_choice.message = mock_message
+        mock_response = MagicMock()
+        mock_response.choices = [mock_choice]
+        mock_complete.return_value = mock_response
+        
+        response = client.post('/analyze', json={
+            'text': 'This is a longer Greek text that should be sufficient for analysis purposes and testing.',
+            'source': 'Test Source'
+        })
+        
+        assert response.status_code == 200
+        data = response.get_json()
+        assert 'analysis' in data
+        assert 'text_length' in data
+        assert 'source' in data
+        assert data['success'] is True
 
 if __name__ == '__main__':
     pytest.main([__file__])
