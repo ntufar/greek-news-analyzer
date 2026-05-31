@@ -192,7 +192,7 @@ class handler(BaseHTTPRequestHandler):
                 
                 <!-- PWA Meta Tags -->
                 <meta name="description" content="Αναλύστε ελληνικά άρθρα ειδήσεων για στοιχεία προπαγάνδας και προκατάληψης">
-                <meta name="theme-color" content="#667eea">
+                <meta name="theme-color" content="#1e3c72">
                 <meta name="apple-mobile-web-app-capable" content="yes">
                 <meta name="apple-mobile-web-app-status-bar-style" content="default">
                 <meta name="apple-mobile-web-app-title" content="Greek News Analyzer">
@@ -239,6 +239,15 @@ class handler(BaseHTTPRequestHandler):
                     }
                     .header h1 { margin: 0; font-size: 1.4rem; }
                     .header p { margin: 4px 0 0; font-size: 0.9rem; opacity: 0.85; }
+                    .logo-alpha {
+                        display: inline-flex; align-items: center; justify-content: center;
+                        width: 40px; height: 40px; border-radius: 10px;
+                        background: linear-gradient(135deg, #1e3c72, #2563eb);
+                        font-family: Georgia, 'Times New Roman', serif;
+                        font-size: 1.5rem; font-weight: 900; color: #fff;
+                        vertical-align: middle; margin-right: 10px;
+                    }
+                    .logo-alpha .check { color: #22c55e; font-size: 0.7rem; margin-left: 1px; }
                     .input-group { margin-bottom: 12px; }
                     label {
                         display: block;
@@ -361,7 +370,7 @@ class handler(BaseHTTPRequestHandler):
             <body>
                 <div class="container">
                     <div class="header">
-                        <h1>🇬🇷 Ανάλυση Ελληνικών Ειδήσεων</h1>
+                        <h1><span class="logo-alpha">Α<span class="check">✓</span></span>Ανάλυση Ελληνικών Ειδήσεων</h1>
                         <p>Ελέγξτε αν ένα άρθρο περιέχει στοιχεία προπαγάνδας</p>
                         <div style="margin-top: 12px;">
                             <a href="/about" style="color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 5px 14px; border-radius: 6px; font-size: 0.85rem; font-weight: 500;">
@@ -720,7 +729,7 @@ class handler(BaseHTTPRequestHandler):
             
             <!-- PWA Meta Tags -->
             <meta name="description" content="Σχετικά με την εφαρμογή ανάλυσης ελληνικών ειδήσεων">
-            <meta name="theme-color" content="#667eea">
+            <meta name="theme-color" content="#1e3c72">
             <meta name="apple-mobile-web-app-capable" content="yes">
             <meta name="apple-mobile-web-app-status-bar-style" content="default">
             <meta name="apple-mobile-web-app-title" content="Greek News Analyzer">
@@ -856,7 +865,7 @@ class handler(BaseHTTPRequestHandler):
         <body>
             <div class="container">
                 <div class="header">
-                    <h1><i class="fas fa-newspaper me-2"></i>Σχετικά με την Εφαρμογή</h1>
+                    <h1><span class="logo-alpha">Α<span class="check">✓</span></span>Σχετικά με την Εφαρμογή</h1>
                     <p>Ανάλυση Ελληνικών Ειδήσεων με Τεχνητή Νοημοσύνη</p>
                 </div>
                 

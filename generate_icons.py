@@ -1,78 +1,52 @@
 #!/usr/bin/env python3
-"""
-Simple icon generator for PWA
-Creates basic icons from a simple text-based design
-"""
+"""Generate PWA icons using the new logo design (SVG → PNG via cairosvg)"""
 
-from PIL import Image, ImageDraw, ImageFont
 import os
+import cairosvg
 
-def create_icon(size, filename):
-    """Create a simple icon with the specified size"""
-    # Create a new image with a gradient background
-    img = Image.new('RGBA', (size, size), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(img)
-    
-    # Draw gradient background
-    for i in range(size):
-        color_ratio = i / size
-        r = int(30 + (102 - 30) * color_ratio)  # 1e3c72 to 667eea
-        g = int(60 + (126 - 60) * color_ratio)
-        b = int(114 + (234 - 114) * color_ratio)
-        draw.line([(0, i), (size, i)], fill=(r, g, b, 255))
-    
-    # Draw a simple newspaper icon
-    # Main rectangle
-    margin = size // 8
-    draw.rectangle([margin, margin, size-margin, size-margin], 
-                   fill=(255, 255, 255, 200), outline=(0, 0, 0, 255), width=2)
-    
-    # Text lines
-    line_height = size // 12
-    for i in range(3):
-        y = margin + size // 6 + i * line_height
-        draw.rectangle([margin + size // 10, y, size - margin - size // 10, y + line_height // 3], 
-                       fill=(0, 0, 0, 255))
-    
-    # Add a small "GR" text
-    try:
-        font_size = size // 8
-        font = ImageFont.truetype("/System/Library/Fonts/Arial.ttf", font_size)
-    except:
-        font = ImageFont.load_default()
-    
-    text = "GR"
-    bbox = draw.textbbox((0, 0), text, font=font)
-    text_width = bbox[2] - bbox[0]
-    text_height = bbox[3] - bbox[1]
-    x = (size - text_width) // 2
-    y = size - margin - text_height
-    draw.text((x, y), text, fill=(0, 0, 0, 255), font=font)
-    
-    # Save the image
-    img.save(filename, 'PNG')
-    print(f"Created {filename} ({size}x{size})")
+ICON_SIZES = [16, 32, 72, 96, 128, 144, 152, 192, 384, 512]
+TARGET_DIRS = ['static/icons', 'api/static/icons']
 
-def main():
-    """Generate all required icon sizes"""
-    # Create icons directory if it doesn't exist
-    os.makedirs('static/icons', exist_ok=True)
-    
-    # Generate all required icon sizes
-    sizes = [16, 32, 72, 96, 128, 144, 152, 192, 384, 512]
-    
-    for size in sizes:
-        filename = f'static/icons/icon-{size}x{size}.png'
-        create_icon(size, filename)
-    
-    print("✅ All icons generated successfully!")
-    print("📱 Your app is now ready for mobile installation!")
+LOGO_SVG = '''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1e3c72"/>
+      <stop offset="100%" stop-color="#2a5298"/>
+    </linearGradient>
+    <linearGradient id="gauge" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="30%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#22c55e"/>
+    </linearGradient>
+  </defs>
+  <rect x="10" y="10" width="300" height="300" rx="65" fill="url(#bg)"/>
+  <path d="M50 240 A110 110 0 0 1 270 240" fill="none" stroke="url(#gauge)" stroke-width="14" stroke-linecap="round"/>
+  <text x="160" y="170" text-anchor="middle" font-size="110" font-weight="900" fill="#fff" font-family="Georgia,'Times New Roman',serif">Α</text>
+  <text x="252" y="135" text-anchor="middle" font-size="46" font-weight="900" fill="#22c55e" font-family="sans-serif">87</text>
+  <text x="252" y="152" text-anchor="middle" font-size="11" font-weight="600" fill="#fff" font-family="sans-serif" opacity="0.5">ΒΑΘΜΟΣ</text>
+  <path d="M195 216 L212 233 L255 188" fill="none" stroke="#22c55e" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="160" y="290" text-anchor="middle" font-size="16" font-weight="800" fill="#fbbf24" font-family="sans-serif" letter-spacing="2">ΑΝΑΛΥΣΗ ΕΙΔΗΣΕΩΝ</text>
+</svg>'''
 
-if __name__ == "__main__":
-    try:
-        from PIL import Image, ImageDraw, ImageFont
-        main()
-    except ImportError:
-        print("❌ PIL (Pillow) is required to generate icons")
-        print("Install it with: pip install Pillow")
-        print("Or create simple placeholder icons manually")
+
+def generate_icons():
+    for dir_path in TARGET_DIRS:
+        os.makedirs(dir_path, exist_ok=True)
+
+    for size in ICON_SIZES:
+        png_bytes = cairosvg.svg2png(
+            bytestring=LOGO_SVG.encode('utf-8'),
+            output_width=size,
+            output_height=size,
+        )
+        for dir_path in TARGET_DIRS:
+            filename = f'{dir_path}/icon-{size}x{size}.png'
+            with open(filename, 'wb') as f:
+                f.write(png_bytes)
+            print(f'  ✓ {filename} ({size}x{size})')
+
+    print('\n✅ All icons generated successfully!')
+
+
+if __name__ == '__main__':
+    generate_icons()
