@@ -182,7 +182,7 @@ class handler(BaseHTTPRequestHandler):
         shared_title = url_params.get('title', [None])[0] if url_params.get('title') else None
         shared_text = url_params.get('text', [None])[0] if url_params.get('text') else None
         
-        return """
+        html = """
             <!DOCTYPE html>
             <html lang="el">
             <head>
