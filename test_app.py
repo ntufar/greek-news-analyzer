@@ -44,21 +44,25 @@ def test_analyze_route_invalid_url(client):
     data = response.get_json()
     assert 'error' in data
 
-@patch('app.model.generate_content')
-def test_analyze_greek_news_success(mock_generate_content):
+@patch('app.mistral_client.chat.complete')
+def test_analyze_greek_news_success(mock_complete):
     """Test successful Greek news analysis."""
+    mock_message = MagicMock()
+    mock_message.content = "Test analysis result"
+    mock_choice = MagicMock()
+    mock_choice.message = mock_message
     mock_response = MagicMock()
-    mock_response.text = "Test analysis result"
-    mock_generate_content.return_value = mock_response
+    mock_response.choices = [mock_choice]
+    mock_complete.return_value = mock_response
     
     result = analyze_greek_news("Test Greek text for analysis", "Test Source")
     assert result == "Test analysis result"
-    mock_generate_content.assert_called_once()
+    mock_complete.assert_called_once()
 
-@patch('app.model.generate_content')
-def test_analyze_greek_news_error(mock_generate_content):
+@patch('app.mistral_client.chat.complete')
+def test_analyze_greek_news_error(mock_complete):
     """Test Greek news analysis with error."""
-    mock_generate_content.side_effect = Exception("API Error")
+    mock_complete.side_effect = Exception("API Error")
     
     result = analyze_greek_news("Test text", "Test Source")
     assert "Σφάλμα στην ανάλυση" in result
@@ -68,6 +72,7 @@ def test_extract_text_from_url_success(mock_get):
     """Test successful text extraction from URL."""
     mock_response = MagicMock()
     mock_response.content = b'<html><body><main><p>Test article content</p></main></body></html>'
+    mock_response.headers = {'content-type': 'text/html'}
     mock_response.raise_for_status.return_value = None
     mock_get.return_value = mock_response
     
@@ -82,12 +87,16 @@ def test_extract_text_from_url_error(mock_get):
     result = extract_text_from_url("https://example.com/article")
     assert "Error extracting text" in result
 
-@patch('app.model.generate_content')
-def test_analyze_route_success(client, mock_generate_content):
+@patch('app.mistral_client.chat.complete')
+def test_analyze_route_success(client, mock_complete):
     """Test successful analysis via API."""
+    mock_message = MagicMock()
+    mock_message.content = "Test analysis result"
+    mock_choice = MagicMock()
+    mock_choice.message = mock_message
     mock_response = MagicMock()
-    mock_response.text = "Test analysis result"
-    mock_generate_content.return_value = mock_response
+    mock_response.choices = [mock_choice]
+    mock_complete.return_value = mock_response
     
     response = client.post('/analyze', json={
         'text': 'This is a longer Greek text that should be sufficient for analysis purposes and testing.',
