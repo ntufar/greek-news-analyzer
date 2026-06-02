@@ -15,6 +15,46 @@ class ResultScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AnalysisProvider>(
       builder: (context, provider, _) {
+        // Show loading state
+        if (provider.state == AnalysisState.loading) {
+          return const Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 16),
+                  Text('Ανάλυση σε εξέλιξη...'),
+                ],
+              ),
+            ),
+          );
+        }
+
+        // Show error state
+        if (provider.state == AnalysisState.error) {
+          return Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Σφάλμα: ${provider.errorMessage ?? "Άγνωστο σφάλμα"}',
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: const Text('Επιστροφή'),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
         final result = provider.currentResult;
         if (result == null) {
           return const Scaffold(
