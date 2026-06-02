@@ -182,6 +182,47 @@ class handler(BaseHTTPRequestHandler):
                 <meta name="application-name" content="ΕΠΑΠ">
                 <meta name="apple-touch-fullscreen" content="yes">
                 
+                <!-- SEO Meta Tags -->
+                <meta name="author" content="Nicolai Tufar">
+                <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+                <link rel="canonical" href="https://epap.vercel.app/">
+                
+                <!-- Open Graph -->
+                <meta property="og:title" content="ΕΠΑΠ - Ελληνική Πλατφόρμα Ανάλυσης Παραπληροφόρισης">
+                <meta property="og:description" content="Αναλύστε ελληνικά άρθρα ειδήσεων για στοιχεία προπαγάνδας και προκατάληψης με τεχνητή νοημοσύνη">
+                <meta property="og:url" content="https://epap.vercel.app/">
+                <meta property="og:type" content="website">
+                <meta property="og:image" content="https://epap.vercel.app/static/icons/icon-512x512.png">
+                <meta property="og:image:width" content="512">
+                <meta property="og:image:height" content="512">
+                <meta property="og:locale" content="el_GR">
+                <meta property="og:site_name" content="ΕΠΑΠ">
+                
+                <!-- Twitter Card -->
+                <meta name="twitter:card" content="summary">
+                <meta name="twitter:title" content="ΕΠΑΠ - Ελληνική Πλατφόρμα Ανάλυσης Παραπληροφόρισης">
+                <meta name="twitter:description" content="Αναλύστε ελληνικά άρθρα ειδήσεων για στοιχεία προπαγάνδας και προκατάληψης με τεχνητή νοημοσύνη">
+                <meta name="twitter:image" content="https://epap.vercel.app/static/icons/icon-512x512.png">
+                
+                <!-- JSON-LD Structured Data -->
+                <script type="application/ld+json">
+                {
+                    "@context": "https://schema.org",
+                    "@type": "WebApplication",
+                    "name": "ΕΠΑΠ - Ελληνική Πλατφόρμα Ανάλυσης Παραπληροφόρισης",
+                    "url": "https://epap.vercel.app/",
+                    "description": "Αναλύστε ελληνικά άρθρα ειδήσεων για στοιχεία προπαγάνδας και προκατάληψης με τεχνητή νοημοσύνη",
+                    "applicationCategory": "Multimedia",
+                    "operatingSystem": "All",
+                    "inLanguage": "el",
+                    "author": {
+                        "@type": "Person",
+                        "name": "Nicolai Tufar",
+                        "url": "https://github.com/ntufar"
+                    }
+                }
+                </script>
+                
                 <!-- PWA Manifest -->
                 <link rel="manifest" href="/static/manifest.json">
                 
@@ -777,6 +818,45 @@ class handler(BaseHTTPRequestHandler):
             <meta name="mobile-web-app-capable" content="yes">
             <meta name="application-name" content="ΕΠΑΠ">
             
+            <!-- SEO Meta Tags -->
+            <meta name="author" content="Nicolai Tufar">
+            <meta name="robots" content="index, follow">
+            <link rel="canonical" href="https://epap.vercel.app/about">
+            
+            <!-- Open Graph -->
+            <meta property="og:title" content="Σχετικά - ΕΠΑΠ Ελληνική Πλατφόρμα Ανάλυσης Παραπληροφόρισης">
+            <meta property="og:description" content="Σχετικά με την πλατφόρμα ανάλυσης παραπληροφόρισης - Τεχνητή νοημοσύνη για εντοπισμό προπαγάνδας σε ελληνικές ειδήσεις">
+            <meta property="og:url" content="https://epap.vercel.app/about">
+            <meta property="og:type" content="website">
+            <meta property="og:image" content="https://epap.vercel.app/static/icons/icon-512x512.png">
+            <meta property="og:image:width" content="512">
+            <meta property="og:image:height" content="512">
+            <meta property="og:locale" content="el_GR">
+            <meta property="og:site_name" content="ΕΠΑΠ">
+            
+            <!-- Twitter Card -->
+            <meta name="twitter:card" content="summary">
+            <meta name="twitter:title" content="Σχετικά - ΕΠΑΠ Ελληνική Πλατφόρμα Ανάλυσης Παραπληροφόρισης">
+            <meta name="twitter:description" content="Σχετικά με την πλατφόρμα ανάλυσης παραπληροφόρισης - Τεχνητή νοημοσύνη για εντοπισμό προπαγάνδας σε ελληνικές ειδήσεις">
+            <meta name="twitter:image" content="https://epap.vercel.app/static/icons/icon-512x512.png">
+            
+            <!-- JSON-LD Structured Data -->
+            <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "WebPage",
+                "name": "Σχετικά - ΕΠΑΠ",
+                "url": "https://epap.vercel.app/about",
+                "description": "Σχετικά με την πλατφόρμα ανάλυσης παραπληροφόρισης",
+                "inLanguage": "el",
+                "author": {
+                    "@type": "Person",
+                    "name": "Nicolai Tufar",
+                    "url": "https://github.com/ntufar"
+                }
+            }
+            </script>
+            
             <!-- PWA Manifest -->
             <link rel="manifest" href="/static/manifest.json">
             
@@ -1030,6 +1110,40 @@ class handler(BaseHTTPRequestHandler):
             <meta name="apple-mobile-web-app-title" content="ΕΠΑΠ">
             <meta name="mobile-web-app-capable" content="yes">
             <meta name="application-name" content="ΕΠΑΠ">
+            
+            <!-- SEO Meta Tags -->
+            <meta name="author" content="Nicolai Tufar">
+            <meta name="robots" content="index, follow">
+            <link rel="canonical" href="https://epap.vercel.app/privacy">
+            
+            <!-- Open Graph -->
+            <meta property="og:title" content="Πολιτική Απορρήτου - ΕΠΑΠ">
+            <meta property="og:description" content="Πολιτική απορρήτου της ΕΠΑΠ - Ελληνική Πλατφόρμα Ανάλυσης Παραπληροφόρησης">
+            <meta property="og:url" content="https://epap.vercel.app/privacy">
+            <meta property="og:type" content="website">
+            <meta property="og:image" content="https://epap.vercel.app/static/icons/icon-512x512.png">
+            <meta property="og:image:width" content="512">
+            <meta property="og:image:height" content="512">
+            <meta property="og:locale" content="el_GR">
+            <meta property="og:site_name" content="ΕΠΑΠ">
+            
+            <!-- Twitter Card -->
+            <meta name="twitter:card" content="summary">
+            <meta name="twitter:title" content="Πολιτική Απορρήτου - ΕΠΑΠ">
+            <meta name="twitter:description" content="Πολιτική απορρήτου της ΕΠΑΠ - Ελληνική Πλατφόρμα Ανάλυσης Παραπληροφόρησης">
+            <meta name="twitter:image" content="https://epap.vercel.app/static/icons/icon-512x512.png">
+            
+            <!-- JSON-LD Structured Data -->
+            <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "WebPage",
+                "name": "Πολιτική Απορρήτου - ΕΠΑΠ",
+                "url": "https://epap.vercel.app/privacy",
+                "description": "Πολιτική απορρήτου της ΕΠΑΠ - Ελληνική Πλατφόρμα Ανάλυσης Παραπληροφόρησης",
+                "inLanguage": "el"
+            }
+            </script>
             
             <link rel="manifest" href="/static/manifest.json">
             
