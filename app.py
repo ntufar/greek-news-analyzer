@@ -337,6 +337,29 @@ def sitemap_xml():
         logger.error(f"Error serving sitemap.xml: {str(e)}")
         return f'Error: {str(e)}', 500
 
+@app.route('/BingSiteAuth.xml')
+def bing_site_auth():
+    """Serve Bing Site Auth XML verification file"""
+    try:
+        candidate_paths = [
+            os.path.join('static', 'BingSiteAuth.xml'),
+            os.path.join(os.path.dirname(__file__), 'api', 'static', 'BingSiteAuth.xml')
+        ]
+        for file_path in candidate_paths:
+            if os.path.exists(file_path):
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                response = app.response_class(
+                    content,
+                    mimetype='text/xml; charset=utf-8'
+                )
+                response.headers['Cache-Control'] = 'public, max-age=86400'
+                return response
+        return 'BingSiteAuth.xml not found', 404
+    except Exception as e:
+        logger.error(f"Error serving BingSiteAuth.xml: {str(e)}")
+        return f'Error: {str(e)}', 500
+
 @app.route('/analyze', methods=['POST'])
 @limiter.limit("5 per minute")  # More restrictive for analysis endpoint
 @log_request

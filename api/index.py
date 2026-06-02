@@ -1525,7 +1525,32 @@ class handler(BaseHTTPRequestHandler):
                 self.send_response(404)
                 self.end_headers()
                 self.wfile.write(b'Verification file not found')
-            
+
+        elif self.path == '/BingSiteAuth.xml':
+            # Serve Bing Site Auth XML verification file
+            candidate_paths = [
+                os.path.join('static', 'BingSiteAuth.xml'),
+                os.path.join(os.path.dirname(__file__), 'static', 'BingSiteAuth.xml')
+            ]
+            file_found = False
+            for file_path in candidate_paths:
+                try:
+                    with open(file_path, 'r', encoding='utf-8') as f:
+                        content = f.read()
+                    self.send_response(200)
+                    self.send_header('Content-type', 'text/xml; charset=utf-8')
+                    self.send_header('Cache-Control', 'public, max-age=86400')
+                    self.end_headers()
+                    self.wfile.write(content.encode('utf-8'))
+                    file_found = True
+                    break
+                except FileNotFoundError:
+                    continue
+            if not file_found:
+                self.send_response(404)
+                self.end_headers()
+                self.wfile.write(b'BingSiteAuth.xml not found')
+
         else:
             self.send_response(404)
             self.end_headers()
