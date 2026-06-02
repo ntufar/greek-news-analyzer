@@ -9,9 +9,10 @@ class ShareHandler {
     required void Function(String sharedText) onShare,
     required void Function(String sharedText) onInitialShare,
   }) {
+    // Handle shared content (text, URLs, files)
     _sub = ReceiveSharingIntent.instance.getMediaStream().listen(
-      (List<SharedMediaFile> files) {
-        for (final file in files) {
+      (List<SharedMediaFile> value) {
+        for (final file in value) {
           if (file.path.isNotEmpty) {
             onShare(file.path);
           }
@@ -22,9 +23,10 @@ class ShareHandler {
       },
     );
 
+    // Handle initial share (when app is launched via share)
     ReceiveSharingIntent.instance.getInitialMedia().then(
-      (List<SharedMediaFile> files) {
-        for (final file in files) {
+      (List<SharedMediaFile> value) {
+        for (final file in value) {
           if (file.path.isNotEmpty) {
             onInitialShare(file.path);
           }
