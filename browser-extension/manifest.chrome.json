@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "ΕΠΑΠ - Ανάλυση Ελληνικών Ειδήσεων",
+  "short_name": "ΕΠΑΠ",
+  "version": "1.0.0",
+  "description": "Αναλύστε ελληνικά άρθρα ειδήσεων για προπαγάνδα και προκατάληψη με AI",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    },
+    "default_title": "ΕΠΑΠ - Ανάλυση Ειδήσεων"
+  },
+  "permissions": ["activeTab", "scripting"],
+  "host_permissions": ["https://epap.vercel.app/*"]
+}

@@ -1328,6 +1328,16 @@ class handler(BaseHTTPRequestHandler):
         """
         return html
     
+    def _send_cors_headers(self):
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+
+    def do_OPTIONS(self):
+        self.send_response(200)
+        self._send_cors_headers()
+        self.end_headers()
+
     def do_GET(self):
         if self.path == '/':
             self.send_response(200)
@@ -1575,6 +1585,7 @@ class handler(BaseHTTPRequestHandler):
                     }
                     self.send_response(400)
                     self.send_header('Content-type', 'application/json')
+                    self._send_cors_headers()
                     self.end_headers()
                     self.wfile.write(json.dumps(error_response).encode())
                     return
@@ -1588,6 +1599,7 @@ class handler(BaseHTTPRequestHandler):
                         }
                         self.send_response(400)
                         self.send_header('Content-type', 'application/json')
+                        self._send_cors_headers()
                         self.end_headers()
                         self.wfile.write(json.dumps(error_response).encode())
                         return
@@ -1600,10 +1612,11 @@ class handler(BaseHTTPRequestHandler):
                         }
                         self.send_response(400)
                         self.send_header('Content-type', 'application/json')
+                        self._send_cors_headers()
                         self.end_headers()
                         self.wfile.write(json.dumps(error_response).encode())
                         return
-                
+
                 # Check minimum text length
                 if len(text) < 50:
                     error_response = {
@@ -1612,10 +1625,11 @@ class handler(BaseHTTPRequestHandler):
                     }
                     self.send_response(400)
                     self.send_header('Content-type', 'application/json')
+                    self._send_cors_headers()
                     self.end_headers()
                     self.wfile.write(json.dumps(error_response).encode())
                     return
-                
+
                 # Check maximum text length
                 if len(text) > 10000:
                     error_response = {
@@ -1624,33 +1638,36 @@ class handler(BaseHTTPRequestHandler):
                     }
                     self.send_response(400)
                     self.send_header('Content-type', 'application/json')
+                    self._send_cors_headers()
                     self.end_headers()
                     self.wfile.write(json.dumps(error_response).encode())
                     return
-                
+
                 # Perform analysis using Mistral AI
                 analysis = analyze_greek_news(text, source)
-                
+
                 response = {
                     'analysis': analysis,
                     'text_length': len(text),
                     'source': source if source else 'Άγνωστη',
                     'success': True
                 }
-                
+
                 self.send_response(200)
                 self.send_header('Content-type', 'application/json')
+                self._send_cors_headers()
                 self.end_headers()
                 self.wfile.write(json.dumps(response).encode())
-                
+
             except Exception as e:
                 error_response = {
                     'error': f'Σφάλμα: {str(e)}',
                     'success': False
                 }
-                
+
                 self.send_response(500)
                 self.send_header('Content-type', 'application/json')
+                self._send_cors_headers()
                 self.end_headers()
                 self.wfile.write(json.dumps(error_response).encode())
         else:
